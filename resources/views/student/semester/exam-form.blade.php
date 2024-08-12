@@ -15,12 +15,12 @@
                         <tr><th>Registration No :</th> <td>{{$student->registration_no}}</td></tr>
                         <tr><th>Roll No :</th> <td>{{$student->university_roll_no}}</td></tr>
                         <tr><th>Registration Type :</th> <td>{{ucfirst($student->registration_type)}}</td></tr>
-                        <tr><th>Registration Type :</th> <td>{{ucfirst($student->semester_id)}}</td></tr>
+                        <tr><th>Semester :</th> <td>{{ucfirst($student->semester_id)}}</td></tr>
                         <tr><th>Registration Type :</th> <td>{{ucfirst($student->admission_session)}}</td></tr>
                        </table>
                     </div>
                     <div class="col-3">
-                        <div class="col-6 mb-6 pt-5">
+                        <div class="col-6 mb-6 pt-3">
                             <img src="{{ asset('storage/' . optional(Auth::guard('student')->user()->profile_pic)->media) }}"
                                 alt="" class="image-responsive" style="width: 150px; height: 200px;">
                         </div>
