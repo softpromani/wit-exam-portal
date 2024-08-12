@@ -15,7 +15,11 @@
                         <tr><th>Registration No :</th> <td>{{$student->registration_no}}</td></tr>
                         <tr><th>Roll No :</th> <td>{{$student->university_roll_no}}</td></tr>
                         <tr><th>Registration Type :</th> <td>{{ucfirst($student->registration_type)}}</td></tr>
-                        <tr><th>Semester :</th> <td>{{ucfirst($student->semester_id)}}</td></tr>
+                        <tr>
+                            <th>Course :</th> <td>{{ucfirst(optional($student->course)->name)}}</td>
+                            <th>Branch :</th> <td>{{ucfirst(optional($student->branch)->name)}}</td>
+                            <th>Semester :</th> <td>{{ucfirst(optional($student->semester)->semester_name)}}</td>
+                        </tr>
                         <tr><th>Registration Type :</th> <td>{{ucfirst($student->admission_session)}}</td></tr>
                        </table>
                     </div>

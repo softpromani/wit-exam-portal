@@ -28,4 +28,16 @@ class Student extends Authenticatable
         ->exists();
         return $res;
     }
+    public function semester(){
+        return $this->belongsTo(Semester::class);
+    }
+    public function course(){
+        return $this->belongsTo(Course::class);
+    }
+    public function branch(){
+        return $this->belongsTo(Branch::class);
+    }
+    public function admission_session(){
+        return $this->belongsTo(AdmissionSession::class);
+    }
 }
