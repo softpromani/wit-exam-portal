@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\student\ExamFormController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Student\StudentController;
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +35,9 @@ Route::group(['prefix' => 'student', 'as' => 'student.'], function () {
     });
 }); 
 
-
-Route::get('admin-dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('login',[AdminAuthController::class,'login'])->name('admin-login');
+    Route::post('login',[AdminAuthController::class,'adminLogin'])->name('admin-login-store');
+    Route::get('admin-dashboard',[AdminController::class,'adminDashboard'])->name('admin-dashboard');
+    Route::get('logout', [AdminAuthController::class, 'adminLogout'])->name('admin-logout');
+});

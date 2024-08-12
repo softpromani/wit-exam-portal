@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('semester_id');
+            $table->unsignedBigInteger('admission_session_id');
             $table->string('password');
             $table->string('gender')->nullable();
             $table->string('email')->nullable();

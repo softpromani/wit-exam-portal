@@ -1,4 +1,4 @@
-@extends('auth.includes.master')
+@extends('admin.auth.includes.master')
 @section('content')
 <div class="container">
 
@@ -15,15 +15,15 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome To Admin Portal!</h1>
                                 </div>
-                                <form action="{{route ('loginStore') }}" method="POST">
+                                <form action="{{route ('admin.admin-login-store') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user"
-                                            id="exampleInputEmail" name="university_roll_no" aria-describedby="emailHelp"
+                                            id="exampleInputEmail" name="email" aria-describedby="emailHelp"
                                             placeholder="Enter User Id">
-                                            @error('university_roll_no')
+                                            @error('email')
                                             <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                     </div>
@@ -44,7 +44,7 @@
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                         Login
                                     </button
-                                </form >
+                                </form>
                                 <hr>
                                 {{-- <div class="text-center">
                                     <a class="small" href="forgot-password.html">Forgot Password?</a>

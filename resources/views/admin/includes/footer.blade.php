@@ -23,7 +23,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="{{url('admin.logout')}}">Logout</a>
+                <a class="btn btn-primary" href="{{route('admin.admin-logout')}}">Logout</a>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form   action="{{ url('student.changesPassword', Auth::guard('student')->user()->id) }}" method="POST">
+        <form   action="{{ url('student.changesPassword', Auth::id()) }}" method="POST">
             @csrf
         <div class="modal-body">
                 <div class="row">
