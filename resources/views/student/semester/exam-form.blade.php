@@ -10,23 +10,14 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-9">
-                        <div class="ml-5 p-3">
-                            <div>
-                                <h5>Name : <span>{{ Auth::guard('student')->user()->student_name ?? '' }}</span> </h5>
-                            </div>
-                            <div>
-                                <h5>Enrollment No. :<spna>{{ Auth::guard('student')->user()->enrollment_number ?? '' }}</spna>
-                                </h5>
-                            </div>
-                            <div>
-                                <h5>Regisration No. :<spna>{{ Auth::guard('student')->user()->register_number ?? '' }}</spna>
-                                </h5>
-                            </div>
-                            <div>
-                                <h5>Semester :<spna>{{ Auth::guard('student')->user()->semester_id ?? '' }}</spna>
-                                </h5>
-                            </div>
-                        </div>
+                       <table class="table table-borderless">
+                        <tr><th>Name :</th> <td>{{$student->student_name}}</td></tr>
+                        <tr><th>Registration No :</th> <td>{{$student->registration_no}}</td></tr>
+                        <tr><th>Roll No :</th> <td>{{$student->university_roll_no}}</td></tr>
+                        <tr><th>Registration Type :</th> <td>{{ucfirst($student->registration_type)}}</td></tr>
+                        <tr><th>Registration Type :</th> <td>{{ucfirst($student->semester_id)}}</td></tr>
+                        <tr><th>Registration Type :</th> <td>{{ucfirst($student->admission_session)}}</td></tr>
+                       </table>
                     </div>
                     <div class="col-3">
                         <div class="col-6 mb-6 pt-5">

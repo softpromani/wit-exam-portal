@@ -15,7 +15,8 @@ class ExamFormController extends Controller
         if(auth()->guard('student')->user()->checkThisSemFormStatus()){
             return redirect()->back()->with(['warning'=>'Your Exam Form for  this Session already submitted']);
         }
-        return view('student.semester.exam-form');
+        $student=auth()->guard('student')->user();
+        return view('student.semester.exam-form',compact('student'));
     }
 
     public function subject_fetch(Request $request){
