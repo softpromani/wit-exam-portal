@@ -94,10 +94,11 @@
                     <label for="parent_number" class="form-label">Parent/Guardian Contact No.</label>
                     <input type="text" class="form-control" placeholder="Enter Parent/Guardian Number" id="parent_number" name="parent_number"
                         value="{{ isset($editstudent) ? $editstudent->parent_number  : '' }}">
-                </div>
-                @error('parent_number')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
+                        @error('parent_number')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+               
                 <div class="col-6 mb-3">
                     <label for="semester" class="form-label">Current Semester</label>
                     <input type="text" class="form-control" id="semester" name="semester"
@@ -113,13 +114,14 @@
                 </div>
                 @if(!isset($editstudent->profile_pic))
                 <div class="col-6 mb-3">
-                    <label for="photo" class="form-label">Upload Picture</label>
+                    <label for="photo" class="form-label">Upload Picture <span class="text-danger">(must be 300x400 px and less than 512 Kb)</span></label>
                     <input type="file" class="form-control" id="photo" name="photo"/>
                     <img id="profilePreview" src="" width="60" height="60" class="mt-2" style="display: none;" />
+                    @error('photo')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
-                @error('photo')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
+                
                 @else
                 <div class="col-6 mb-3">
                     <b>Your Profile Pic</b> <br>
@@ -129,13 +131,14 @@
                 
                 @if(!isset($editstudent->sign))
                 <div class="col-6 mb-3">
-                    <label for="signature" class="form-label">Signature</label>
+                    <label for="signature" class="form-label">Signature  <span class="text-danger">(must be 200x100 px and less than 512 Kb)</span></label>
                     <input type="file" class="form-control" id="signature" name="signature"/>
                     <img id="signaturePreview" src="" width="60" height="60" class="mt-2" style="display: none;" />
+                    @error('signature')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
-                @error('signature')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
+                
                 @else
                     <div class="col-6 mb-6 pt-5">
                         <b>Your Signature</b><br>
