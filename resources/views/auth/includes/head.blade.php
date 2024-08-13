@@ -4,7 +4,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>University Attendance System- Login</title>
+<title>WIT : : Exam Portal</title>
 
 <!-- Custom fonts for this template-->
 <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
