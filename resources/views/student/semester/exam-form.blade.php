@@ -11,12 +11,14 @@
                 <div class="row">
                     <div class="col-9">
                        <table class="table table-borderless">
-                        <tr><th>Name :</th> <td>{{$student->student_name}}</td></tr>
+                        <tr><th>Name :</th> <td colspan="4">{{$student->student_name}}</td></tr>
                         <tr>
-                            <th>Registration No :</th> <td>{{$student->registration_no}}</td>
+                            <th>Registration No :</th> <td colspan="4">{{$student->registration_no}}</td>
+                        </tr>
+                        <tr><th>Registration Type :</th> <td>{{ucfirst($student->registration_type)}}</td>
+                        
                             <th>Roll No :</th> <td>{{$student->university_roll_no}}</td>
                         </tr>
-                        <tr><th>Registration Type :</th> <td>{{ucfirst($student->registration_type)}}</td></tr>
                         <tr>
                             <th>Course :</th> <td>{{ucfirst(optional($student->course)->name)}}</td>
                             <th>Branch :</th> <td>{{ucfirst(optional($student->branch)->name)}}</td>
