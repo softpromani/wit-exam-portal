@@ -12,15 +12,19 @@
                     <div class="col-9">
                        <table class="table table-borderless">
                         <tr><th>Name :</th> <td>{{$student->student_name}}</td></tr>
-                        <tr><th>Registration No :</th> <td>{{$student->registration_no}}</td></tr>
-                        <tr><th>Roll No :</th> <td>{{$student->university_roll_no}}</td></tr>
+                        <tr>
+                            <th>Registration No :</th> <td>{{$student->registration_no}}</td>
+                            <th>Roll No :</th> <td>{{$student->university_roll_no}}</td>
+                        </tr>
                         <tr><th>Registration Type :</th> <td>{{ucfirst($student->registration_type)}}</td></tr>
                         <tr>
                             <th>Course :</th> <td>{{ucfirst(optional($student->course)->name)}}</td>
                             <th>Branch :</th> <td>{{ucfirst(optional($student->branch)->name)}}</td>
+                        </tr>
+                        <tr>
+                            <th>Admission Session :</th> <td>{{ucfirst(optional($student->admission_session)->session_name)}}</td>
                             <th>Semester :</th> <td>{{ucfirst(optional($student->semester)->semester_name)}}</td>
                         </tr>
-                        <tr><th>Registration Type :</th> <td>{{ucfirst($student->admission_session)}}</td></tr>
                        </table>
                     </div>
                     <div class="col-3">
