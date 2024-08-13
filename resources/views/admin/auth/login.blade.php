@@ -11,7 +11,13 @@
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                        <div class="col-lg-6 text-center mt-5  d-lg-block bg-login-image">
+                            <div> <h4 class="ml-5"> Welcome to WIT LNMU</h4></div>
+
+                            <div class="mt-4">
+                                <img src="{{asset('wit/img/witlogo.png')}}" style="max-height:200px" class="img-responsive"/>
+                            </div>
+                        </div>
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
