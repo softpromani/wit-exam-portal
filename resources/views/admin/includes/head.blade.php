@@ -19,3 +19,6 @@
 
 <!-- Custom styles for this template-->
 <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+{{-- yajra css --}}
+
+<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">

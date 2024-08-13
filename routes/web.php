@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Student\ExamFormController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Admin\ExamController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
