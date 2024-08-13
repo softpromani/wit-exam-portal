@@ -22,7 +22,7 @@
                     <input type="text" class="form-control" id="reg_numbr" name="reg_number"
                         value="{{ isset($editstudent) ?$editstudent->registration_no :  '' }}" required readonly>
                 </div>
-                @error('name')
+                @error('reg_number')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <div class="col-6 mb-3">
@@ -44,6 +44,24 @@
                     </select>
                 </div>                
                 @error('gender')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+                <div class="col-6 mb-3">
+                    <label for="dob" class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="dob" name="dob"
+                           placeholder="Select your date of birth"
+                           value="{{ isset($editstudent) ? $editstudent->dob : old('dob') }}">
+                </div>                
+                @error('dob')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+                <div class="col-6 mb-3">
+                    <label for="adhar_number" class="form-label">Adhar Number</label>
+                    <input type="number" class="form-control" id="adhar_number" name="adhar_number"
+                           placeholder="Enter Adhar Number"
+                           value="{{ isset($editstudent) ? $editstudent->adhar_number : old('adhar_number') }}">
+                </div>                
+                @error('dob')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <div class="col-6 mb-3">

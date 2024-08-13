@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Authenticatable
 {
     use HasFactory;
-    protected $guarded=[];
+    protected $fillable=['university_roll_no','registration_no','registration_type','student_name','course_id','branch_id',
+                        'semester_id','admission_session_id','password','gender','email','mobile_number','fname','mname','parent_number',
+                        'address','is_profile','dob','adhar_number'
+                        ];
 
     function profile_pic(){
         return $this->morphOne(Media::class,'mediable')->where('type','photo');

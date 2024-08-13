@@ -29,11 +29,14 @@ class StudentController extends Controller
             'mobile_number' => 'required|max:13',
             'fname' => 'required',
             'mname' => 'required',
+            'dob' => 'required|date',
+            'adhar_number' => 'required|numeric',
             'parent_number' => 'required',
             'address' => 'required',
             'photo'=>'required|mimes:jpg,jpeg,png|max:512|dimensions:width=300,height=400',
             'signature'=>'required|mimes:jpg,jpeg,png|max:512|dimensions:width=200,height=100',
         ]);
+        
             // dd($data);
         $student=Student::findOrFail(Auth::guard('student')->id());
         $data['is_profile']='1';
