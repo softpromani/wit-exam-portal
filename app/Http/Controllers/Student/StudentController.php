@@ -31,8 +31,8 @@ class StudentController extends Controller
             'mname' => 'required',
             'parent_number' => 'required',
             'address' => 'required',
-            'photo'=>'nullable|mimes:jpg,jpeg,png|max:512|dimensions:width=300,height=400',
-            'signature'=>'nullable|mimes:jpg,jpeg,png|max:512|dimensions:width=200,height=100',
+            'photo'=>'required|mimes:jpg,jpeg,png|max:512|dimensions:width=300,height=400',
+            'signature'=>'required|mimes:jpg,jpeg,png|max:512|dimensions:width=200,height=100',
         ]);
             // dd($data);
         $student=Student::findOrFail(Auth::guard('student')->id());

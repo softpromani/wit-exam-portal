@@ -5,15 +5,7 @@
 <div class="container card">
 
     <div class="card-body">
-        @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+        
         <form action="{{($editstudent->is_profile==0)?route('student.store'):'#'}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
