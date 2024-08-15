@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('session_name');
             $table->string('from');
             $table->string('to');
-            $table->string('semester_id');
             $table->string('status');
             $table->timestamps();
         });

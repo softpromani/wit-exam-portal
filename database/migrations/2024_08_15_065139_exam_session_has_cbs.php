@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_trackings', function (Blueprint $table) {
+        Schema::create('exam_session_has_cbs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payment_id');
-            $table->string('payment_status')->default('process');
-            $table->string('payment_mode');
-            $table->string('amount');
-            $table->string('transaction_id');
-            $table->softDeletes();
+            $table->unsignedBigInteger('exam_session_id');
+            $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('branch_id');
+            $table->longText('semesters');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_trackings');
+        //
     }
 };

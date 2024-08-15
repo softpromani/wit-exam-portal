@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Payment extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $guarded=[];
 
     public function paymentable()
     {
@@ -20,11 +21,7 @@ class Payment extends Model
      * @param Model $mediable
      * @return static
      */
-    public static function uploadPayment(Model $mediable)
-    {
-    
-        return self::create([
-          
-        ]);
-    }
+   public function paymenttrackings(){
+        return $this->hasMany(PaymentTracking::class,'payment_id','id');
+   }
 }

@@ -21,13 +21,13 @@ class BranchSeeder extends Seeder
             ],
             [
                 'name' => 'IT',
-                'course_id' => '2',
+                'course_id' => '1',
             ],
             [
                 'name' => 'BIOINFORMATICS',
-                'course_id' => '3',
+                'course_id' => '1',
             ],
-           
+
         ]);
     }
 }

@@ -24,9 +24,10 @@ class Student extends Authenticatable
     public function examForms(){
         return $this->hasMany(ExamForm::class,'student_id');
     }
-    public static function checkThisSemFormStatus(){
+    public static function checkThisSemFormStatus($exam_session_id){
         $res=ExamForm::where('student_id',auth()->guard('student')->id())
         ->where('semester_id',auth()->guard('student')->user()->semester_id)
+        ->where('session_id',$exam_session_id)
         ->whereNot('exam_status','cancel')
         ->exists();
         return $res;

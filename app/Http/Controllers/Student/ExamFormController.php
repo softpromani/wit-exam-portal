@@ -5,6 +5,7 @@ namespace App\Http\Controllers\student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExamFormApplicationReq;
 use App\Models\ExamForm;
+use App\Models\ExamSession;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\Subject;
@@ -12,13 +13,16 @@ use DB;
 class ExamFormController extends Controller
 {
     function exam_form(){
-        if(auth()->guard('student')->user()->checkThisSemFormStatus()){
+            $examSessions=ExamSession::where('status','process')->get();
+            return view('student.semester.exam-form-list',['examSessions'=>$examSessions]);
+    }
+    function apply_for_exam($exam_session_id){
+        if(auth()->guard('student')->user()->checkThisSemFormStatus($exam_session_id)){
             return redirect()->back()->with(['warning'=>'Your Exam Form for  this Session already submitted']);
         }
         $student=auth()->guard('student')->user();
-        return view('student.semester.exam-form',compact('student'));
+        return view('student.semester.exam-form',compact('student','exam_session_id'));
     }
-
     public function subject_fetch(Request $request){
       $subjects = Subject::select('id','subject_code','title')->where('subject_code', 'LIKE', '%' . $request->param . '%')->orWhere('title', 'LIKE','%'.$request->param.'%')
       ->limit(10)
@@ -27,7 +31,7 @@ class ExamFormController extends Controller
     }
     public function apply_exam_form(ExamFormApplicationReq $req){
             $data=$req->validated();
-            $data['session_id']=1;
+            $data['session_id']=$req->exam_session_id;
             $data['semester_id']=auth()->guard('student')->user()->semester_id;
             $data['student_id']=auth()->guard('student')->id();
             try {
@@ -42,7 +46,7 @@ class ExamFormController extends Controller
                         ],
                         $data
                     );
-        
+
                     // Prepare exam_form_subjects data
                     $examFormSubjects = array_map(function ($subjectId) use ($examForm) {
                         return [
@@ -53,14 +57,14 @@ class ExamFormController extends Controller
                             'grade' => null, // Default value or use request data
                         ];
                     }, $data['choosen_subjects']);
-        
+
                     // Clear existing subjects for this exam form
                     DB::table('exam_form_subjects')->where('exam_form_id', $examForm->id)->delete();
-        
+
                     // Insert new subjects
                     DB::table('exam_form_subjects')->insert($examFormSubjects);
                 });
-        
+
                 // Return success response
                 return redirect()->route('student.dashboard')->with(['success' => 'Exam form and subjects saved successfully!']);
             } catch (QueryException $e) {

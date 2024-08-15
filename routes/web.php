@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\FeePaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,12 +28,17 @@ Route::group(['prefix' => 'student', 'as' => 'student.'], function () {
     Route::post('student-profile-store',[StudentController::class,'store'])->name('store');
     Route::post('change-password/{id}',[AuthController::class,'changePassword'])->name('changePassword');
     Route::get('logout', [StudentController::class, 'logout'])->name('logout');
+    Route::post('fee-payment',[FeePaymentController::class,'studentfeepayment'])->name('fee-payment');
+
+
     Route::group(['prefix'=>'semester','as'=>'semester.'],function(){
         Route::get('exam-form',[ExamFormController::class,'exam_form'])->name('exam-form');
         Route::post('subject-fetch',[ExamFormController::class,'subject_fetch'])->name('fetchsubject');
+        Route::get('exam-for-form/{id}',[ExamFormController::class,'apply_for_exam'])->name('exam-for-apply');
         Route::post('exam-apply',[ExamFormController::class,'apply_exam_form'])->name('exam-apply');
+
     });
-}); 
+});
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('login',[AdminAuthController::class,'login'])->name('admin-login');

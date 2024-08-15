@@ -16,7 +16,7 @@
                             <th>Registration No :</th> <td colspan="4">{{$student->registration_no}}</td>
                         </tr>
                         <tr><th>Registration Type :</th> <td>{{ucfirst($student->registration_type)}}</td>
-                        
+
                             <th>Roll No :</th> <td>{{$student->university_roll_no}}</td>
                         </tr>
                         <tr>
@@ -64,6 +64,7 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-4">
+                            <input type='hidden' name="exam_session_id" value='{{ $exam_session_id }}'/>
                             <label for="semester">Choose Your Subjects From here </label>
                             <select class="form-control" id="semester">
                             </select>
@@ -103,7 +104,7 @@
     <script>
         $(document).ready(function() {
             $('#semester').select2({
-                // 
+                //
                 ajax: {
                     url: '{{ route('student.semester.fetchsubject') }}',
                     method: 'POST',
@@ -145,9 +146,9 @@
             </td>
             <td>
                 <i class="fa-solid fa fa-trash text-danger delete-subject"></i>
-            </td>   
-                
-        </tr>    
+            </td>
+
+        </tr>
         `;
                 $('#choosen_subjects_table').append(html);
             });
