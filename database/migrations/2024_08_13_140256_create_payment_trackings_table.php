@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('payment_status')->default('process');
             $table->string('payment_mode');
             $table->string('amount');
-            $table->string('transaction_id');
+            $table->string('transaction_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

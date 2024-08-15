@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Payment extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $guarded=[];
+    protected $fillable=['paymentable_type','paymentable_id','total_amount','paid_amount','fine_amount','due_amount','payment_status'];
 
     public function paymentable()
     {

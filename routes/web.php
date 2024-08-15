@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\FeePaymentController;
 
 /*
@@ -28,7 +29,6 @@ Route::group(['prefix' => 'student', 'as' => 'student.'], function () {
     Route::post('student-profile-store',[StudentController::class,'store'])->name('store');
     Route::post('change-password/{id}',[AuthController::class,'changePassword'])->name('changePassword');
     Route::get('logout', [StudentController::class, 'logout'])->name('logout');
-    Route::post('fee-payment',[FeePaymentController::class,'studentfeepayment'])->name('fee-payment');
 
 
     Route::group(['prefix'=>'semester','as'=>'semester.'],function(){
@@ -46,4 +46,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('admin-dashboard',[AdminController::class,'adminDashboard'])->name('admin-dashboard');
     Route::get('logout', [AdminAuthController::class, 'adminLogout'])->name('admin-logout');
     Route::get('exam-form-list',[ExamController::class,'exam_form_list'])->name('exam-form_list');
+    Route::post('fee-payment',[PaymentController::class,'feePayment'])->name('fee-payment');
+    
+
 });

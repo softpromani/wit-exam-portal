@@ -75,7 +75,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form   action="{{ route('student.fee-payment') }}" method="POST">
+      <form   action="{{ route('admin.fee-payment') }}" method="POST">
           @csrf
       <div class="modal-body">
               <div class="row">
