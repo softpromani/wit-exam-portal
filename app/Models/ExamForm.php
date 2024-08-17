@@ -14,9 +14,14 @@ class ExamForm extends Model
         'student_id', 'semester_id', 'session_id', 'result_status', 'exam_status',
     ];
 
-    public function payment(){
+    public function payment()
+    {
         return $this->MorphOne(Payment::class,'paymentable');
     }
 
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'id');
+    }
 
 }

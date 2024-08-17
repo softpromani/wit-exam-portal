@@ -9,46 +9,36 @@
                     <tr>
                         <th>S.No</th>
                         <th>Roll No.</th>
-                        <th>Registeration No.</th>
+                        <th>Registration No.</th>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th>Gender</th>
-                        <th>DOB</th>
-                        <th>Adhar Number</th>
                         <th>Mobile Number</th>
                         <th>Course</th>
                         <th>Branch</th>
                         <th>Semester</th>
-                        <th>Admission Session</th>
-                        <th>Father Name</th>
-                        <th>Mother Name</th>
-                        <th>Parent Number</th>
-                        <th>Address</th>
-
+                        <th>Profile</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if ($examformdata!='')
                       @foreach ($examformdata as  $formdata)
-                          {{--  <tr>
+                          <tr>
                             <td>{{$loop->index+1}}</td>
-                            <td>{{$formdata->university_roll_no??''}}</td>
-                            <td>{{$formdata->registration_no??''}}</td>
-                            <td>{{$formdata->student_name??''}}</td>
-                            <td>{{$formdata->email??''}}</td>
-                            <td>{{$formdata->gender??''}}</td>
-                            <td>{{$formdata->dob??''}}</td>
-                            <td>{{$formdata->adhar_number??''}}</td>
-                            <td>{{$formdata->mobile_number??''}}</td>
-                            <td>{{$formdata->course->name??''}}</td>
-                            <td>{{$formdata->branch->name??''}}</td>
-                            <td>{{$formdata->semester->semester_name??''}}</td>
-                            <td>{{$formdata->admission_session->session_name??''}}</td>
-                            <td>{{$formdata->fname??''}}</td>
-                            <td>{{$formdata->mname??''}}</td>
-                            <td>{{$formdata->parent_number??''}}</td>
-                            <td>{{$formdata->address??''}}</td>
+                            <td>{{$formdata->student->university_roll_no??''}}</td>
+                            <td>{{$formdata->student->registration_no??''}}</td>
+                            <td>{{$formdata->student->student_name??''}}</td>
+                            <td>{{$formdata->student->mobile_number ??''}}</td>
+                            <td>{{$formdata->student->course->name ??''}}</td>
+                            <td>{{$formdata->student->branch->name ??''}}</td>
+                            <td>{{$formdata->student->semester->semester_name ??''}}</td>
+                            <td>
+                                @if ($formdata->student->is_profile && $formdata->student->is_profile == 1)
+                                <span class="badge badge-success">Complete</span>
+                                @else
+                                <span class="badge badge-danger">Incomplete</span>
+                                @endif
+
+                            </td>
                             <td>
                                 <a href="#"><i class="fa fa-eye text-primary"></i></a>
                                @if($formdata->student->is_profile == 1)
@@ -57,7 +47,7 @@
                                    
                             </td>
 
-                          </tr>  --}}
+                          </tr>
                       @endforeach
                     @endif
                 </tbody>
