@@ -31,7 +31,7 @@
                 <tbody>
                     @if ($examformdata!='')
                       @foreach ($examformdata as  $formdata)
-                          <tr>
+                          {{--  <tr>
                             <td>{{$loop->index+1}}</td>
                             <td>{{$formdata->university_roll_no??''}}</td>
                             <td>{{$formdata->registration_no??''}}</td>
@@ -51,10 +51,13 @@
                             <td>{{$formdata->address??''}}</td>
                             <td>
                                 <a href="#"><i class="fa fa-eye text-primary"></i></a>
-                                <a href="#" class="ml-3" data-toggle="modal" data-target="#paymentModal" data-id="{{ $formdata->id }}" id="paymentBtn"><i class="fa fa-credit-card text-success"></i></a>
+                               @if($formdata->student->is_profile == 1)
+                                <a href="#" class="ml-3" data-toggle="modal" data-target="#paymentModal" data-id="{{ $formdata->id }}" id="paymentBtn"><i class="fa fa-credit-card text-success"></i></a> 
+                               @endif
+                                   
                             </td>
 
-                          </tr>
+                          </tr>  --}}
                       @endforeach
                     @endif
                 </tbody>
