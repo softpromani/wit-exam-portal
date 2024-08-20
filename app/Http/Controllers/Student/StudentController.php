@@ -40,9 +40,9 @@ class StudentController extends Controller
             // dd($data);
         $student=Student::findOrFail(Auth::guard('student')->id());
         $data['is_profile']='1';
-             isset($request->photo,$student)?Media::uploadMedia($request->photo,$student,'photo'):'';
-              isset($request->signature)?Media::uploadMedia($request->signature,$student,'sign'):'';
-              $student->update($data);
+        isset($request->photo,$student)?Media::uploadMedia($request->photo,$student,'photo'):'';
+        isset($request->signature)?Media::uploadMedia($request->signature,$student,'sign'):'';
+        $student->update($data);
         if($student){
             return redirect()->route('student.dashboard')->with('success','Your profile Update Successfully !!');
         }else{

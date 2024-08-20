@@ -30,9 +30,7 @@ Route::group(['prefix' => 'student', 'as' => 'student.'], function () {
     Route::post('student-profile-store',[StudentController::class,'store'])->name('store');
     Route::post('change-password/{id}',[AuthController::class,'changePassword'])->name('changePassword');
     Route::get('logout', [StudentController::class, 'logout'])->name('logout');
-    Route::get('admitcard', [AdmitCardController::class, 'studentAdmitcard'])->name('admit-card');
-
-
+  
     Route::group(['prefix'=>'semester','as'=>'semester.'],function(){
         Route::get('exam-form',[ExamFormController::class,'exam_form'])->name('exam-form');
         Route::post('subject-fetch',[ExamFormController::class,'subject_fetch'])->name('fetchsubject');

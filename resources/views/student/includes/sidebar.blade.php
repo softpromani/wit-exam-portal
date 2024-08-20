@@ -28,7 +28,7 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
 
- 
+
     <li class="nav-item">
         <a class="nav-link" href="{{route('student.profile')}}">
             <i class="fas fa-user"></i>
@@ -52,7 +52,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Exam form & Admit card</h6>
                 <a class="collapse-item" href="{{route('student.semester.exam-form')}}">Exam Form</a>
-                <a class="collapse-item" href="#">Admit Card</a>
+                <a class="collapse-item" href="{{route('student.semester.admitcard-form-list')}}">Admit Card</a>
             </div>
         </div>
     </li>

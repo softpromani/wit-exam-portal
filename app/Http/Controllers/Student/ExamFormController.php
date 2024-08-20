@@ -5,10 +5,12 @@ namespace App\Http\Controllers\student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExamFormApplicationReq;
 use App\Models\ExamForm;
+use App\Models\ExamSchedule;
 use App\Models\ExamSession;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\Subject;
+use Carbon\Carbon;
 use DB;
 
 class ExamFormController extends Controller
@@ -99,29 +101,50 @@ class ExamFormController extends Controller
 
     public function admitcard_download($exam_session_id)
     {
-        $examform = ExamForm::with(['subjects', 'student'])->where('student_id', auth()->guard('student')->id())->where('session_id', $exam_session_id)->first();
+        $examform = ExamForm::with(['subjects', 'student'])
+            ->where('student_id', auth()->guard('student')->id())
+            ->where('session_id', $exam_session_id)
+            ->first();
+
+        // Check if exam form exists
+        if (!$examform) {
+            // Handle case when no exam form is found
+            return response()->json(['message' => 'No exam form found.'], 404);
+        }
+
         $arrView['student'] = $examform->student;
-        $arrView['subjects'] = $examform->subjects;
+
+        $arrView['subjects'] = $examform->subjects->map(function ($subject) use ($examform) {
+            $schedule = ExamSchedule::where('exam_session_id', $examform->session_id)
+                ->where('subject_id', $subject->id)
+                ->first();
+            $subject->date =Carbon::parse(optional($schedule)->date)->format('d-M-Y');
+            $startDate=Carbon::parse(optional($schedule)->from_time ? optional($schedule)->from_time:'00:00:00')->format('h:i a') ;
+            $endDate=Carbon::parse(optional($schedule)->to_time ? optional($schedule)->to_time:'00:00:00')->format('h:i a');
+            $subject->time=$startDate .' to '.$endDate;
+            return $subject;
+        });
         return view('student.semester.admitcard', $arrView);
     }
-    public function locked_subject_by_examsession($exam_session_id){
-        $locked_subjects=ExamForm::with(['subjects'])->where('session_id',$exam_session_id)->where('student_id',auth()->guard('student')->id())->first();
-        $html=" <table class='table table-responsive table-bordered'>
+    public function locked_subject_by_examsession($exam_session_id)
+    {
+        $locked_subjects = ExamForm::with(['subjects'])->where('session_id', $exam_session_id)->where('student_id', auth()->guard('student')->id())->first();
+        $html = " <table class='table table-responsive table-bordered'>
             <tr>
             <th>Sr No</th>
             <th>Subject Code</th>
             <th>Subject Name</th>
             </tr>";
-            $index = 1; // Start the counter at 1
-        foreach($locked_subjects->subjects as $subject){
-            $html .="<tr>
+        $index = 1; // Start the counter at 1
+        foreach ($locked_subjects->subjects as $subject) {
+            $html .= "<tr>
                 <td>{$index}</td>
                 <td>{$subject->subject_code}</td>
                 <td>" . ucfirst($subject->title) . "</td>
             </tr>";
             $index++;
         }
-        $html .=`</table>`;
+        $html .= `</table>`;
         return $html;
     }
 }
