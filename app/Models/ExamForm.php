@@ -24,4 +24,16 @@ class ExamForm extends Model
         return $this->belongsTo(Student::class, 'student_id', 'id');
     }
 
+    public function exam_session()
+    {
+
+        return $this->belongsTo(ExamSession::class,'session_id');
+
+    }
+
+    // Define a many-to-many relationship with Subject
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'exam_form_subjects', 'exam_form_id', 'subject_id');
+    }
 }

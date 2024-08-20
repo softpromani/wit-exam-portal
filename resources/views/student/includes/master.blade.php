@@ -41,7 +41,6 @@
             <!-- Footer -->
            @include('student.includes.footer')
             <!-- End of Footer -->
-            @yield('script_section')
         </div>
         <!-- End of Content Wrapper -->
 
@@ -53,6 +52,7 @@
     <!-- Bootstrap core JavaScript-->
    @include('student.includes.foot')
 
+   @yield('script_section')
 </body>
 
 </html>

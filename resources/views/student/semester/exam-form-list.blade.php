@@ -17,11 +17,67 @@
                     <tr>
                         <td>{{ $loop->index+1 }}</td>
                         <td>{{ $examSession->session_name }}</td>
-                        <td><a href="{{ route('student.semester.exam-for-apply',$examSession->id) }}"> Apply </a></td>
+                        <td>
+                            @if($examSession->form_status==false)
+                            <a href="{{ route('student.semester.exam-for-apply',$examSession->id) }}"> Apply </a>
+                            @else
+                                <button type="button" class="btn btn-primary viewSubjectBtn" data-toggle="modal" data-target="#exampleModal" data-id="{{ $examSession->id }}">
+                                  View your locked subject
+                               </button>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Subject Select For this Exam</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div id="modal-data">
+                <div class="spinner-border text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection
+@section('script_section')
+<script>
+
+$(document).on('click', '.viewSubjectBtn', function () {
+    // Get the data-id from the button
+    var examSessionId = $(this).data('id');
+    // Fire an AJAX request to get the data
+    $.ajax({
+        url: '{{ url('student/semester/locked-subject-by-examsession') }}/'+examSessionId, // Your API endpoint
+        method: 'GET',
+        success: function (response) {
+            // Populate the modal with the data
+            $('#modal-data').html(response); // Assuming response contains HTML
+        },
+        error: function () {
+            // Handle errors here
+            $('#modal-data').html('An error occurred while loading the data.');
+        }
+    });
+
+    // Show the modal after the AJAX call completes
+    {{--  $('#exampleModal').modal('show');  --}}
+});
+
+</script>
 @endsection
