@@ -60,7 +60,7 @@
                     </tr>
                 </thead>
                 <tbody id="examScheduleTable">
-
+                    
                 </tbody>
             </table>
         </div>
@@ -70,13 +70,38 @@
 @endsection
 @section('script_section')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    {{--1 yahan se jquiry button ke liye h jo sab jagah hm syntax ye use kar sakte h   --}}
     $(document).ready(function(){
+
+        $.ajax({
+            url: '{{ route("admin.fetch_exam_schedule") }}',
+            type: 'GET',
+            success: function(response) {
+                console.log(response);
+                var rows = '';
+                // Assuming 'response' contains an array of exam schedules
+                response.schedules.forEach(function(schedules, index) {
+                    rows += '<tr>'+
+                                '<td>' + (index + 1) + '</td>'+
+                                '<td>' + (schedules.exam_session ? schedules.exam_session.session_name : 'N/A') + '</td>'+
+                                '<td>' + (schedules.subject ? schedules.subject.title : 'N/A') + '</td>'+
+                                '<td>' + schedules.date + '</td>'+
+                                '<td>' + schedules.from_time + '</td>'+
+                                '<td>' + schedules.to_time + '</td>'+
+                            '</tr>';
+                });
+                console.log(rows);
+                $('#examScheduleTable').html(rows);
+            },
+            error: function(xhr, status, error) {
+                console.error("An error occurred: " + error);
+            }
+        });
+
+
         $('#submitScheduleForm').click(function(e){
             e.preventDefault();
-     {{--  1 end  ab real query jo form id ke adhaar par data ek $ver me store --}}
-     // Collect form data using serialize() jo ki hm har form me use kar sakte h array me lata hai data
             var formData = $('#examScheduleForm').serialize();
             console.log(formData);
             // AJAX request
@@ -87,19 +112,38 @@
                 success: function(response) {
                     console.log('data submitted');
                     console.log(response);
+                  if(response.status==2)
+                  {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'This schedule already exist!',
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                      });
+                  }
+                  else if(response.status == 1 )
+                  {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Schedule saved successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                      });
+                  }
                     var rows = '';
                     // Assuming 'response' contains an array of exam schedules
                     response.schedules.forEach(function(schedules, index) {
                         rows += '<tr>'+
                                     '<td>' + (index + 1) + '</td>'+
-                                    '<td>' + schedules.exam_session_id + '</td>'+
-                                    '<td>' + schedules.subject_id + '</td>'+
+                                    '<td>' + (schedules.exam_session ? schedules.exam_session.session_name : 'N/A') + '</td>'+
+                                    '<td>' + (schedules.subject ? schedules.subject.title : 'N/A') + '</td>'+
                                     '<td>' + schedules.date + '</td>'+
                                     '<td>' + schedules.from_time + '</td>'+
                                     '<td>' + schedules.to_time + '</td>'+
                                 '</tr>';
                     });
                     $('#examScheduleTable').html(rows);
+                
                 },
                 error: function(xhr, status, error) {
                     console.error("An error occurred: " + error);

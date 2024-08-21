@@ -49,11 +49,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('admin-dashboard',[AdminController::class,'adminDashboard'])->name('admin-dashboard');
     Route::get('logout', [AdminAuthController::class, 'adminLogout'])->name('admin-logout');
     Route::get('exam-form-list',[ExamController::class,'exam_form_list'])->name('exam-form_list');
+    Route::get('exam-form-show/{form_id}',[ExamController::class,'exam_form_show'])->name('exam-form-show');
     Route::get('exam-schedule-list',[ExamController::class,'exam_schedule'])->name('exam_schedule_list');
     Route::post('exam-schedule',[ExamController::class,'exam_schedule_store'])->name('exam_schedule_store');
+    Route::get('fetch-exam-schedule',[ExamController::class,'fetchexam_schedule'])->name('fetch_exam_schedule');
     Route::get('subject',[ExamController::class,'subject'])->name('exam_subjects');
     Route::post('fee-payment',[PaymentController::class,'feePayment'])->name('fee-payment');
-
 
 
 });

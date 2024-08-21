@@ -12,10 +12,8 @@
                         <th>Registration No.</th>
                         <th>Name</th>
                         <th>Mobile Number</th>
-                        <th>Course</th>
-                        <th>Branch</th>
-                        <th>Semester</th>
-                        <th>Profile</th>
+                        <th>CBS</th>
+                        <th>Payment</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -28,21 +26,32 @@
                             <td>{{$formdata->student->registration_no??''}}</td>
                             <td>{{$formdata->student->student_name??''}}</td>
                             <td>{{$formdata->student->mobile_number ??''}}</td>
-                            <td>{{$formdata->student->course->name ??''}}</td>
-                            <td>{{$formdata->student->branch->name ??''}}</td>
-                            <td>{{$formdata->student->semester->semester_name ??''}}</td>
                             <td>
-                                @if ($formdata->student->is_profile && $formdata->student->is_profile == 1)
-                                <span class="badge badge-success">Complete</span>
-                                @else
-                                <span class="badge badge-danger">Incomplete</span>
-                                @endif
-
+                                <span class="badge badge-primary">  {{$formdata->student->course->name ??''}}</span> <br>
+                                <span class="badge badge-success">  {{$formdata->student->branch->name ??''}}</span>
+                                <span class="badge badge-warning">  {{$formdata->student->semester->semester_name ??''}}</span>
                             </td>
                             <td>
-                                <a href="#"><i class="fa fa-eye text-primary"></i></a>
+                                @if($formdata->payment)
+                                @if($formdata->payment->payment_status=='unpaid')
+                                <span class="badge badge-danger">Unpaid</span> <br>
+                                @elseif($formdata->payment->payment_status=='paid')
+                                <span class="badge badge-success">Paid</span> <br>
+                                @elseif($formdata->payment->payment_status=='partial')
+                                <span class="badge badge-warning">Partial Paid </span> <br>
+                                @endif
+                                ₹ {{ $formdata->payment->paid_amount }}
+                                @else
+                                <span class="badge badge-danger">Unpaid</span> <br>
+
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.exam-form-show',$formdata->id) }}" target="_blank"><i class="fa fa-eye text-primary"></i></a>
                                @if($formdata->student->is_profile == 1)
                                 <a href="#" class="ml-3" data-toggle="modal" data-target="#paymentModal" data-id="{{ $formdata->id }}" id="paymentBtn"><i class="fa fa-credit-card text-success"></i></a> 
+                                @else
+                                <span class="badge badge-danger"> Incomplete Profile</span>
                                @endif
                                    
                             </td>
