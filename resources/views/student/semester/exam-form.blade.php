@@ -74,7 +74,7 @@
                         </div>
 
                         <div class="col-md-6 border-left border-danger ">
-                            <h5 class="h5 text-dark">Subject You Choosen</h5>
+                            <h5 class="h5 text-dark">Choosen Subjects</h5>
                             <hr>
                             <table class="table table-borderless" id="choosen_subjects_table">
                                 @forelse ($locked_subjects as $ls)
