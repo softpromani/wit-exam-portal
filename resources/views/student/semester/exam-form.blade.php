@@ -77,6 +77,19 @@
                             <h5 class="h5 text-dark">Subject You Choosen</h5>
                             <hr>
                             <table class="table table-borderless" id="choosen_subjects_table">
+                                @forelse ($locked_subjects as $ls)
+                                <tr>
+                                    <td>{{ $ls->subject_code }} / {{$ls->title}}
+                                        <input type="hidden" value="{{$ls->id}}" name="choosen_subjects[]" >
+                                    </td>
+                                    <td>
+                                        <i class="fa-solid fa fa-trash text-danger delete-subject"></i>
+                                    </td>
+
+                                </tr>
+                                @empty
+
+                                @endforelse()
                             </table>
                         </div>
                         <div class="col-md-12 mt-2">

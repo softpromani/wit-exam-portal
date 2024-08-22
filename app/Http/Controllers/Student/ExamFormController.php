@@ -31,13 +31,20 @@ class ExamFormController extends Controller
         });
         return view('student.semester.exam-form-list', ['examSessions' => $examSessions]);
     }
-    function apply_for_exam($exam_session_id)
+    function apply_for_exam($exam_session_id,$edit=NULL)
     {
+        $locked_subject=NULL;
+        if($edit!=true){
         if (auth()->guard('student')->user()->checkThisSemFormStatus($exam_session_id)) {
             return redirect()->back()->with(['warning' => 'Your Exam Form for  this Session already submitted']);
         }
+    }
+    else{
+         $locked_subjects =optional(ExamForm::with(['subjects'])->where('session_id', $exam_session_id)->where('student_id', auth()->guard('student')->id())->first())->subjects;
+    }
+
         $student = auth()->guard('student')->user();
-        return view('student.semester.exam-form', compact('student', 'exam_session_id'));
+       return view('student.semester.exam-form', compact('student', 'exam_session_id','locked_subjects'));
     }
     public function subject_fetch(Request $request)
     {

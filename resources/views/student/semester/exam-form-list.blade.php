@@ -24,6 +24,7 @@
                                 <button type="button" class="btn btn-primary viewSubjectBtn" data-toggle="modal" data-target="#exampleModal" data-id="{{ $examSession->id }}">
                                   View your locked subject
                                </button>
+                               <a href="{{ route('student.semester.exam-for-apply',['session_id' => $examSession->id, 'edit' => true]) }}">Change Your Subject</a>
                             @endif
                         </td>
                     </tr>
