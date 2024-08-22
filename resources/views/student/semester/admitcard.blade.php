@@ -68,8 +68,12 @@
                     <table style="width:100%;border:0px;text-align:left;padding-left:10px;font-size:14px;">
                         <tbody>
                             <tr>
-                                <th>Roll No</th>
+                                <th>Course Roll No</th>
                                 <td> <span style="margin-right:10px;">:</span> {{$student->university_roll_no}}</td>
+                            </tr>
+                             <tr>
+                                <th>Registration No</th>
+                                <td> <span style="margin-right:10px;">:</span> {{$student->registration_no}}</td>
                             </tr>
                             <tr>
                                 <th>Name of candidate</th>
@@ -172,7 +176,7 @@
             Evaluation से | ऐसी कॉपियों को पकड़ा जा सकता है एवम विश्वविद्यालय के ऑर्डिनेंस के नियमानुसार दंड दिया जाएगा
             जिसकी समस्त जिम्मेवारी आप की होगी।
         </div>
-        
+
         <div style="text-align:right; padding-right:30px; ">
             <img src="{{ asset('wit/img/imgpsh_fullsize_anim-removebg-preview.png') }}" alt="signature image" style="width: 150px; height:50px; margin-top:5px">
             <p>Controller of Examination</p>
