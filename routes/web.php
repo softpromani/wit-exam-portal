@@ -43,9 +43,11 @@ Route::group(['prefix' => 'student', 'as' => 'student.','middleware'=>'auth:stud
     });
 });
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], function () {
+Route::group(['prefix'=>'admin','as'=>'admin.'],function(){
     Route::get('login',[AdminAuthController::class,'login'])->name('admin-login');
     Route::post('login',[AdminAuthController::class,'adminLogin'])->name('admin-login-store');
+});
+Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], function () {
     Route::get('admin-dashboard',[AdminController::class,'adminDashboard'])->name('admin-dashboard');
     Route::get('logout', [AdminAuthController::class, 'adminLogout'])->name('admin-logout');
     Route::get('exam-form-list',[ExamController::class,'exam_form_list'])->name('exam-form_list');
