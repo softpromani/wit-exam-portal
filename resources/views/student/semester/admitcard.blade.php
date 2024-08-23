@@ -178,7 +178,7 @@
         </div>
 
         <div style="text-align:right; padding-right:30px; ">
-            <img src="{{ asset('wit/img/imgpsh_fullsize_anim-removebg-preview.png') }}" alt="signature image" style="width: 150px; height:50px; margin-top:5px">
+            <img src="{{ asset('wit/img/exam-controller-sign.png') }}" alt="signature image" style="width: 150px; height:50px; margin-top:5px">
             <p>Controller of Examination</p>
         </div>
     </div>
