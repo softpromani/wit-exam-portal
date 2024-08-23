@@ -20,7 +20,7 @@
                         <select class="form-control" aria-label="Default select example" name="subject">
                             <option selected value="">Subject</option>
                             @foreach ($subjects as $subject)
-                            <option value="{{ $subject->id }}">{{ $subject->title }}</option>
+                            <option value="{{ $subject->id }}">{{$subject->subject_code}} / {{ $subject->title }}</option>
                             @endforeach
                         </select>
                     </div>
