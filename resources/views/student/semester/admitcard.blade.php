@@ -135,6 +135,7 @@
                     <th>Exam Date</th>
                     <th>Timings</th>
                     <th>Answer Book No.</th>
+                    <th>Invigilator Sign</th>
                 </tr>
             </thead>
             <tbody>
@@ -144,6 +145,8 @@
                     <td>{{ $subject->title }}</td>
                     <td>{{ $subject->date }}</td>
                     <td>{{ $subject->time }}</td>
+                    <td>{{ $subject->answer_book_no }}</td>
+                    <td>{{ $subject->invigilator }}</td>
                     <td></td>
 
                 </tr>
@@ -177,10 +180,24 @@
             जिसकी समस्त जिम्मेवारी आप की होगी।
         </div>
 
-        <div style="text-align:right; padding-right:30px; ">
-            <img src="{{ asset('wit/img/exam-controller-sign.png') }}" alt="signature image" style="width: 150px; height:50px; margin-top:5px">
-            <p>Controller of Examination</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 30px; padding-right: 30px;">
+            <div style="text-align: left;">
+                <p style="margin: 0;">D.A</p>
+            </div>
+            <div style="text-align: center;">
+                <p style="margin: 0;">Director</p>
+            </div>
+            <div style="text-align: right;">
+                <img src="{{ asset('wit/img/exam-controller-sign.png') }}" alt="signature image" style="width: 150px; height:50px; margin-top:5px">
+                <p style="margin: 0;">Controller of Examination</p>
+            </div>
         </div>
+
+        </div>
+
+        </div>
+
+
     </div>
 
     <div class='printbtn' style="width:100%; margin-top:20px;text-center;">
