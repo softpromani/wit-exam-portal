@@ -44,4 +44,9 @@ class Student extends Authenticatable
     public function admission_session(){
         return $this->belongsTo(AdmissionSession::class);
     }
+    public function exam_session()
+        {
+            return $this->belongsTo(ExamSession::class, 'admission_session_id', 'id');
+        }
+
 }

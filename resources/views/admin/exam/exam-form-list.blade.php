@@ -10,6 +10,7 @@
                         <th>S.No</th>
                         <th>Roll No.</th>
                         <th>Registration No.</th>
+                        <th>Session</th>
                         <th>Name</th>
                         <th>Mobile Number</th>
                         <th>CBS</th>
@@ -24,6 +25,7 @@
                             <td>{{$loop->index+1}}</td>
                             <td>{{$formdata->student->university_roll_no??''}}</td>
                             <td>{{$formdata->student->registration_no??''}}</td>
+                            <td>{{$formdata->student->exam_session->session_name??''}}</td>
                             <td>{{$formdata->student->student_name??''}}</td>
                             <td>{{$formdata->student->mobile_number ??''}}</td>
                             <td>
