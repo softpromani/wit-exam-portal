@@ -33,7 +33,7 @@ class ExamFormController extends Controller
     }
     function apply_for_exam($exam_session_id,$edit=NULL)
     {
-        $locked_subject=NULL;
+        $locked_subjects=[];
         if($edit!=true){
         if (auth()->guard('student')->user()->checkThisSemFormStatus($exam_session_id)) {
             return redirect()->back()->with(['warning' => 'Your Exam Form for  this Session already submitted']);
