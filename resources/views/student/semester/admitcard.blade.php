@@ -57,6 +57,7 @@
 </head>
 
 <body class="watermark" >
+    <div style='width:100%; border:1px solid black;text-align:center;border-bottom:0px;'>Admit Card</div>
     <div style="width:100%; border:1px solid black">
         <div id="header" style="height: 75px;border-bottom:1px solid grey;" >
             <img src="{{ asset('wit/img/Dr.png') }}" alt="" style="width: 90%; height: 100%; object-fit: contain; margin-left:20px;">
