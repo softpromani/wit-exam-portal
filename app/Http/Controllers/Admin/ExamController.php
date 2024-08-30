@@ -17,9 +17,15 @@ class ExamController extends Controller
 
 
     public function exam_form_list(){
-        $examformdata=ExamForm::with('student','payment')->get();
-        // dd($examformdata);
-        return view('admin.exam.exam-form-list',compact('examformdata'));
+       $examsession= ExamSession::get();
+        return view('admin.exam.exam-form-list',compact('examsession'));
+    }
+
+    public function ExamSession($id){
+        $examformdata=ExamForm::with('student','payment','exam_session')->where('session_id',$id)->get();        
+        return response()->json(['status' => 1, 'examsession' => $examformdata]);
+        // $examsession= ExamSession::get();
+        // return view('admin.exam.exam-form-list',compact('examformdata','examsession'));
     }
 
     public function exam_schedule(){

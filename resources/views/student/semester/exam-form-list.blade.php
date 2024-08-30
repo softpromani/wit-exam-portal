@@ -4,6 +4,7 @@
 @section('content')
 <div class="card">
     <div class="card-body">
+        
         <table class="table table-bordered">
             <thead class="table-primary">
                 <tr>
@@ -57,28 +58,32 @@
   </div>
 @endsection
 @section('script_section')
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+crossorigin="anonymous"></script>
 <script>
 
-$(document).on('click', '.viewSubjectBtn', function () {
-    // Get the data-id from the button
-    var examSessionId = $(this).data('id');
-    // Fire an AJAX request to get the data
-    $.ajax({
-        url: '{{ url('student/semester/locked-subject-by-examsession') }}/'+examSessionId, // Your API endpoint
-        method: 'GET',
-        success: function (response) {
-            // Populate the modal with the data
-            $('#modal-data').html(response); // Assuming response contains HTML
-        },
-        error: function () {
-            // Handle errors here
-            $('#modal-data').html('An error occurred while loading the data.');
-        }
+    $(document).on('click', '.viewSubjectBtn', function () {
+        // Get the data-id from the button
+        var examSessionId = $(this).data('id');
+        // Fire an AJAX request to get the data
+        $.ajax({
+            url: '{{ url('student/semester/locked-subject-by-examsession') }}/'+examSessionId, // Your API endpoint
+            method: 'GET',
+            success: function (response) {
+                // Populate the modal with the data
+                $('#modal-data').html(response); // Assuming response contains HTML
+            },
+            error: function () {
+                // Handle errors here
+                $('#modal-data').html('An error occurred while loading the data.');
+            }
+        });
+
+        // Show the modal after the AJAX call completes
+        {{--  $('#exampleModal').modal('show');  --}}
     });
 
-    // Show the modal after the AJAX call completes
-    {{--  $('#exampleModal').modal('show');  --}}
-});
+    
 
 </script>
 @endsection

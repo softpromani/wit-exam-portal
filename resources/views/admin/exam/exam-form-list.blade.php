@@ -1,74 +1,43 @@
 @extends('admin.includes.master')
 @section('content')
+
+      
+    
 <div class="container">
-    <div class="card">
+
+  <select class="form-control mb-3 col-md-4 examSession" name="examsession">
+    <option value="">-- Select Exam Session --</option>
+    @foreach ($examsession as  $examSession)
+    <option value="{{$examSession->id??''}}">{{$examSession->session_name??''}}</option>
+    @endforeach
+  </select>
+
+  
+    <div class="card">   
         <div class="card-body">
             <h2>Applied Exam Form</h2>
             <table class="table table-bordered" id="student_datatable">
-                <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Roll No.</th>
-                        <th>Registration No.</th>
-                        <th>Session</th>
-                        <th>Name</th>
-                        <th>Mobile Number</th>
-                        <th>CBS</th>
-                        <th>Payment</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if ($examformdata!='')
-                      @foreach ($examformdata as  $formdata)
-                          <tr>
-                            <td>{{$loop->index+1}}</td>
-                            <td>{{$formdata->student->university_roll_no??''}}</td>
-                            <td>{{$formdata->student->registration_no??''}}</td>
-                            <td>{{$formdata->student->exam_session->session_name??''}}</td>
-                            <td>{{$formdata->student->student_name??''}}</td>
-                            <td>{{$formdata->student->mobile_number ??''}}</td>
-                            <td>
-                                <span class="badge badge-primary">  {{$formdata->student->course->name ??''}}</span> <br>
-                                <span class="badge badge-success">  {{$formdata->student->branch->name ??''}}</span>
-                                <span class="badge badge-warning">  {{$formdata->student->semester->semester_name ??''}}</span>
-                            </td>
-                            <td>
-                                @if($formdata->payment)
-                                @if($formdata->payment->payment_status=='unpaid')
-                                <span class="badge badge-danger">Unpaid</span> <br>
-                                @elseif($formdata->payment->payment_status=='paid')
-                                <span class="badge badge-success">Paid</span> <br>
-                                @elseif($formdata->payment->payment_status=='partial')
-                                <span class="badge badge-warning">Partial Paid </span> <br>
-                                @endif
-                                ₹ {{ $formdata->payment->paid_amount }}
-                                @else
-                                <span class="badge badge-danger">Unpaid</span> <br>
-
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.exam-form-show',$formdata->id) }}" target="_blank"><i class="fa fa-eye text-primary"></i></a>
-                               @if($formdata->student->is_profile == 1)
-                                <a href="#" class="ml-3" data-toggle="modal" data-target="#paymentModal" data-id="{{ $formdata->id }}" id="paymentBtn"><i class="fa fa-credit-card text-success"></i></a> 
-                                @else
-                                <span class="badge badge-danger"> Incomplete Profile</span>
-                               @endif
-                                   
-                            </td>
-
-                          </tr>
-                      @endforeach
-                    @endif
-                </tbody>
-            </table>
+              <thead>
+                  <tr>
+                      <th>S.No</th>
+                      <th>Roll No.</th>
+                      <th>Registration No.</th>
+                      <th>Session</th>
+                      <th>Name</th>
+                      <th>Mobile Number</th>
+                      <th>CBS</th>
+                      <th>Payment</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody id="examSessionTable"> 
+              </tbody>
+          </table>
         </div>
     </div>
 
+
 </div>
-
-
 <!-- Payment  modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModal" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -151,5 +120,55 @@ integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="ano
             scroller: true,  // Enables the scroller feature
         });
     });
+
+    $(document).on('change', '.examSession', function() {
+    var sessionid = $(this).val(); // Get the selected session ID
+      // alert(sessionid);
+    if (sessionid!='') { // Check if a valid session ID is selected
+        $.ajax({
+            url: "{{url('admin/exam-session')}}/"+sessionid, // Use the route URL passed from Blade
+            type: 'GET',
+            success: function(response) {
+              // console.log(response);
+                if (response) {
+                    console.log("Session ID:", response);
+                    var rows = '';
+
+                    response.examsession.forEach(function(examsession, index) {
+                      
+                      rows += '<tr>' +
+                        '<td>' + (index + 1) + '</td>' +
+                        '<td>' + (examsession.student ? examsession.student.university_roll_no : 'N/A') + '</td>' +       
+                        '<td>' + (examsession.student ? examsession.student.registration_no : 'N/A') + '</td>' +        
+                        '<td>' + (examsession.exam_session ? examsession.exam_session.session_name : 'N/A') + '</td>' +        
+                        '<td>' + (examsession.student ? examsession.student.student_name : 'N/A') + '</td>' +        
+                        '<td>' + (examsession.student ? examsession.student.mobile_number : 'N/A') + '</td>' +        
+                        '<td>' + 
+                            '<span class="badge badge-primary">' + (examsession.course ? examsession.course.name : '') + '</span> ' +
+                            '<span class="badge badge-success">' + (examsession.branch ? examsession.branch.name : '') + '</span> ' +
+                            '<span class="badge badge-warning">' + (examsession.semester ? examsession.semester.semester_name : '') + '</span>' +
+                        '</td>' +        
+                    '</tr>';
+
+                    });
+                    console.log(rows);
+                    $('#examSessionTable').html(rows);
+                } else {
+                    // Handle the case where the server returns success: false
+                    alert("Failed to fetch session data.");
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors during the AJAX request
+                console.error("AJAX Error:", error);
+                alert("An error occurred while processing your request.");
+            }
+        });
+    } else {
+        alert("Please select a valid session.");
+    }
+});
+
+
 </script>
 @endsection
