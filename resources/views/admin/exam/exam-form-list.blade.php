@@ -4,14 +4,23 @@
       
     
 <div class="container">
-
-  <select class="form-control mb-3 col-md-4 examSession" name="examsession">
-    <option value="">-- Select Exam Session --</option>
-    @foreach ($examsession as  $examSession)
-    <option value="{{$examSession->id??''}}">{{$examSession->session_name??''}}</option>
-    @endforeach
-  </select>
-
+<form action="{{route('admin.examsession')}}" method="post">
+  @csrf
+  <div class="row">
+    <div class="col-md-4">
+      <select class="form-control mb-3 " name="examsession">
+        <option value="">-- Select Exam Session --</option>
+        @foreach ($examsession as  $examSession)
+        <option value="{{$examSession->id??''}}">{{$examSession->session_name??''}}</option>
+        @endforeach
+      </select>
+    </div>
+    <div  class="col-md-2">
+      <input type="submit" class="btn btn-primary" />
+    </div>
+  
+  </div>
+</form>
   
     <div class="card">   
         <div class="card-body">
@@ -31,6 +40,49 @@
                   </tr>
               </thead>
               <tbody id="examSessionTable"> 
+                @isset ($examformdata)
+                @foreach ($examformdata as  $formdata)
+                    <tr>
+                      <td>{{$loop->index+1}}</td>
+                      <td>{{$formdata->student->university_roll_no??''}}</td>
+                      <td>{{$formdata->student->registration_no??''}}</td>
+                      <td>{{$formdata->student->exam_session->session_name??''}}</td>
+                      <td>{{$formdata->student->student_name??''}}</td>
+                      <td>{{$formdata->student->mobile_number ??''}}</td>
+                      <td>
+                          <span class="badge badge-primary">  {{$formdata->student->course->name ??''}}</span> <br>
+                          <span class="badge badge-success">  {{$formdata->student->branch->name ??''}}</span>
+                          <span class="badge badge-warning">  {{$formdata->student->semester->semester_name ??''}}</span>
+                      </td>
+                      <td>
+                          @if($formdata->payment)
+                          @if($formdata->payment->payment_status=='unpaid')
+                          <span class="badge badge-danger">Unpaid</span> <br>
+                          @elseif($formdata->payment->payment_status=='paid')
+                          <span class="badge badge-success">Paid</span> <br>
+                          @elseif($formdata->payment->payment_status=='partial')
+                          <span class="badge badge-warning">Partial Paid </span> <br>
+                          @endif
+                          ₹ {{ $formdata->payment->paid_amount }}
+                          @else
+                          <span class="badge badge-danger">Unpaid</span> <br>
+
+                          @endif
+                      </td>
+                      <td>
+                          <a href="{{ route('admin.exam-form-show',$formdata->id) }}" target="_blank"><i class="fa fa-eye text-primary"></i></a>
+                         @if($formdata->student->is_profile == 1)
+                          <a href="#" class="ml-3" data-toggle="modal" data-target="#paymentModal" data-id="{{ $formdata->id }}" id="paymentBtn"><i class="fa fa-credit-card text-success"></i></a> 
+                          @else
+                          <span class="badge badge-danger"> Incomplete Profile</span>
+                         @endif
+                             
+                      </td>
+
+                    </tr>
+                @endforeach
+               
+              @endisset
               </tbody>
           </table>
         </div>
