@@ -46,7 +46,7 @@
                       <td>{{$loop->index+1}}</td>
                       <td>{{$formdata->student->university_roll_no??''}}</td>
                       <td>{{$formdata->student->registration_no??''}}</td>
-                      <td>{{$formdata->student->exam_session->session_name??''}}</td>
+                      <td>{{$formdata->exam_session->session_name??''}}</td>
                       <td>{{$formdata->student->student_name??''}}</td>
                       <td>{{$formdata->student->mobile_number ??''}}</td>
                       <td>
