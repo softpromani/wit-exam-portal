@@ -110,7 +110,7 @@
                             </tr>
                             <tr>
                                 <th>Examination Center</th>
-                                <td> <span style="margin-right:10px;">:</span> {{ $student->Examination_center}}</td>
+                                <td> <span style="margin-right:10px;">:</span> B.Ed. Regular, Moti Mahal, LNMU, Darbhanga</td>
                             </tr>
                         </tbody>
                     </table>
