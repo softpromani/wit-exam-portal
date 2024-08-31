@@ -102,4 +102,19 @@ class ExamController extends Controller
             }
         }
 
+
+        public function attendanceList(){
+            $examsession= ExamSession::get();
+            $subject=Subject::get();
+            return view('admin.exam.attendance-list',compact('examsession','subject'));
+        }
+
+        public function requestAttendanceList(Request $request){
+            $data = Student::where('admission_session_id', $request->examsession)
+            ->where('course_id', $request->subject)
+            ->get(); 
+            $examsession= ExamSession::get();
+            $subject=Subject::get();
+            return view('admin.exam.attendance-list',compact('data','examsession','subject'));
+        }
 }
