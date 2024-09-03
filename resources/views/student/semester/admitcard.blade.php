@@ -179,6 +179,7 @@
 
         <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 30px; padding-right: 30px;">
             <div style="text-align: left;">
+                <img src="{{ asset('wit/img/DA-sign.png') }}" alt="signature image" style="width: 150px; height:50px; margin-top:5px">
                 <p style="margin: 0;">D.A</p>
             </div>
             <div style="text-align: center;">
