@@ -1,4 +1,9 @@
 @extends('admin.includes.master')
+@section('style_area')
+<style>
+    
+</style>
+@endsection
 @section('content')
     <div class="container">
         <div class="card">
@@ -36,7 +41,7 @@
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">Request Data</div>
-            <div class="card-body">
+            <div class="card-body" id="printableArea">
                 <div class="row">
                     <div class="col-12">
                         <div id="header" style="height: 75px;border-bottom:1px solid grey;" >
@@ -80,7 +85,7 @@
                     
                     </tbody>
                 </table>
-                    <a href="#" class="btn btn-primary float-right">Print</a>
+                    <button type='button' onclick="printDiv('printableArea')" id="attendancelist" class="btn btn-primary float-right">Print</button>
             </div>
         </div>
     </div>
@@ -95,5 +100,13 @@ crossorigin="anonymous"></script>
         // alert();
         $('.select2subjectcode').select2();
     });
+    function printDiv(divId) {
+    var printContents = document.getElementById(divId).innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+}
 </script>
 @endsection
