@@ -81,15 +81,14 @@ class ExamController extends Controller
 
         $arrView['subjects'] = $examform->subjects->map(function ($subject) use ($examform) {
             $schedule = ExamSchedule::where('exam_session_id', $examform->session_id)
-                ->where('subject_id', $subject->id)
-                ->orderBy('date', 'asc')  // Order by date in ascending order
+                ->where('subject_id', $subject->id)  // Order by date in ascending order
                 ->first();
             $subject->date =$schedule?Carbon::parse(optional($schedule)->date)->format('d-M-Y'):'N/A';
             $startDate=Carbon::parse(optional($schedule)->from_time ? optional($schedule)->from_time:'00:00:00')->format('h:i a') ;
             $endDate=Carbon::parse(optional($schedule)->to_time ? optional($schedule)->to_time:'00:00:00')->format('h:i a');
             $subject->time=$startDate .' to '.$endDate;
             return $subject;
-        });
+        })->sortBy('date');
         return view('student.semester.admitcard', $arrView);
         }
         public function fetchexam_schedule(){
