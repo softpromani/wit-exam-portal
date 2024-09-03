@@ -58,6 +58,7 @@
                     <thead>
                         <tr>
                             <th>S.No</th>
+                            <th>Enrollment Number</th>
                             <th>Name</th>
                             <th>Student Sign</th>
                             <th>Invigilator Sign</th>
@@ -69,6 +70,7 @@
                                 
                             <tr>
                                 <td>{{$loop->index+1}}</td>
+                                <td>{{$dt->registration_no}}</td>
                                 <td>{{$dt->student_name}}</td>
                                 <td></td>
                                 <td></td>
@@ -78,10 +80,7 @@
                     
                     </tbody>
                 </table>
-               
-                    <a href="{{ route('admin.attendance_data', []) }}" class="btn btn-primary float-right">Print</a>
-             
-
+                    <a href="#" class="btn btn-primary float-right">Print</a>
             </div>
         </div>
     </div>
