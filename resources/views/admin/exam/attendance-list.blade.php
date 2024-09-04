@@ -64,7 +64,9 @@
                         <tr>
                             <th>S.No</th>
                             <th>Enrollment Number</th>
+                            <th>Roll Number</th>
                             <th>Name</th>
+                            <th>Answer Booklate Number</th>
                             <th>Student Sign</th>
                             <th>Invigilator Sign</th>
                         </tr>
@@ -76,7 +78,9 @@
                             <tr>
                                 <td>{{$loop->index+1}}</td>
                                 <td>{{$dt->registration_no}}</td>
+                                <td>{{$dt->university_roll_no}}</td>
                                 <td>{{$dt->student_name}}</td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
