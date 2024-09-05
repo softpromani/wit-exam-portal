@@ -121,18 +121,17 @@ class ExamFormController extends Controller
 
         $arrView['student'] = $examform->student;
 
-        
+
         $arrView['subjects'] = $examform->subjects->map(function ($subject) use ($examform) {
             $schedule = ExamSchedule::where('exam_session_id', $examform->session_id)
                 ->where('subject_id', $subject->id)
-                ->orderBy('date', 'asc') // Order by date in ascending order
                 ->first();
             $subject->date =Carbon::parse(optional($schedule)->date)->format('d-M-Y');
             $startDate=Carbon::parse(optional($schedule)->from_time ? optional($schedule)->from_time:'00:00:00')->format('h:i a') ;
             $endDate=Carbon::parse(optional($schedule)->to_time ? optional($schedule)->to_time:'00:00:00')->format('h:i a');
             $subject->time=$startDate .' to '.$endDate;
             return $subject;
-        });
+        })->sortBy('date');
         return view('student.semester.admitcard', $arrView);
     }
     public function locked_subject_by_examsession($exam_session_id)
