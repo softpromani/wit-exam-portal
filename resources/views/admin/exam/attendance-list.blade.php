@@ -1,10 +1,27 @@
 @extends('admin.includes.master')
 @section('style_area')
-<style>
 
-</style>
 @endsection
 @section('content')
+{{-- <style>
+    @media print {
+           /* Hide everything except the div with the given id */
+           body * {
+               visibility: hidden;
+           }
+           /* Show only the content of the specific div */
+           .printable {
+               visibility: visible !important;
+           }
+           /* Ensure the specific div takes up the entire page */
+           /* .printable {
+               position: absolute;
+               top: 0;
+               left: 0;
+               width: 100%;
+           } */
+       }
+</style> --}}
     <div class="container">
         <div class="card">
             <div class="card-body">
@@ -42,12 +59,13 @@
         <div class="container mt-3">
             <div class="card">
                 <div class="card-header">Requested Data</div>
-                <div class="card-body" id="printableArea">
+                <div class="card-body" id="printableArea{{$k}}">
                     <div class="row">
                         <div class="col-12">
                             <div id="header" style="height: 75px;border-bottom:1px solid grey;" >
                                 <img src="{{ asset('wit/img/Dr.png') }}" alt="" style="width: 90%; height: 100%; object-fit: contain; margin-left:20px;">
                             </div>
+                            <div class="col-12 text-center">Attendance List</div>
                             <div class="col-12">
                                 @if($selectedExamSession and $selectedSubject and $examSchedule and $examSchedule->date and $examSchedule->from_time)
                                 <b>Exam Session -</b> {{$selectedExamSession->session_name}} <br>
@@ -91,7 +109,7 @@
 
                         </tbody>
                     </table>
-                        <button type='button' onclick="printDiv('printableArea')" id="attendancelist" class="btn btn-primary float-right">Print</button>
+                        <button type='button' onclick="printDiv('printableArea{{$k}}')" id="attendancelist" class="btn btn-primary float-right">Print</button>
                 </div>
             </div>
         </div>
@@ -109,12 +127,16 @@ crossorigin="anonymous"></script>
         $('.select2subjectcode').select2();
     });
     function printDiv(divId) {
-    var printContents = document.getElementById(divId).innerHTML;
-    var originalContents = document.body.innerHTML;
+         // Add class 'printable' to the specific div for printing
+         var printContents = document.getElementById(divId).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
+        // Set the contents of the selected div to the body and print
+        document.body.innerHTML = "<div class='printable'>" + printContents + "</div>";
+        window.print();
+
+        // Revert back to the original content after printing
+        document.body.innerHTML = originalContents;
 }
 </script>
 @endsection
