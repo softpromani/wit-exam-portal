@@ -127,7 +127,7 @@ class ExamController extends Controller
                         return $student->branch->name; // Group by branch_name and branch_id
                     })->map(function ($students) {
                         // Order students by enrollment_no after grouping
-                        return $students->sortBy('enrollment_no');
+                        return $students->sortBy('registration_no');
                     });
                 $selectedExamSession=ExamSession::find($session_id);
                 $selectedSubject=Subject::find($subject_id);
