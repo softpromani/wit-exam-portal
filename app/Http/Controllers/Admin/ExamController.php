@@ -117,16 +117,16 @@ class ExamController extends Controller
 
                 // Retrieve students based on the selected session and subject
                 $studentsData = ExamForm::where('session_id', $session_id)
-    ->whereHas('examfrom_has_subjects', function($query) use ($subject_id) {
-        $query->where('subject_id', $subject_id);
-    })
-    ->with('student') // Make sure the student relationship is loaded
-    ->get()
-    ->pluck('student')
-    ->groupBy(function($student) {
-        return $student->branch->name; // Group by branch_name and branch_id
-    });
-                    //  dd($students);
+                    ->whereHas('examfrom_has_subjects', function($query) use ($subject_id) {
+                        $query->where('subject_id', $subject_id);
+                    })
+                    ->with('student') // Make sure the student relationship is loaded
+                    ->get()
+                    ->pluck('student')
+                    ->groupBy(function($student) {
+                        return $student->branch->name; // Group by branch_name and branch_id
+                    });
+                //  dd($studentsData);
                 $selectedExamSession=ExamSession::find($session_id);
                 $selectedSubject=Subject::find($subject_id);
                 $examSchedule=ExamSchedule::where('exam_session_id',$session_id)->where('subject_id',$subject_id)->first();

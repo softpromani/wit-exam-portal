@@ -37,66 +37,66 @@
             </div>
         </div>
     </div>
-@if(isset($studentsData) and !empty($studentsData))
-@foreach($studentsData as $k=>$student)
-    <div class="container mt-3">
-        <div class="card">
-            <div class="card-header">Request Data</div>
-            <div class="card-body" id="printableArea">
-                <div class="row">
-                    <div class="col-12">
-                        <div id="header" style="height: 75px;border-bottom:1px solid grey;" >
-                            <img src="{{ asset('wit/img/Dr.png') }}" alt="" style="width: 90%; height: 100%; object-fit: contain; margin-left:20px;">
-                        </div>
+    @if(isset($studentsData) and !empty($studentsData))
+    @foreach($studentsData as $k=>$students)
+        <div class="container mt-3">
+            <div class="card">
+                <div class="card-header">Requested Data</div>
+                <div class="card-body" id="printableArea">
+                    <div class="row">
                         <div class="col-12">
-                            @if($selectedExamSession and $selectedSubject and $examSchedule and $examSchedule->date and $examSchedule->from_time)
-                            <b>Exam Session -</b> {{$selectedExamSession->session_name}} <br>
-                            <b>Subject -</b> {{$selectedSubject->subject_code .' / '.$selectedSubject->title}} <br>
-                            <b>Exam Date -</b> {{\Carbon\Carbon::parse($examSchedule->date)->format('d-M-Y')}}  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<b>Time -</b> {{\Carbon\Carbon::parse($examSchedule->from_time)->format('h:i a')}} to {{\Carbon\Carbon::parse($examSchedule->to_time)->format('h:i a')}} <br>
-                            <b>Branch -</b> {{ $k }}
-                            @else
-                                No Exam Schedule Found
-                            @endif
+                            <div id="header" style="height: 75px;border-bottom:1px solid grey;" >
+                                <img src="{{ asset('wit/img/Dr.png') }}" alt="" style="width: 90%; height: 100%; object-fit: contain; margin-left:20px;">
+                            </div>
+                            <div class="col-12">
+                                @if($selectedExamSession and $selectedSubject and $examSchedule and $examSchedule->date and $examSchedule->from_time)
+                                <b>Exam Session -</b> {{$selectedExamSession->session_name}} <br>
+                                <b>Subject -</b> {{$selectedSubject->subject_code .' / '.$selectedSubject->title}} <br>
+                                <b>Exam Date -</b> {{\Carbon\Carbon::parse($examSchedule->date)->format('d-M-Y')}}  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<b>Time -</b> {{\Carbon\Carbon::parse($examSchedule->from_time)->format('h:i a')}} to {{\Carbon\Carbon::parse($examSchedule->to_time)->format('h:i a')}} <br>
+                                <b>Branch -</b> {{ $k }}
+                                @else
+                                    No Exam Schedule Found
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
-                <hr>
-                <table  class="table table-bordered" style="font-size:11px; color:black">
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Registration Number</th>
-                            <th>Roll Number</th>
-                            <th>Name</th>
-                            <th>Answer Booklate Number</th>
-                            <th>Student Sign</th>
-                            <th>Invigilator Sign</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @isset($students)
-                            @foreach ($students as $dt)
-
+                    <hr>
+                    <table  class="table table-bordered" style="font-size:11px; color:black">
+                        <thead>
                             <tr>
-                                <td>{{$loop->index+1}}</td>
-                                <td>{{$dt->registration_no}}</td>
-                                <td>{{$dt->university_roll_no}}</td>
-                                <td>{{$dt->student_name}}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th>Sr.No</th>
+                                <th>Registration Number</th>
+                                <th>Roll Number</th>
+                                <th>Name</th>
+                                <th>Answer Booklate Number</th>
+                                <th>Student Sign</th>
+                                <th>Invigilator Sign</th>
                             </tr>
-                            @endforeach
-                        @endisset
+                        </thead>
+                        <tbody>
+                            @isset($students)
+                                @foreach ($students as $dt)
 
-                    </tbody>
-                </table>
-                    <button type='button' onclick="printDiv('printableArea')" id="attendancelist" class="btn btn-primary float-right">Print</button>
+                                <tr>
+                                    <td>{{$loop->index+1}}</td>
+                                    <td>{{$dt->registration_no}}</td>
+                                    <td>{{$dt->university_roll_no}}</td>
+                                    <td>{{$dt->student_name}}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                @endforeach
+                            @endisset
+
+                        </tbody>
+                    </table>
+                        <button type='button' onclick="printDiv('printableArea')" id="attendancelist" class="btn btn-primary float-right">Print</button>
+                </div>
             </div>
         </div>
-    </div>
-@endforeach
-@endif
+    @endforeach
+    @endif
 
 @endsection
 @section('script_section')
