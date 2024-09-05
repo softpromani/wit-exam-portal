@@ -106,7 +106,7 @@ class ExamController extends Controller
         public function attendanceList(Request $req) {
             $examsession = ExamSession::get();
             $subject = Subject::get();
-            $students = [];  // Initialize an empty collection
+            $studentsData = [];  // Initialize an empty collection
             $selectedSubject=[];
             $selectedExamSession=(object)[];
             $examSchedule=(object)[];
