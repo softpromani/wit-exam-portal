@@ -65,7 +65,7 @@
                     <thead>
                         <tr>
                             <th>S.No</th>
-                            <th>Enrollment Number</th>
+                            <th>Registration Number</th>
                             <th>Roll Number</th>
                             <th>Name</th>
                             <th>Answer Booklate Number</th>
