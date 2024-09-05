@@ -68,9 +68,9 @@
                                 <th>Registration Number</th>
                                 <th>Roll Number</th>
                                 <th>Name</th>
-                                <th>Answer Booklate Number</th>
-                                <th>Student Sign</th>
-                                <th>Invigilator Sign</th>
+                                <th>Answer Booklet Number</th>
+                                <th>Student Signature</th>
+                                <th>Invigilator Signature</th>
                             </tr>
                         </thead>
                         <tbody>
