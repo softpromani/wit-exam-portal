@@ -110,7 +110,7 @@
                             </tr>
                             <tr>
                                 <th>Examination Center</th>
-                                <td> <span style="margin-right:10px;">:</span> {{ $student->Examination_center}}</td>
+                                <td> <span style="margin-right:10px;">:</span> B.Ed. Regular, Moti Mahal, LNMU, Darbhanga</td>
                             </tr>
                         </tbody>
                     </table>
@@ -162,23 +162,19 @@
             1: Reporting time at exam centre atleast an hour before the commencement of exam. No entry is allowed after
             the start of the exam.<br>
             2: The student should bring the Admit Card along with a Institute Photo Id/Other valid Id for appearing in
-            the examination failing which he/she shall not be allowed to appear in the examination.<br>
-            3: You are advised to follow the COVID-19 safety and social distancing guidlines as issued by the government
-            from time to time.<br>
-            4:If photograph of student is not available in the admit card,paste a recent photograph attested by the
-            Director of respective institute.<br>
-            5:Please verify the Exam date with latest date sheet available on witlnmu.ac.in website. In case
-            of
-            any discrepancy the date sheet available on the website shall be FINAL.<br>
-            6: Kindly keep checking circulars at witlnmu.ac.in daily for updates in exam schedule.<br>
-            7: उक्त प्रवेश पत्र में वर्णित सूचनाओं में कोई त्रुटि / संशोधन होने की स्थिति में कृपया
-            itcell@lnmu.ac.in पर ही स्कैन कॉपी भेजना सुनिश्चित करें <br>
+            the examination failing which he/she shall not be allowed to appear.<br>
+            3:  You are advised to follow the COVID-19 safety and social distancing guidelines issued
+            by the government occasionally.<br>
+            4:If the student's photograph is not available on the admit card, paste a recent photograph attested
+             by the Director of the respective institute.<br>
+            5:Please verify the Exam date with the latest date sheet on witlnmu.ac on the website.
+             In case of any discrepancy, the date sheet on the website shall be FINAL.<br>
+            6: Kindly keep checking circulars at witlnmu.ac.in daily for updates on the exam schedule.<br>
+            7: In case of any error/modification in the information mentioned in the said admit card, please ensure to send a scanned copy to itcell@lnmu.ac.in
+            <br>
             8:
-            आप से अपेक्षा है कि आप किसी भी सूरत में उत्तर पुस्तिका के अंदर के पृष्ठों पर अपना रोल नंबर या फोन नंबर अथवा
-            कोई अन्य
-            पहचान अंकित नहीं करें। साथ ही किसी भी प्रकार से नकल (व्यक्तिगत या सामूहिक) में संलिप्त न हों। Digital
-            Evaluation से | ऐसी कॉपियों को पकड़ा जा सकता है एवम विश्वविद्यालय के ऑर्डिनेंस के नियमानुसार दंड दिया जाएगा
-            जिसकी समस्त जिम्मेवारी आप की होगी।
+            You are expected not to mention your roll number, phone number, or any other
+            identification on the inner pages of the answer sheet under any circumstances. Also, be involved in any copying (individual or collective). From Digital Evaluation Such copies can be caught, and punishment will be given as per the University's ordinance, which is your entire responsibility.
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 30px; padding-right: 30px;">

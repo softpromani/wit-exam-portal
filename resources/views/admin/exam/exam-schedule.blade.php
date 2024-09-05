@@ -82,15 +82,23 @@
                 var rows = '';
                 // Assuming 'response' contains an array of exam schedules
                 response.schedules.forEach(function(schedules, index) {
+                    // Convert and format the date to 'd-M-YYYY'
+                    var dateObj = new Date(schedules.date);
+                    var formattedDate = dateObj.getDate() + '-' + 
+                                        dateObj.toLocaleString('default', { month: 'short' }) + '-' + 
+                                        dateObj.getFullYear();
+
                     rows += '<tr>'+
                                 '<td>' + (index + 1) + '</td>'+
                                 '<td>' + (schedules.exam_session ? schedules.exam_session.session_name : 'N/A') + '</td>'+
                                 '<td>' + (schedules.subject ? schedules.subject.title : 'N/A') + '</td>'+
-                                '<td>' + schedules.date + '</td>'+
+                                '<td>' + formattedDate + '</td>'+ // Use the formatted date here
                                 '<td>' + schedules.from_time + '</td>'+
                                 '<td>' + schedules.to_time + '</td>'+
                             '</tr>';
                 });
+
+
                 console.log(rows);
                 $('#examScheduleTable').html(rows);
             },

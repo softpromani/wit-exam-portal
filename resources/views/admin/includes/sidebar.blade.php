@@ -40,6 +40,7 @@
                 <h6 class="collapse-header">Custom Components:</h6>
                 <a class="collapse-item" href="{{route('admin.exam-form_list')}}">Exam from List</a>
                 <a class="collapse-item" href="{{route('admin.exam_schedule_list')}}">Exam Schedule </a>
+                <a class="collapse-item" href="{{route('admin.attendance_list')}}">Attendance List </a>
             </div>
         </div>
 

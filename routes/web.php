@@ -57,6 +57,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     Route::get('fetch-exam-schedule',[ExamController::class,'fetchexam_schedule'])->name('fetch_exam_schedule');
     Route::get('subject',[ExamController::class,'subject'])->name('exam_subjects');
     Route::post('fee-payment',[PaymentController::class,'feePayment'])->name('fee-payment');
-
+    Route::post('exam-session',[ExamController::class,'ExamSession'])->name('examsession');
+    Route::any('attendance_list',[ExamController::class,'attendanceList'])->name('attendance_list');
+    Route::get('attendance-data/', [ExamController::class, 'attendanceData'])->name('attendance_data');
 
 });

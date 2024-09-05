@@ -33,7 +33,7 @@ class ExamFormController extends Controller
     }
     function apply_for_exam($exam_session_id,$edit=NULL)
     {
-        $locked_subject=NULL;
+        $locked_subjects=[];
         if($edit!=true){
         if (auth()->guard('student')->user()->checkThisSemFormStatus($exam_session_id)) {
             return redirect()->back()->with(['warning' => 'Your Exam Form for  this Session already submitted']);
@@ -121,9 +121,11 @@ class ExamFormController extends Controller
 
         $arrView['student'] = $examform->student;
 
+        
         $arrView['subjects'] = $examform->subjects->map(function ($subject) use ($examform) {
             $schedule = ExamSchedule::where('exam_session_id', $examform->session_id)
                 ->where('subject_id', $subject->id)
+                ->orderBy('date', 'asc') // Order by date in ascending order
                 ->first();
             $subject->date =Carbon::parse(optional($schedule)->date)->format('d-M-Y');
             $startDate=Carbon::parse(optional($schedule)->from_time ? optional($schedule)->from_time:'00:00:00')->format('h:i a') ;

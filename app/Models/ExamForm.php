@@ -36,4 +36,8 @@ class ExamForm extends Model
     {
         return $this->belongsToMany(Subject::class, 'exam_form_subjects', 'exam_form_id', 'subject_id');
     }
+
+    public function examfrom_has_subjects(){
+        return $this->hasMany(ExamFormSubject::class,'exam_form_id');
+    }
 }
