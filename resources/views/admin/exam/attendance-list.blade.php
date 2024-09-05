@@ -1,7 +1,7 @@
 @extends('admin.includes.master')
 @section('style_area')
 <style>
-    
+
 </style>
 @endsection
 @section('content')
@@ -26,18 +26,19 @@
                                 <option value="{{ $sub->id?? '' }}" @selected(isset($selectedSubject->id) and $selectedSubject->id==$sub->id)>{{ $sub->subject_code ?? '' }} / {{ $sub->title ?? '' }}</option>
                             @endforeach
                         </select>
-                        
+
                     </div>
                     <div class="col-md-2 ">
                         <input type="submit" class="form-control btn btn-primary"/>
                     </div>
-                
+
                 </div>
             </form>
             </div>
         </div>
     </div>
-@if(isset($students) and !empty($students)) 
+@if(isset($studentsData) and !empty($studentsData))
+@foreach($studentsData as $k=>$student)
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">Request Data</div>
@@ -51,7 +52,8 @@
                             @if($selectedExamSession and $selectedSubject and $examSchedule and $examSchedule->date and $examSchedule->from_time)
                             <b>Exam Session -</b> {{$selectedExamSession->session_name}} <br>
                             <b>Subject -</b> {{$selectedSubject->subject_code .' / '.$selectedSubject->title}} <br>
-                            <b>Exam Date -</b> {{\Carbon\Carbon::parse($examSchedule->date)->format('d-M-Y')}}  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<b>Time -</b> {{\Carbon\Carbon::parse($examSchedule->from_time)->format('h:i a')}} to {{\Carbon\Carbon::parse($examSchedule->to_time)->format('h:i a')}}
+                            <b>Exam Date -</b> {{\Carbon\Carbon::parse($examSchedule->date)->format('d-M-Y')}}  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<b>Time -</b> {{\Carbon\Carbon::parse($examSchedule->from_time)->format('h:i a')}} to {{\Carbon\Carbon::parse($examSchedule->to_time)->format('h:i a')}} <br>
+                            <b>Branch -</b> {{ $k }}
                             @else
                                 No Exam Schedule Found
                             @endif
@@ -74,7 +76,7 @@
                     <tbody>
                         @isset($students)
                             @foreach ($students as $dt)
-                                
+
                             <tr>
                                 <td>{{$loop->index+1}}</td>
                                 <td>{{$dt->registration_no}}</td>
@@ -86,14 +88,16 @@
                             </tr>
                             @endforeach
                         @endisset
-                    
+
                     </tbody>
                 </table>
                     <button type='button' onclick="printDiv('printableArea')" id="attendancelist" class="btn btn-primary float-right">Print</button>
             </div>
         </div>
     </div>
+@endforeach
 @endif
+
 @endsection
 @section('script_section')
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="

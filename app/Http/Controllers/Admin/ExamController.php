@@ -23,7 +23,7 @@ class ExamController extends Controller
 
     public function ExamSession(Request $request){
         // dd($request->all());
-        $examformdata=ExamForm::with('student','payment','exam_session')->where('session_id',$request->examsession)->get();        
+        $examformdata=ExamForm::with('student','payment','exam_session')->where('session_id',$request->examsession)->get();
         // return response()->json(['status' => 1, 'examsession' => $examformdata]);
         $examsession= ExamSession::get();
         return view('admin.exam.exam-form-list',compact('examformdata','examsession'));
@@ -110,29 +110,32 @@ class ExamController extends Controller
             $selectedSubject=[];
             $selectedExamSession=(object)[];
             $examSchedule=(object)[];
-        
+
             if ($req->filled('examsession') && $req->filled('subject')) {
                 $session_id = $req->examsession;
                 $subject_id = $req->subject;
-        
+
                 // Retrieve students based on the selected session and subject
-                $students = ExamForm::where('session_id', $session_id)
-                    ->whereHas('examfrom_has_subjects', function($query) use ($subject_id) {
-                        $query->where('subject_id', $subject_id);
-                    })
-                    ->with('student')
-                    ->get()
-                    ->pluck('student');
-                    // dd($students);
-                $selectedExamSession=ExamSession::find($session_id);    
+                $studentsData = ExamForm::where('session_id', $session_id)
+    ->whereHas('examfrom_has_subjects', function($query) use ($subject_id) {
+        $query->where('subject_id', $subject_id);
+    })
+    ->with('student') // Make sure the student relationship is loaded
+    ->get()
+    ->pluck('student')
+    ->groupBy(function($student) {
+        return $student->branch->name; // Group by branch_name and branch_id
+    });
+                    //  dd($students);
+                $selectedExamSession=ExamSession::find($session_id);
                 $selectedSubject=Subject::find($subject_id);
-                $examSchedule=ExamSchedule::where('exam_session_id',$session_id)->where('subject_id',$subject_id)->first();    
+                $examSchedule=ExamSchedule::where('exam_session_id',$session_id)->where('subject_id',$subject_id)->first();
             }
-        
-            return view('admin.exam.attendance-list', compact('students', 'examsession', 'subject','selectedExamSession','selectedSubject','examSchedule'));
+
+            return view('admin.exam.attendance-list', compact('studentsData', 'examsession', 'subject','selectedExamSession','selectedSubject','examSchedule'));
         }
-        
+
         public function attendanceData($students){
-            return "gjg"; 
+            return "gjg";
         }
 }
