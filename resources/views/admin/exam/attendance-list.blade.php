@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <hr>
-                <table  class="table table-bordered" style="font-size:11px">
+                <table  class="table table-bordered" style="font-size:11px; color:black">
                     <thead>
                         <tr>
                             <th>S.No</th>
