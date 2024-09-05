@@ -125,8 +125,10 @@ class ExamController extends Controller
                     ->pluck('student')
                     ->groupBy(function($student) {
                         return $student->branch->name; // Group by branch_name and branch_id
+                    })->map(function ($students) {
+                        // Order students by enrollment_no after grouping
+                        return $students->sortBy('enrollment_no');
                     });
-                //  dd($studentsData);
                 $selectedExamSession=ExamSession::find($session_id);
                 $selectedSubject=Subject::find($subject_id);
                 $examSchedule=ExamSchedule::where('exam_session_id',$session_id)->where('subject_id',$subject_id)->first();
