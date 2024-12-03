@@ -134,6 +134,56 @@ class ExamFormController extends Controller
         })->sortBy('date');
         return view('student.semester.admitcard', $arrView);
     }
+
+    public function examresult_form_list()
+    {
+        $examSession = ExamSession::where('status', 'admit-card')->get();
+        return view('student.semester.exam-result-list', compact('examSession'));
+    }
+
+    public function examresult_download($exam_session_id)
+{
+    $examform = ExamForm::with(['subjects', 'student', 'examfrom_has_subjects'])
+        ->where('student_id', auth()->guard('student')->id())
+        ->where('session_id', $exam_session_id)
+        ->first();
+
+    // Check if exam form exists
+    if (!$examform) {
+        // Handle case when no exam form is found
+        return response()->json(['message' => 'No exam form found.'], 404);
+    }
+
+    $arrView['student'] = $examform->student;
+
+    $arrView['subjects'] = $examform->subjects->map(function ($subject) use ($examform) {
+        // Get the schedule for the subject
+        $schedule = ExamSchedule::where('exam_session_id', $examform->session_id)
+            ->where('subject_id', $subject->id)
+            ->first();
+
+        // Find the corresponding ExamFormSubject for total_marks
+        $examFormSubject = $examform->examfrom_has_subjects->where('subject_id', $subject->id)->first();
+
+        // Add total_marks to the subject
+        $subject->internal_marks = optional($examFormSubject)->internal_marks;
+        $subject->external_marks = optional($examFormSubject)->external_marks;
+        $subject->total_marks = optional($examFormSubject)->total_marks;
+
+        // Format date and time
+        $subject->date = Carbon::parse(optional($schedule)->date)->format('d-M-Y');
+        $startDate = Carbon::parse(optional($schedule)->from_time ?: '00:00:00')->format('h:i a');
+        $endDate = Carbon::parse(optional($schedule)->to_time ?: '00:00:00')->format('h:i a');
+        $subject->time = $startDate . ' to ' . $endDate;
+
+        return $subject;
+    })->sortBy('date');
+
+    // dd($arrView);
+    return view('student.semester.examresult', $arrView);
+}
+
+
     public function locked_subject_by_examsession($exam_session_id)
     {
         $locked_subjects = ExamForm::with(['subjects'])->where('session_id', $exam_session_id)->where('student_id', auth()->guard('student')->id())->first();

@@ -25,11 +25,13 @@ return new class extends Migration
         Schema::create('exam_form_subjects', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('exam_form_id');
-            $table->unsignedBigInteger('subject_id');
-            $table->bigInteger('total_marks')->default(0.00);
+            $table->unsignedBigInteger('subject_id')->nullable();
+            $table->bigInteger('internal_marks')->default(0.00);
+            $table->bigInteger('external_marks')->default(0.00);
             $table->bigInteger('obtain_marks')->default(0.00);
+            $table->bigInteger('total_marks')->default(0.00);
             $table->string('grade')->nullable();
-            $table->timestamps();    
+            $table->timestamps();
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->foreign('exam_form_id')->references('id')->on('exam_forms')->onDelete('cascade');
         });
