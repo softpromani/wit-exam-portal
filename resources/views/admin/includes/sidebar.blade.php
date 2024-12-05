@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{route('admin.admin-dashboard')}}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -39,8 +39,10 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Components:</h6>
                 <a class="collapse-item" href="{{route('admin.exam-form_list')}}">Exam from List</a>
-                <a class="collapse-item" href="{{route('admin.exam_schedule_list')}}">Exam Schedule </a>
-                <a class="collapse-item" href="{{route('admin.attendance_list')}}">Attendance List </a>
+                <a class="collapse-item" href="{{route('admin.exam_schedule_list')}}">Exam Schedule</a>
+                <a class="collapse-item" href="{{route('admin.attendance_list')}}">Attendance List</a>
+                <a class="collapse-item" href="{{route('admin.marksfeed_list')}}">Marks Feed</a>
+
             </div>
         </div>
 

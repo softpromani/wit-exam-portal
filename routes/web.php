@@ -38,6 +38,10 @@ Route::group(['prefix' => 'student', 'as' => 'student.','middleware'=>'auth:stud
         Route::post('exam-apply',[ExamFormController::class,'apply_exam_form'])->name('exam-apply');
         Route::get('admitcard-form-list',[ExamFormController::class,'admitcard_form_list'])->name('admitcard-form-list');
         Route::get('admitcard-download/{exam_session_id}',[ExamFormController::class,'admitcard_download'])->name('admitcard-download');
+
+        Route::get('examresult-form-list',[ExamFormController::class,'examresult_form_list'])->name('examresult_form_list');
+        Route::get('examresult-download/{exam_session_id}',[ExamFormController::class,'examresult_download'])->name('examresult-download');
+
         Route::get('locked-subject-by-examsession/{exam_Session_id}',[ExamFormController::class, 'locked_subject_by_examsession'])->name('locked-subject-by-examsession');
 
     });
@@ -59,6 +63,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     Route::post('fee-payment',[PaymentController::class,'feePayment'])->name('fee-payment');
     Route::post('exam-session',[ExamController::class,'ExamSession'])->name('examsession');
     Route::any('attendance_list',[ExamController::class,'attendanceList'])->name('attendance_list');
+    
+    //Marksfeed URI
+    Route::any('marksfeed_list',[ExamController::class,'marksfeedList'])->name('marksfeed_list');
+    Route::post('feed-marks',[ExamController::class,'feedMarks'])->name('feedMarks');
+
     Route::get('attendance-data/', [ExamController::class, 'attendanceData'])->name('attendance_data');
 
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ExamForm;
+use App\Models\ExamFormSubject;
 use App\Models\ExamSchedule;
 use App\Models\ExamSession;
 use Illuminate\Http\Request;
@@ -17,8 +18,8 @@ class ExamController extends Controller
 
 
     public function exam_form_list(){
-       $examsession= ExamSession::get();
-        return view('admin.exam.exam-form-list',compact('examsession'));
+       $examsessions= ExamSession::get();
+        return view('admin.exam.exam-form-list',compact('examsessions'));
     }
 
     public function ExamSession(Request $request){
@@ -136,8 +137,81 @@ class ExamController extends Controller
 
             return view('admin.exam.attendance-list', compact('studentsData', 'examsession', 'subject','selectedExamSession','selectedSubject','examSchedule'));
         }
-
         public function attendanceData($students){
             return "gjg";
         }
-}
+
+        public function marksfeedList(Request $req){
+            $marksfeed = ExamSession::get();
+            $subject = Subject::get();
+            $studentsData = [];
+            $selectedSubject=[];
+            $selectedExamSession=(object)[];
+            $examSchedule=(object)[];
+
+            if ($req->filled('examsession') && $req->filled('subject')) {
+                $session_id = $req->examsession;
+                $subject_id = $req->subject;
+
+                // Retrieve students based on the selected session and subject
+                $studentsData = ExamForm::where('session_id', $session_id)
+                    ->whereHas('examfrom_has_subjects', function ($query) use ($subject_id) {
+                        $query->where('subject_id', $subject_id);
+                    })
+                    ->with(['student', 'examfrom_has_subjects' => function ($query) use ($subject_id) {
+                        // Make sure to filter the subjects by the subject_id
+                        $query->where('subject_id', $subject_id);
+                    }])
+                    ->get()
+                    ->map(function ($examForm) {
+                        // Attach exam form information to the student
+                        $examForm->student->exam_form_id = $examForm->id;
+
+                        // Attach obtained marks and total marks from the examform_has_subjects relationship
+                        $examFormSubject = $examForm->examfrom_has_subjects->first(); // Assuming there's only one related record per subject_id
+                        $examForm->student->internal_mark = $examFormSubject ? $examFormSubject->internal_marks : null;
+                        $examForm->student->external_mark = $examFormSubject ? $examFormSubject->external_marks : null;
+                        $examForm->student->total_mark = $examFormSubject ? $examFormSubject->total_marks : null;
+
+                        return $examForm->student;
+                    })
+                    ->groupBy(function ($student) {
+                        return $student->branch->name;
+                    })
+                    ->map(function ($students) {
+                        return $students->sortBy('registration_no');
+                    });
+
+
+                $selectedExamSession=ExamSession::find($session_id);
+                $selectedSubject=Subject::find($subject_id);
+                $examSchedule=ExamSchedule::where('exam_session_id',$session_id)->where('subject_id',$subject_id)->first();
+            }
+            // dd($studentsData);
+            return view('admin.exam.marks-feed-list',compact('marksfeed' ,'studentsData',  'subject','selectedExamSession','selectedSubject','examSchedule'));
+        }
+
+
+        public function feedMarks(Request $request)
+        {
+            $isDataExist = ExamFormSubject::where('exam_form_id', $request->exam_form_id)->where('subject_id', $request->subject_id)->exists();
+
+            if($isDataExist) {
+                $obtainedMarks = $request->internal_mark + $request->external_mark;
+                ExamFormSubject::where('exam_form_id', $request->exam_form_id)
+                               ->where('subject_id', $request->subject_id)
+                               ->update([
+                                   'internal_marks' => $request->internal_mark,
+                                   'external_marks' => $request->external_mark,
+                                   'obtain_marks'   => $obtainedMarks,
+                                   'total_marks'    => $request->total_mark,
+                                 ]);
+
+                $response = ['status' => 1, 'message' => 'Data feed successfully'];
+            } else {
+                $response = ['status' => 0, 'message' => 'Data not available'];
+            }
+            return response()->json($response);
+        }
+    }
+

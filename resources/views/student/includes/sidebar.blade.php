@@ -53,6 +53,8 @@
                 <h6 class="collapse-header">Exam form & Admit card</h6>
                 <a class="collapse-item" href="{{route('student.semester.exam-form')}}">Exam Form</a>
                 <a class="collapse-item" href="{{route('student.semester.admitcard-form-list')}}">Admit Card</a>
+                <a class="collapse-item" href="{{route('student.semester.examresult_form_list')}}">Exam Result</a>
+
             </div>
         </div>
     </li>
