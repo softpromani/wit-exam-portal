@@ -11,6 +11,7 @@ use Yajra\DataTables\DataTables;
 use App\Models\Student;
 use App\Models\Subject;
 use Carbon\Carbon;
+use PhpParser\Node\Stmt\ElseIf_;
 
 class ExamController extends Controller
 {
@@ -172,6 +173,8 @@ class ExamController extends Controller
                         $examForm->student->internal_mark = $examFormSubject ? $examFormSubject->internal_marks : null;
                         $examForm->student->external_mark = $examFormSubject ? $examFormSubject->external_marks : null;
                         $examForm->student->total_mark = $examFormSubject ? $examFormSubject->total_marks : null;
+                        $examForm->student->grade_point = $examFormSubject ? $examFormSubject->grade_point : null;
+                        $examForm->student->grade = $examFormSubject ? $examFormSubject->grade : null;
 
                         return $examForm->student;
                     })
@@ -197,20 +200,46 @@ class ExamController extends Controller
             $isDataExist = ExamFormSubject::where('exam_form_id', $request->exam_form_id)->where('subject_id', $request->subject_id)->exists();
 
             if($isDataExist) {
-                $obtainedMarks = $request->internal_mark + $request->external_mark;
-                ExamFormSubject::where('exam_form_id', $request->exam_form_id)
+                $grade=null;
+                if($request->grade_point==10){
+                    $grade='A+';
+                }
+                elseif ($request->grade_point==9) {
+                    $grade='A';
+                }
+                elseif ($request->grade_point==8) {
+                    $grade='B';
+                }
+                elseif ($request->grade_point==7) {
+                    $grade='C';
+                }
+                elseif ($request->grade_point==6) {
+                    $grade='D';
+                }
+                elseif ($request->grade_point==5) {
+                    $grade='P';
+                }
+                elseif($request->grade_point<5) {
+                    $grade='F';
+                }
+
+
+                $obtainedMarks = $request->internal_mark??0 + $request->external_mark??0;
+               $res= ExamFormSubject::where('exam_form_id', $request->exam_form_id)
                                ->where('subject_id', $request->subject_id)
                                ->update([
-                                   'internal_marks' => $request->internal_mark,
-                                   'external_marks' => $request->external_mark,
-                                   'obtain_marks'   => $obtainedMarks,
-                                   'total_marks'    => $request->total_mark,
+                                   'internal_marks' => $request->internal_mark??0.00,
+                                   'external_marks' => $request->external_mark??0.00,
+                                   'obtain_marks'   => $obtainedMarks??0.00,
+                                   'total_marks'    => $request->total_mark??0.00,
+                                   'grade_point'    => number_format($request->grade_point??0.00,2),
+                                   'grade'          => $grade
                                  ]);
-
                 $response = ['status' => 1, 'message' => 'Data feed successfully'];
             } else {
                 $response = ['status' => 0, 'message' => 'Data not available'];
             }
+
             return response()->json($response);
         }
         // function for edit exam_schedule

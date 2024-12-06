@@ -76,9 +76,7 @@
                                 <th>Registration Number</th>
                                 <th>Roll Number</th>
                                 <th>Name</th>
-                                <th>Internal Mark</th>
-                                <th>External Mark</th>
-                                <th>Total Mark (exam held marks like 10 cgpa)</th>
+                                <th>Grade Point</th>
                                 <th>Feed Marks</th>
                             </tr>
                         </thead>
@@ -95,9 +93,7 @@
                                         @csrf
                                         <input type="hidden" value="{{ $dt->exam_form_id }}" name="exam_form_id" />
                                         <input type="hidden" value="{{ $selectedSubject->id }}" name="subject_id" />
-                                        <td><input class="form-control" type="text" name="internal_mark" value="{{ $dt->internal_mark ?? 0 }}" ></td>
-                                        <td><input class="form-control" type="text" name="external_mark" value="{{ $dt->external_mark ?? 0 }}" ></td>
-                                        <td><input class="form-control" type="text" name="total_mark" value="{{ $dt->total_mark ?? 0 }}" ></td>
+                                        <td><input class="form-control" type="number" name="grade_point" value="{{ $dt->grade_point ?? 0 }}" ></td>
                                         <td><button type="button" class="btn btn-primary feedbutton"  data-id="{{ $dt->id }}" >Feed</button></td>
                                     </form>
 
