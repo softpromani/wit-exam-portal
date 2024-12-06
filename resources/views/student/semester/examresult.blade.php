@@ -135,9 +135,8 @@
                 <tr>
                     <th>Subject Code </th>
                     <th>Subject Name </th>
-                    <th>Internal</th>
-                    <th>External</th>
-                    <th>Total</th>
+                    <th>Grade Point</th>
+                    <th>Grade</th>
                 </tr>
             </thead>
             <tbody>
@@ -145,9 +144,8 @@
                 <tr>
                     <td>{{ $subject->subject_code }}</td>
                     <td>{{ $subject->title }}</td>
-                    <td>{{ $subject->internal_marks ?? 0 }}</td>
-                    <td>{{ $subject->external_marks ?? 0 }}</td>
-                    <td>{{ $subject->total_marks ?? 0 }}</td>
+                    <td>{{ $subject->grade_point ?? 0 }}</td>
+                    <td>{{ $subject->grade ?? 0 }}</td>
                 </tr>
                 @endforeach
             </tbody>
