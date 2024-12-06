@@ -58,16 +58,15 @@
     @foreach($studentsData as $k=>$students)
         <div class="container mt-3">
             <div class="card">
+                <div class="card-header">
 
                             <div class="col-12 text-center">Marks Feed List</div>
                             <div class="col-12">
-                                <b>Semester -</b> {{ $k}}
-                            </div>
-                            <div class="col-12">
                                 <b>Branch -</b> {{ $k }}
                             </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="card-body">
+                
 
                     <table  class="table table-bordered col-11 mt-3 ml-5" style="font-size:11px; color:black">
                         <thead>
