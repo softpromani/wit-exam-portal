@@ -59,6 +59,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     Route::get('exam-schedule-list',[ExamController::class,'exam_schedule'])->name('exam_schedule_list');
     Route::post('exam-schedule',[ExamController::class,'exam_schedule_store'])->name('exam_schedule_store');
     Route::get('fetch-exam-schedule',[ExamController::class,'fetchexam_schedule'])->name('fetch_exam_schedule');
+    Route::get('exam-schedule-edit/{id}',[ExamController::class,'exam_schedule_edit'])->name('exam_schedule_edit');
+    Route::post('exam-schedule-update',[ExamController::class,'exam_schedule_update'])->name('exam_schedule_update');
     Route::get('subject',[ExamController::class,'subject'])->name('exam_subjects');
     Route::post('fee-payment',[PaymentController::class,'feePayment'])->name('fee-payment');
     Route::post('exam-session',[ExamController::class,'ExamSession'])->name('examsession');
