@@ -29,6 +29,7 @@ return new class extends Migration
             $table->bigInteger('internal_marks')->default(0.00);
             $table->bigInteger('external_marks')->default(0.00);
             $table->bigInteger('obtain_marks')->default(0.00);
+            $table->decimal('grade_point',10,2)->default(0.00);
             $table->bigInteger('total_marks')->default(0.00);
             $table->string('grade')->nullable();
             $table->timestamps();
