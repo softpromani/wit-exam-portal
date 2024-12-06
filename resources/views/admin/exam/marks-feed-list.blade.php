@@ -78,7 +78,7 @@
                                 <th>Name</th>
                                 <th>Internal Mark</th>
                                 <th>External Mark</th>
-                                <th>Total Mark</th>
+                                <th>Total Mark (exam held marks like 10 cgpa)</th>
                                 <th>Feed Marks</th>
                             </tr>
                         </thead>

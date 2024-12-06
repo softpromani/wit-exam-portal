@@ -56,17 +56,43 @@
                         <th>Date</th>
                         <th>From Time</th>
                         <th>To Time</th>
+                        <th>L-T-P</th>
+                        <th>Credits</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="examScheduleTable">
-                    
+
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
+{{--  exam schedule edit modal  --}}
+<!-- Modal -->
+<div class="modal fade" id="examScheduleEdit" tabindex="-1" role="dialog" aria-labelledby="examScheduleEditLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <form method="post" action="{{ route('admin.exam_schedule_update') }}">
+        @csrf
+        <div class="modal-header">
+            <h5 class="modal-title" id="examScheduleEditLabel">Update Exam Schedule </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" id="examScheduleEditBody">
+           498g-=
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
 @endsection
 @section('script_section')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -84,8 +110,8 @@
                 response.schedules.forEach(function(schedules, index) {
                     // Convert and format the date to 'd-M-YYYY'
                     var dateObj = new Date(schedules.date);
-                    var formattedDate = dateObj.getDate() + '-' + 
-                                        dateObj.toLocaleString('default', { month: 'short' }) + '-' + 
+                    var formattedDate = dateObj.getDate() + '-' +
+                                        dateObj.toLocaleString('default', { month: 'short' }) + '-' +
                                         dateObj.getFullYear();
 
                     rows += '<tr>'+
@@ -95,6 +121,9 @@
                                 '<td>' + formattedDate + '</td>'+ // Use the formatted date here
                                 '<td>' + schedules.from_time + '</td>'+
                                 '<td>' + schedules.to_time + '</td>'+
+                                '<td>'+schedules.ltp+'</td>'+
+                                '<td>'+schedules.credits+'</td>'+
+                                '<td><button class="btn btn-warning edit_exam_schedule" data-id="'+schedules.id+'">Edit</button></td>'
                             '</tr>';
                 });
 
@@ -151,12 +180,24 @@
                                 '</tr>';
                     });
                     $('#examScheduleTable').html(rows);
-                
+
                 },
                 error: function(xhr, status, error) {
                     console.error("An error occurred: " + error);
                 }
             });
+        });
+    });
+    $(document).on('click','.edit_exam_schedule',function(){
+        var schedule_id = $(this).data('id');
+        $.ajax({
+            url:"{{ url('admin/exam-schedule-edit') }}/"+schedule_id,
+            method:'GET',
+            success:function(response){
+                $('#examScheduleEditBody').html(response);
+                const myModal = new bootstrap.Modal(document.getElementById('examScheduleEdit'));
+                myModal.show(); 
+            }
         });
     });
 </script>
