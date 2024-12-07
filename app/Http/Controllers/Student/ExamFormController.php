@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Subject;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Storage;
 
 class ExamFormController extends Controller
 {
@@ -137,8 +138,13 @@ class ExamFormController extends Controller
 
     public function examresult_form_list()
     {
+        $pdfresult=NULL;
+        if(Storage::exists('result/'.auth()->user()->university_roll_no.'.pdf')){
+            $pdfresult=Storage::url('result/'.auth()->user()->university_roll_no.'.pdf');
+
+        }
         $examSession = ExamSession::where('status', 'admit-card')->get();
-        return view('student.semester.exam-result-list', compact('examSession'));
+        return view('student.semester.exam-result-list', compact('examSession','pdfresult'));
     }
 
     public function examresult_download($exam_session_id)
