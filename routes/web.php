@@ -22,7 +22,10 @@ use App\Http\Controllers\Student\AdmitCardController;
 |
 */
 Route::get('/', [AuthController::class, 'index'])->name('login');
-Route::post('login-store', [AuthController::class, 'login'])->name('loginStore');
+Route::post('login-store', [AuthController::class, 'login'])->name(name: 'loginStore');
+Route::get('result-view', [AuthController::class, 'resultview'])->name('result');
+Route::post('fetch-result', [AuthController::class, 'fetch_result'])->name(name: 'fetch-result');
+
 
 Route::group(['prefix' => 'student', 'as' => 'student.','middleware'=>'auth:student'], function () {
     Route::get('dashboard', [StudentController::class, 'dashboard'])->name('dashboard');
@@ -65,7 +68,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     Route::post('fee-payment',[PaymentController::class,'feePayment'])->name('fee-payment');
     Route::post('exam-session',[ExamController::class,'ExamSession'])->name('examsession');
     Route::any('attendance_list',[ExamController::class,'attendanceList'])->name('attendance_list');
-    
+
     //Marksfeed URI
     Route::any('marksfeed_list',[ExamController::class,'marksfeedList'])->name('marksfeed_list');
     Route::post('feed-marks',[ExamController::class,'feedMarks'])->name('feedMarks');

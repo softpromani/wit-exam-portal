@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
 class AuthController extends Controller
 {
     //
@@ -15,9 +17,31 @@ class AuthController extends Controller
      return view('auth.login');
     }
 
+    public function resultview(){
+        return view('result.view');
+    }
+
+    public function fetch_result(Request $request){
+
+        $data=$request->validate([
+            'resultrollno' => 'required',
+        ]);
+        if(Storage::exists('result/'.$request->resultrollno.'.pdf')){
+            // return response()->file(storage_path(path: 'app/result/' . $request->resultrollno.'.pdf'));
+            $filePath = storage_path('app/result/' . $request->resultrollno . '.pdf');
+
+            // Return response to open file in a new tab
+            return response()->file($filePath, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $request->resultrollno . '.pdf"',
+            ]);
+        }
+        return redirect()->back()->with('error','Result Not Available');
+
+    }
 
     public function login(Request $request){
-       
+
         $data=$request->validate([
             'university_roll_no' => 'required',
             'password' => 'required',
@@ -34,10 +58,10 @@ class AuthController extends Controller
                 {
                     return redirect()->route('student.profile')->with('success','Welcome to student panel !!');
                 }
-        } else { 
+        } else {
             return redirect()->back()->with('error','Something Event Wrong');
         }
-        
+
     }
 
     // change password
@@ -48,17 +72,17 @@ class AuthController extends Controller
             'new_password' => 'required',
             'confirm_password' => 'required|same:new_password',
         ]);
-    
+
         $studentData = Student::find($id);
-    
+
         if (Hash::check($data['old_password'], $studentData->password)) {
             $studentData->password = Hash::make($data['new_password']);
             $studentData->save();
-    
+
             return redirect()->route('login')->with('success', 'Password change successfully.');
         } else {
             return redirect()->back()->with('error', 'Old password is incorrect.');
         }
     }
-    
+
 }

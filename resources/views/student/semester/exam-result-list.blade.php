@@ -20,12 +20,19 @@
                         <td><a href="{{ route('student.semester.examresult-download',$session->id) }}"> Download Result </a></td>
                     </tr>
                 @empty
-                    <tr>
+                    {{--  <tr>
                         <td>1</td>
                         <td>Test Result</td>
                         <td><a href="{{ route('student.semester.examresult-download',1) }}"> Download Test Result </a></td>
-                    </tr>
+                    </tr>  --}}
                 @endforelse
+                @if($pdfresult!=NULL)
+                    <tr>
+                        <td>1</td>
+                        <td>current Semester Result</td>
+                        <td><a href="{{ $pdfresult }}" target="_blank">Download Result</a></td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>
