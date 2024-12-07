@@ -26,11 +26,17 @@
                         <td><a href="{{ route('student.semester.examresult-download',1) }}"> Download Test Result </a></td>
                     </tr>  --}}
                 @endforelse
-                @if($pdfresult!=NULL)
+                @if($pdfresult!=false)
                     <tr>
                         <td>1</td>
                         <td>current Semester Result</td>
-                        <td><a href="{{ $pdfresult }}" target="_blank">Download Result</a></td>
+                        <td>
+                            <form action="{{route ('fetch-result') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="resultrollno" value="{{ $pdfresult }}">
+                                <button type="submit" class="btn btn-primary">View Result</button>
+                            </form>
+                        </td>
                     </tr>
                 @endif
             </tbody>

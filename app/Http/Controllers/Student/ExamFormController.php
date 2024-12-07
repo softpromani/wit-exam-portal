@@ -138,9 +138,12 @@ class ExamFormController extends Controller
 
     public function examresult_form_list()
     {
-        $pdfresult=NULL;
-        if(Storage::exists('result/'.auth()->user()->university_roll_no.'.pdf')){
-            $pdfresult=Storage::url('result/'.auth()->user()->university_roll_no.'.pdf');
+        $pdfresult=false;
+        $universityRollNo = auth()->user()->university_roll_no; // Example: 'cs-123456'
+        $numericRollNo = preg_replace('/[^0-9]/', '', $universityRollNo);
+
+        if(Storage::exists('result/'.$numericRollNo.'.pdf')){
+            $pdfresult=$numericRollNo;
 
         }
         $examSession = ExamSession::where('status', 'admit-card')->get();
