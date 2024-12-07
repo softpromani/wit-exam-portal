@@ -166,9 +166,8 @@ class ExamFormController extends Controller
         $examFormSubject = $examform->examfrom_has_subjects->where('subject_id', $subject->id)->first();
 
         // Add total_marks to the subject
-        $subject->internal_marks = optional($examFormSubject)->internal_marks;
-        $subject->external_marks = optional($examFormSubject)->external_marks;
-        $subject->total_marks = optional($examFormSubject)->total_marks;
+        $subject->grade_point = optional($examFormSubject)->grade_point;
+        $subject->grade = optional($examFormSubject)->grade;
 
         // Format date and time
         $subject->date = Carbon::parse(optional($schedule)->date)->format('d-M-Y');
