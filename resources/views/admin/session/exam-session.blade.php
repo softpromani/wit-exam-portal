@@ -52,12 +52,12 @@
 
                       {{-- <td>
                             <!-- Edit Button with Pencil Icon -->
-                            <a href="{{ route('admin.admission-session.edit', $examsession->id) }}" class="btn btn-sm btn-warning">
+                            <a href="{{ route('admin.exam-session.edit', $examsession->id) }}" class="btn btn-sm btn-warning">
                         <i class="fas fa-edit"></i>
                         </a>
 
                         <!-- Delete Button with Trash Icon -->
-                        <form action="{{ route('admin.admission-session.destroy', $examsession->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this admission session?')">
+                        <form action="{{ route('admin.exam-session.destroy', $examsession->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this exam session?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">
