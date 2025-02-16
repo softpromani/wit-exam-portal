@@ -49,11 +49,29 @@
 
     </li>
 
+    <!-- session -->
+    <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+            aria-expanded="true" aria-controls="collapseThree">
+            <i class="fa fa-address-book"></i>
+            <span>Session</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Custom Components:</h6>
+                <a class="collapse-item" href="{{route('admin.admission-session.index')}}">Admission Session</a>
+                <a class="collapse-item" href="{{route('admin.exam-session.index')}}">Exam Session</a>
+
+            </div>
+        </div>
+    </li>
+
+
     <!-- Divider -->
-    {{--  <hr class="sidebar-divider">  --}}
+    {{-- <hr class="sidebar-divider">  --}}
 
     <!-- Heading -->
-    {{--  <div class="sidebar-heading">
+    {{-- <div class="sidebar-heading">
         Addons
     </div>  --}}
 

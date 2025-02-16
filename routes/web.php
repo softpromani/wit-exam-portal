@@ -10,12 +10,13 @@ use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\FeePaymentController;
 use App\Http\Controllers\Student\AdmitCardController;
+use App\Http\Controllers\Admin\AddmissionSessionController;
+use App\Http\Controllers\Admin\ExamSessionController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
@@ -66,13 +67,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     Route::post('exam-schedule-update',[ExamController::class,'exam_schedule_update'])->name('exam_schedule_update');
     Route::get('subject',[ExamController::class,'subject'])->name('exam_subjects');
     Route::post('fee-payment',[PaymentController::class,'feePayment'])->name('fee-payment');
-    Route::post('exam-session',[ExamController::class,'ExamSession'])->name('examsession');
+    Route::post('exam-exam-session',[ExamController::class,'ExamSession'])->name('examsession');
     Route::any('attendance_list',[ExamController::class,'attendanceList'])->name('attendance_list');
 
     //Marksfeed URI
     Route::any('marksfeed_list',[ExamController::class,'marksfeedList'])->name('marksfeed_list');
     Route::post('feed-marks',[ExamController::class,'feedMarks'])->name('feedMarks');
-
     Route::get('attendance-data/', [ExamController::class, 'attendanceData'])->name('attendance_data');
+
+    //Session
+    Route::resource('admission-session',AddmissionSessionController::class);
+    Route::resource('exam-session',ExamSessionController::class);
 
 });
