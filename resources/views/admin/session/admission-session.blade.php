@@ -5,24 +5,21 @@
         <div class="card-body">
             <form action="{{route('admin.admission-session.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="row d-flex mb-4">
-                    <div>
-                        <label for="fordate" class="form-label">Admission Session</label>
-                        <input type="text" class="form-control" name="session_name"  placeholder="Enter Session Name">
-
+                <div class="row mb-4">
+                    <div class="col-4">
+                        <x-input-box name="session_name" label="Admission Session"  placeholder="Enter Session Name" />
                     </div>
                     <div class="col-4">
-                        <label for="fordate" class="form-label">From </label>
-                        <input type="date" class="form-control" id="date1" name="from">
+                        <x-input-box type="date" name="from" required/>
                     </div>
 
                     <div class="col-4">
-                        <label for="todate" class="form-label">To </label>
-                        <input type="date" class="form-control" id="todate" name="to" >
+                        <x-input-box type="date" name="to" required/>
                     </div>
+                    <div class="col-4">
+                    <button type="submit" id="submitScheduleForm" class="btn btn-primary">Submit</button>
 
-                    <button type="submit" id="submitScheduleForm" class="btn btn-primary mt-3">Submit</button>
-
+                    </div>
                 </div>
             </form>
         </div>
@@ -34,6 +31,7 @@
                 <thead class="table-primary">
                     <tr>
                         <th scope="col">Sr No</th>
+                        <th scope="col">Id</th>
                         <th scope="col">Session Name</th>
                         <th scope="col">From </th>
                         <th scope="col">To </th>
@@ -43,6 +41,7 @@
                     @foreach ($admissionsessions as $admissionsession)
                     <tr>
                         <th scope="row">{{ $loop->index+1 }}</th>
+                        <td>{{ $admissionsession->id ?? 'N/A' }}</td>
                         <td>{{ $admissionsession->session_name ?? 'N/A' }}</td>
                         <td>{{ $admissionsession->from ?? 'N/A' }}</td>
                         <td>{{ $admissionsession->to ?? 'N/A' }}</td>

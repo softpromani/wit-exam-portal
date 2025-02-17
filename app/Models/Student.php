@@ -13,7 +13,9 @@ class Student extends Authenticatable
                         'semester_id','admission_session_id','password','gender','email','mobile_number','fname','mname','parent_number',
                         'address','is_profile','dob','adhar_number'
                         ];
-
+    protected $casts=[
+        'registration_no'=>'integer'
+    ];
     function profile_pic(){
         return $this->morphOne(Media::class,'mediable')->where('type','photo');
     }

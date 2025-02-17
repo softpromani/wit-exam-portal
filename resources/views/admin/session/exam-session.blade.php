@@ -5,25 +5,20 @@
         <div class="card-body">
             <form action="{{ route('admin.exam-session.store') }}" method="POST">
                 @csrf
-                <div class="row d-flex mb-4">
-                    <div>
-                        <label for="fordate" class="form-label">Exam Session</label>
-                        <input type="text" class="form-control" name="session_name" placeholder="Enter Session Name">
-
+                <div class="row mb-4">
+                    <div class="col-4">
+                        <x-input-box name="session_name" label="Exam Session"  placeholder="Enter Session Name" />
                     </div>
                     <div class="col-4">
-                        <label for="fordate" class="form-label">From </label>
-                        <input type="date" class="form-control" id="date1" name="from">
+                        <x-input-box type="date" name="from" required/>
                     </div>
 
                     <div class="col-4">
-                        <label for="todate" class="form-label">To </label>
-                        <input type="date" class="form-control" id="todate" name="to">
+                        <x-input-box type="date" name="to" required/>
                     </div>
-                 
-
-                        <button type="submit" id="submitScheduleForm" class="btn btn-primary mt-3">Submit</button>
-
+                    <div class="col-4">
+                        <button type="submit" id="submitScheduleForm" class="btn btn-primary">Submit</button>
+                    </div>
                 </div>
             </form>
         </div>

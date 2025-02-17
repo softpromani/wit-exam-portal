@@ -12,6 +12,7 @@ use App\Http\Controllers\FeePaymentController;
 use App\Http\Controllers\Student\AdmitCardController;
 use App\Http\Controllers\Admin\AddmissionSessionController;
 use App\Http\Controllers\Admin\ExamSessionController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,5 +79,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     //Session
     Route::resource('admission-session',AddmissionSessionController::class);
     Route::resource('exam-session',ExamSessionController::class);
+
+    // Student Registration
+    Route::resource('student',AdminStudentController::class);
+    Route::post('student/import',[AdminStudentController::class,'import'])->name('student.import');
+    Route::get('get-students',[AdminStudentController::class,'getStudents'])->name('student.list');
+
 
 });

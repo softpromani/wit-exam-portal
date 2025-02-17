@@ -1,35 +1,29 @@
 <div>
     @php
-        if(!isset($label))
-        {
-            $string = str_replace('_', ' ', $name);
-            $string = ucwords($string);
-        }
-        else
-        {
-            $string=$label;
-        }
+        $labelText = $label ?? ucwords(str_replace('_', ' ', $name));
     @endphp
+
     <div class="form-group">
-        @if($string)
-            <label for="{{ $name }}">{{$string}}</label>
+        @if($labelText)
+            <label for="{{ $name }}">{{ $labelText }}</label>
         @endif
-        <select
-            name="{{ $name }}"
-            id="{{ $name }}"
-            @if($required) required @endif
-            @if($disabled) disabled @endif
-            class="form-control"
+
+        <select 
+            name="{{ $name }}" 
+            id="{{ $name }}" 
+            class="form-control" 
+            {{ $required ? 'required' : '' }} 
+            {{ $disabled ? 'disabled' : '' }}
         >
             @foreach($options as $optionValue => $optionText)
                 <option value="{{ $optionValue }}" {{ $value == $optionValue ? 'selected' : '' }}>
-                    {{ $optionText }}
+                    {{ ucwords($optionText) }}
                 </option>
             @endforeach
         </select>
+
         @error($name)
-            <span class="text-danger">{{$message}}</span>
+            <span class="text-danger">{{ $message }}</span>
         @enderror
     </div>
-
 </div>

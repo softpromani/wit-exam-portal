@@ -66,6 +66,32 @@
         </div>
     </li>
 
+     <!-- Divider -->
+     <hr class="sidebar-divider">
+     <!-- Heading -->
+     <div class="sidebar-heading">
+        User Section
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
+            aria-expanded="true" aria-controls="collapseFour">
+            <i class="fa fa-address-book"></i>
+            <span>Student</span>
+        </a>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Custom Components:</h6>
+                <a class="collapse-item" href="{{route('admin.student.list')}}">Students</a>
+                <a class="collapse-item" href="{{route('admin.student.index')}}">Bulk Import</a>
+            </div>
+        </div>
+
+    </li>
+
 
     <!-- Divider -->
     {{-- <hr class="sidebar-divider">  --}}
