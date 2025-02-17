@@ -7,6 +7,7 @@ use App\Models\AdmissionSession;
 use App\Models\Branch;
 use App\Models\Course;
 use App\Models\ImportFail;
+use App\Models\Semester;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -154,43 +155,56 @@ class StudentController extends Controller
 
 
     // get all student list
-    public function getStudents(Request $req)
+    public function getStudents(Request $request)
     {
-        return view('admin.student.list');
+        $arrView=[
+            'courses'=>Course::with('branches')->get(),
+            'semesters'=>Semester::get(),
+            'admission_sessions'=>AdmissionSession::get(),
+        ];
+        if($request->post()){
+            $query = Student::query();
+
+            // Apply search filters for each column
+            if ($request->has('university_roll_no')) {
+                $query->where('university_roll_no', 'like', '%' . $request->university_roll_no . '%');
+            }
+            if ($request->has('registration_no')) {
+                $query->where('registration_no', 'like', '%' . $request->registration_no . '%');
+            }
+            if ($request->has('registration_type')) {
+                $query->where('registration_type', 'like', '%' . $request->registration_type . '%');
+            }
+            if ($request->has('student_name')) {
+                $query->where('student_name', 'like', '%' . $request->student_name . '%');
+            }
+            if ($request->has('course_id')) {
+                $query->where('course_id', $request->course_id);
+            }
+            if ($request->has('branch_id')) {
+                $query->where('branch_id', $request->branch_id);
+            }
+            if ($request->has('semester_id')) {
+                $query->where('semester_id', $request->semester_id);
+            }
+            if ($request->has('admission_session_id')) {
+                $query->where('admission_session_id', $request->admission_session_id);
+            }
+        
+            $arrView['students'] = $query->get();
+        }
+        return view('admin.student.list',$arrView);
     }
     // get ajax
-    public function getStudentList(Request $req){
-            $query = Student::query();
-             // Define columns dynamically (in case of first request)
-        
-            $columns = [
-                ["title" => "University Roll No", "field" => "university_roll_no", "sorter" => "string", "headerFilter" => "input"],
-                ["title" => "Registration No", "field" => "registration_no", "sorter" => "string", "headerFilter" => "input"],
-                ["title" => "Student Name", "field" => "student_name", "sorter" => "string", "headerFilter" => "input"],
-                ["title" => "Email", "field" => "email", "sorter" => "string", "headerFilter" => "input"],
-                ["title" => "Mobile", "field" => "mobile_number", "sorter" => "string", "headerFilter" => "input"],
-            ];
+    public function getStudentList(Request $request){
+      
     
-            foreach (['university_roll_no', 'registration_no', 'student_name', 'email', 'mobile_number'] as $column) {
-                if ($req->has($column) && !empty($req->$column)) {
-                    $query->where($column, 'LIKE', "%{$req->$column}%");
-                }
-            }
-            // Apply sorting
-            if ($req->has('sortField') && $req->has('sortOrder')) {
-                $query->orderBy($req->sortField, $req->sortOrder);
-            } else {
-                $query->orderBy('id', 'desc'); // Default sorting
-            }        
-            // Apply pagination (ensure valid limit)
-            $limit = is_numeric($req->limit) ? (int) $req->limit : 10;
-            $students = $query->paginate($limit);
-            return response()->json([
-                'last_page' => $students->lastPage(),
-                'total' => $students->total(),
-                'data' => $students->items(),
-                'columns'=>$columns
-            ]);
+        return response()->json([
+            'data' => $students->items(), // Only return array of students
+            'total' => $students->total(),
+            'per_page' => $students->perPage(),
+            'current_page' => $students->currentPage(),
+        ]);
         
     }
     
