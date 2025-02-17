@@ -8,29 +8,33 @@
 @endsection
 @section('script_section')
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch("{{ route('admin.student.list') }}")
-                .then(response => response.json())
-                .then(data => {
-                    let table = new Tabulator("#studentTable", {
-                        layout: "fitColumns",
-                        pagination: "remote",
-                        paginationSize: 10,
-                        paginationSizeSelector: [10, 25, 50, 100],
-                        ajaxURL: "{{ route('admin.student.list') }}",
-                        ajaxParams: function () {
-                            return { search: document.getElementById("search").value };
-                        },
-                        ajaxResponse: function(url, params, response) {
-                            return { data: response.data, last_page: response.last_page };
-                        },
-                        columns: data.columns // Get columns from the server
-                    });
+    document.addEventListener("DOMContentLoaded", function() {
+        let table = new Tabulator("#studentTable", {
+            layout: "fitColumns",
+            pagination: "remote",
+            paginationSize: 10,
+            ajaxURL: "{{route('admin.student.ajax-list')}}", // Change this URL based on your route
+            ajaxParams: function() {
+                let searchInput = document.getElementById("search");
+                return {
+                    search: searchInput ? searchInput.value : "" // Prevent error if input is missing
+                };
+            },
+            columns: [],
+            ajaxResponse: function(url, params, response) {
+                console.log(response); // Debugging: check the response in console
+                if (response.columns) {
+                    this.setColumns(response.columns);
+                    // this.setData(response.data);
+                }
+                return response;
+            }
 
-                    document.getElementById("search").addEventListener("keyup", function () {
-                        table.setData("{{ route('admin.student.list') }}", { search: this.value });
-                    });
-                });
         });
-    </script>
+
+        document.getElementById("search").addEventListener("input", function() {
+            table.setData();
+        });
+    });
+</script>
 @endsection

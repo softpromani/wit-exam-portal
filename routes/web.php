@@ -84,6 +84,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     Route::resource('student',AdminStudentController::class);
     Route::post('student/import',[AdminStudentController::class,'import'])->name('student.import');
     Route::get('get-students',[AdminStudentController::class,'getStudents'])->name('student.list');
+    Route::get('get-students-list',[AdminStudentController::class,'getStudentList'])->name('student.ajax-list');
 
 
 });
