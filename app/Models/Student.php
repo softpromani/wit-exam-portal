@@ -10,12 +10,26 @@ class Student extends Authenticatable
 {
     use HasFactory;
     protected $fillable=['university_roll_no','registration_no','registration_type','student_name','course_id','branch_id',
-                        'semester_id','admission_session_id','password','gender','email','mobile_number','fname','mname','parent_number',
+                        'semester_id','admission_semester_id','admission_session_id','password','gender','email','mobile_number','fname','mname','parent_number',
                         'address','is_profile','dob','adhar_number'
                         ];
     protected $casts=[
         'registration_no'=>'integer'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // When creating a new student record, copy semester_id to admission_semester_id
+        static::creating(function ($student) {
+            if ($student->semester_id) {
+                $student->admission_semester_id = $student->semester_id;
+            }
+        });
+    }
+
+
     function profile_pic(){
         return $this->morphOne(Media::class,'mediable')->where('type','photo');
     }
@@ -36,6 +50,9 @@ class Student extends Authenticatable
     }
     public function semester(){
         return $this->belongsTo(Semester::class);
+    }
+    public function admission_semester(){
+        return $this->belongsTo(Semester::class,'admission_semester_id');
     }
     public function course(){
         return $this->belongsTo(Course::class);

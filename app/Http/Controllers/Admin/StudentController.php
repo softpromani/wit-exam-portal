@@ -163,7 +163,7 @@ class StudentController extends Controller
             'admission_sessions'=>AdmissionSession::get(),
         ];
         if($request->post()){
-            $query = Student::query();
+            $query = Student::query()->with(['semester','branch','admission_session','admission_semester']);
 
             // Apply search filters for each column
             if ($request->has('university_roll_no')) {
@@ -190,22 +190,20 @@ class StudentController extends Controller
             if ($request->has('admission_session_id')) {
                 $query->where('admission_session_id', $request->admission_session_id);
             }
-        
+
             $arrView['students'] = $query->get();
         }
         return view('admin.student.list',$arrView);
     }
-    // get ajax
-    public function getStudentList(Request $request){
-      
-    
-        return response()->json([
-            'data' => $students->items(), // Only return array of students
-            'total' => $students->total(),
-            'per_page' => $students->perPage(),
-            'current_page' => $students->currentPage(),
+    public function promote(Request $req){
+        $validatedData = $req->validate([
+            'selected_students' => 'required|array', // Ensure at least one student is selected
+            'selected_students.*' => 'exists:students,id', // Validate each student ID exists in the database
         ]);
-        
+        $studentIds = $req->input('selected_students');
+        $res=Student::whereIn('id', $studentIds)->increment('semester_id');
+        return redirect()->back()->with('success','Students Promoted');
     }
-    
+
+
 }
