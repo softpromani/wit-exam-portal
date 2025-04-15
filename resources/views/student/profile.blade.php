@@ -5,7 +5,7 @@
 <div class="container card">
 
     <div class="card-body">
-        
+
         <form action="{{($editstudent->is_profile==0)?route('student.store'):'#'}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
@@ -13,7 +13,7 @@
                     <label for="enrollment_number" class="form-label">University Roll No</label>
                     <input type="text" class="form-control" id="enrollment_number" name="enrollment_number"
                         value="{{ isset($editstudent) ?$editstudent->university_roll_no :'' }}" required  readonly/>
-                </div> 
+                </div>
                 @error('enrollment_number')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -42,7 +42,7 @@
                         <option value="female" {{ isset($editstudent) && $editstudent->gender == 'female' ? 'selected' : '' }}>Female</option>
                         <option value="transgender" {{ isset($editstudent) && $editstudent->gender == 'transgender' ? 'selected' : '' }}>Transgender</option>
                     </select>
-                </div>                
+                </div>
                 @error('gender')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -51,7 +51,7 @@
                     <input type="date" class="form-control" id="dob" name="dob"
                            placeholder="Select your date of birth"
                            value="{{ isset($editstudent) ? $editstudent->dob : old('dob') }}">
-                </div>                
+                </div>
                 @error('dob')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -60,7 +60,7 @@
                     <input type="number" class="form-control" id="adhar_number" name="adhar_number"
                            placeholder="Enter Adhar Number"
                            value="{{ isset($editstudent) ? $editstudent->adhar_number : old('adhar_number') }}">
-                </div>                
+                </div>
                 @error('dob')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -108,7 +108,7 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-               
+
                 <div class="col-6 mb-3">
                     <label for="semester" class="form-label">Current Semester</label>
                     <input type="text" class="form-control" id="semester" name="semester"
@@ -120,7 +120,7 @@
                 <div class="col-12 mb-3">
                     <label for="enrollment_number" class="form-label">Address</label>
                     <textarea class="form-control" name="address"> {{ isset($editstudent) ?$editstudent->address:'' }}</textarea>
-                       
+
                 </div>
                 @if(!isset($editstudent->profile_pic))
                 <div class="col-6 mb-3">
@@ -131,14 +131,16 @@
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                
+
                 @else
                 <div class="col-6 mb-3">
                     <b>Your Profile Pic</b> <br>
                     <img src="{{asset('storage/'.$editstudent->profile_pic->media)}}" alt="" class="image-responsive" style="width: 150px; height: 200px;">
+                    <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#profilePicModal">Change Pic</button>
                 </div>
+
                 @endif
-                
+
                 @if(!isset($editstudent->sign))
                 <div class="col-6 mb-3">
                     <label for="signature" class="form-label">Signature  <span class="text-danger">(must be 200x100 px and less than 512 Kb)</span></label>
@@ -148,14 +150,15 @@
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                
+
                 @else
                     <div class="col-6 mb-6 pt-5">
                         <b>Your Signature</b><br>
                         <img src="{{asset('storage/'.$editstudent->sign->media)}}" alt="" class="image-responsive" style="width: 300px; height: 100px;">
+                        <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#SignModal">Change Signature</button>
                     </div>
                 @endif
-             
+
                 <div class="col-12 mt-3">
                     {{-- {{isset($editstudent) && $editstudent->is_profile == 1?'disabled':''}} --}}
                     <button type="submit" class="btn btn-primary" {{($editstudent->is_profile==1)?'disabled':''}} >Update</button>
@@ -164,6 +167,58 @@
         </form>
     </div>
 
+</div>
+
+
+<div class="modal fade" id="profilePicModal" tabindex="-1" aria-labelledby="profilePicModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="{{ route('student.file-update') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-header">
+            <h5 class="modal-title" id="profilePicModalLabel">Profile Photo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="upload_id" value="{{ $editstudent->profile_pic->id }}" required>
+                <input type="hidden" name="type" value="photo" required>
+            <x-input-box type="file" name="pic" required label='Upload Picture <span class="text-danger">(must be 300x400 px and less than 512 Kb)</span>'/>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+{{-- signature update --}}
+<div class="modal fade" id="SignModal" tabindex="-1" aria-labelledby="SignModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="{{ route('student.file-update') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-header">
+            <h5 class="modal-title" id="SignModalLabel">Signature</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="upload_id" value="{{ $editstudent->sign->id }}" required>
+                <input type="hidden" name="type" value="sign" required>
+            <x-input-box type="file" name="pic" required label='Signature  <span class="text-danger">(must be 200x100 px and less than 512 Kb)</span>'/>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+      </div>
+    </div>
 </div>
 @endsection
 
@@ -191,5 +246,4 @@
 
 
     </script>
- @endsection              
-               
+ @endsection

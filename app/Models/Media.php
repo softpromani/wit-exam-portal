@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
 class Media extends Model
 {
     use HasFactory,SoftDeletes;
@@ -29,7 +31,7 @@ class Media extends Model
     public static function uploadMedia(UploadedFile $file, Model $mediable,String $type=null)
     {
         $filePath = $file->store(class_basename($mediable), 'public');
-        
+
         return self::create([
             'media' => $filePath,
             'size' => $file->getSize()/1024,
@@ -38,5 +40,15 @@ class Media extends Model
             'mediable_type' => get_class($mediable),
             'type'=>$type??NULL
         ]);
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($media) {
+            // Check if the file exists and delete it
+            if ($media->media && Storage::disk('public')->exists($media->media)) {
+                Storage::disk('public')->delete($media->media);
+            }
+        });
     }
 }

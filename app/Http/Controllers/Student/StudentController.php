@@ -36,7 +36,7 @@ class StudentController extends Controller
             'photo'=>'required|mimes:jpg,jpeg,png|max:512|dimensions:width=300,height=400',
             'signature'=>'required|mimes:jpg,jpeg,png|max:512|dimensions:width=200,height=100',
         ]);
-        
+
             // dd($data);
         $student=Student::findOrFail(Auth::guard('student')->id());
         $data['is_profile']='1';
@@ -54,5 +54,33 @@ class StudentController extends Controller
     public function logout(){
         Auth::guard('student')->logout();
         return redirect()->route('login');
+    }
+
+    public function file_update(Request $req){
+        $rules = [
+            'upload_id'=>'required|exists:media,id',
+            'type'=>'required|in:photo,sign',
+        ];
+
+    if ($req->type == 'photo') {
+        $rules['pic'] = 'required|mimes:jpg,jpeg,png|max:512|dimensions:width=300,height=400';
+    } elseif ($req->type == 'sign') {
+        $rules['pic'] = 'required|mimes:jpg,jpeg,png|max:512|dimensions:width=200,height=100';
+    }
+
+    $validated = $req->validate($rules);
+    $media=Media::find($validated['upload_id']);
+    $student=$media->mediable;
+    if($validated['type']=='photo'){
+        $res=Media::uploadMedia($req->pic,$student,'photo');
+    }
+    else if($validated['type']=='sign'){
+        $res=Media::uploadMedia($req->pic,$student,'sign');
+    }
+    if(isset($res)){
+        $media->delete();
+        return redirect()->back()->with('success','Your File Updated !!');
+    }
+    return redirect()->back()->with('error','Something went wrong !!');
     }
 }

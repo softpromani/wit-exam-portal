@@ -33,6 +33,7 @@ Route::group(['prefix' => 'student', 'as' => 'student.','middleware'=>'auth:stud
     Route::get('dashboard', [StudentController::class, 'dashboard'])->name('dashboard');
     Route::get('student-profile', [StudentController::class, 'studentProfile'])->name('profile');
     Route::post('student-profile-store',[StudentController::class,'store'])->name('store');
+    Route::post('student-profile-file-update',[StudentController::class,'file_update'])->name('file-update');
     Route::post('change-password/{id}',[AuthController::class,'changePassword'])->name('changePassword');
     Route::get('logout', [StudentController::class, 'logout'])->name('logout');
 
