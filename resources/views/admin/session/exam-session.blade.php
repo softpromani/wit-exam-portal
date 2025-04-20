@@ -17,6 +17,9 @@
                         <x-input-box type="date" name="to" required/>
                     </div>
                     <div class="col-4">
+                        <x-input-box name="exam_center" label="Exam Center"  placeholder="Enter Exam Center" />
+                    </div>
+                    <div class="col-4">
                         <button type="submit" id="submitScheduleForm" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
@@ -34,6 +37,7 @@
                         <th scope="col">From </th>
                         <th scope="col">To </th>
                         <th scope="col">Status</th>
+                        <th scope="col">Exam Center </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,6 +48,7 @@
                         <td>{{ $examsession->from ?? 'N/A' }}</td>
                         <td>{{ $examsession->to ?? 'N/A' }}</td>
                         <td>{{ $examsession->status ?? 'N/A' }}</td>
+                        <td>{{ $examsession->exam_center ?? 'N/A' }}</td>
 
                       {{-- <td>
                             <!-- Edit Button with Pencil Icon -->

@@ -12,10 +12,10 @@ class ExamSessionController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    { 
+    {
         $examsessions=ExamSession::get();
         return view('admin.session.exam-session',compact('examsessions'));
-     
+
     }
 
     /**
@@ -35,6 +35,7 @@ class ExamSessionController extends Controller
             'session_name' => 'required|string|unique:admission_sessions,session_name|max:255',
             'from' => 'required|date',
             'to' => 'required|date|after_or_equal:from',
+            'exam_center'=>'required',
         ]);
 
         $data = [
@@ -42,7 +43,9 @@ class ExamSessionController extends Controller
             'session_name' => $request->session_name,
             'from' => $request->from,
             'to' => $request->to,
-            'status'=>'proccess'
+            'status'=>'proccess',
+            'exam_center' => $request->exam_center,
+
         ];
 
         $examsession = ExamSession::create($data);
@@ -71,6 +74,7 @@ class ExamSessionController extends Controller
         'session_name' => $request->session_name,
         'from' => $request->to,
         'to' => $request->to,
+        'exam_center' => $request->exam_center,
     ];
 
     $examsession = ExamSession::find($examsession->id)->update($data);
