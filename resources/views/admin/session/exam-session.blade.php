@@ -47,7 +47,20 @@
                         <td>{{ $examsession->session_name ?? 'N/A' }}</td>
                         <td>{{ $examsession->from ?? 'N/A' }}</td>
                         <td>{{ $examsession->to ?? 'N/A' }}</td>
-                        <td>{{ $examsession->status ?? 'N/A' }}</td>
+                        <td>
+                            <x-select-box
+                                name="status"
+                                :options="[
+                                    'processing' => 'Processing',
+                                    'admit-card' => 'Admit Card',
+                                    'completed' => 'Completed'
+                                ]"
+                                :value="$examsession->status"
+                                :label="false"
+                            />
+                        </td>
+
+
                         <td>{{ $examsession->exam_center ?? 'N/A' }}</td>
 
                       {{-- <td>
