@@ -13,9 +13,8 @@ class ExamSessionController extends Controller
      */
     public function index()
     {
-        $examsessions=ExamSession::get();
-        return view('admin.session.exam-session',compact('examsessions'));
-
+        $examsessions = ExamSession::get();
+        return view('admin.session.exam-session', compact('examsessions'));
     }
 
     /**
@@ -35,7 +34,7 @@ class ExamSessionController extends Controller
             'session_name' => 'required|string|unique:admission_sessions,session_name|max:255',
             'from' => 'required|date',
             'to' => 'required|date|after_or_equal:from',
-            'exam_center'=>'required',
+            'exam_center' => 'required',
         ]);
 
         $data = [
@@ -43,7 +42,7 @@ class ExamSessionController extends Controller
             'session_name' => $request->session_name,
             'from' => $request->from,
             'to' => $request->to,
-            'status'=>'proccess',
+            'status' => 'proccess',
             'exam_center' => $request->exam_center,
 
         ];
@@ -52,7 +51,7 @@ class ExamSessionController extends Controller
         return redirect()->route('admin.exam-session.index');
     }
 
-     /**
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(ExamSession $examsession)
@@ -60,7 +59,7 @@ class ExamSessionController extends Controller
         $editexamsession = $examsession->first();
         // dd($edituser);
         $examsessions = ExamSession::get();
-        return view('admin.session.exam-session', compact('editexamsession','examsessions'));
+        return view('admin.session.exam-session', compact('editexamsession', 'examsessions'));
     }
 
     /**
@@ -68,25 +67,37 @@ class ExamSessionController extends Controller
      */
     public function update(Request $request, ExamSession $examsession)
     {
-      // dd($request->all());
-    $data = [
-        //Database column_name => Form field name
-        'session_name' => $request->session_name,
-        'from' => $request->to,
-        'to' => $request->to,
-        'exam_center' => $request->exam_center,
-    ];
+        // dd($request->all());
+        $data = [
+            //Database column_name => Form field name
+            'session_name' => $request->session_name,
+            'from' => $request->to,
+            'to' => $request->to,
+            'exam_center' => $request->exam_center,
+        ];
 
-    $examsession = ExamSession::find($examsession->id)->update($data);
-    return redirect()->route('admin.exam-session.update');
+        $examsession = ExamSession::find($examsession->id)->update($data);
+        return redirect()->route('admin.exam-session.update');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ExamSession $examsession )
+    public function destroy(ExamSession $examsession)
     {
         $examsession->delete();
         return redirect()->route('admin.exam-session.destroy');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $session = ExamSession::find($id);
+        if ($session) {
+            $session->status = $request->status;
+            $session->save();
+            return response()->json(['success' => true]);
+
+            return response()->json(['success' => false]);
+        }
     }
 }

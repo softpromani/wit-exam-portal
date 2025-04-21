@@ -80,6 +80,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     //Session
     Route::resource('admission-session',AddmissionSessionController::class);
     Route::resource('exam-session',ExamSessionController::class);
+    Route::post('/update-exam-status/{id}', [ExamSessionController::class, 'updateStatus']);
+
 
     // Student Registration
     Route::resource('student',AdminStudentController::class);

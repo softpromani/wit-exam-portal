@@ -182,7 +182,7 @@
             </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="upload_id" value="{{ $editstudent->profile_pic->id }}" required>
+                <input type="hidden" name="upload_id" value="{{ $editstudent->profile_pic?->id }}" required>
                 <input type="hidden" name="type" value="photo" required>
             <x-input-box type="file" name="pic" required label='Upload Picture <span class="text-danger">(must be 300x400 px and less than 512 Kb)</span>'/>
             </div>

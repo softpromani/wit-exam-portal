@@ -50,14 +50,14 @@
                         <td>
                             <x-select-box
                                 name="status"
-                                :options="[
-                                    'processing' => 'Processing',
-                                    'admit-card' => 'Admit Card',
-                                    'completed' => 'Completed'
-                                ]"
+                                :options="['processing' => 'Processing', 'admit-card' => 'Admit Card', 'completed' => 'Completed']"
                                 :value="$examsession->status"
-                                :label="false"
+                                :attributes="[
+                                    'data-id' => $examsession->id,
+                                    'class' => 'form-select status-select'
+                                ]"
                             />
+
                         </td>
 
 
@@ -86,4 +86,30 @@
         </div>
     </div>
 </div>
+
 @endsection
+<script>
+    document.querySelectorAll('.status-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const status = this.value;
+            const id = this.dataset.id;
+
+            fetch(`/update-exam-status/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success){
+                    alert('Status updated!');
+                } else {
+                    alert('Update failed!');
+                }
+            });
+        });
+    });
+</script>
