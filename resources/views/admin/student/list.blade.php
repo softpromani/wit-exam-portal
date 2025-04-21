@@ -69,7 +69,10 @@
                         <td><input type="checkbox" class="select-item" name="selected_students[]" value="{{$st->id}}"></td>
                         <td>{{$loop->index+1}}</td>
                         <td>{{$st->registration_no}}</td>
-                        <td>{{$st->university_roll_no}}</td>
+                        <td>
+                            <input type="text" value="{{ $st->university_roll_no }}" data-id="{{ $st->id }}" class="form-control roll-no-class"/>
+                            <small class="text-danger error-message"></small>
+                        </td>
                         <td>{{$st->student_name}}</td>
                         <td>{{$st->branch?->name}}</td>
                         <td>{{$st->semester?->semester_name}}</td>
@@ -89,10 +92,71 @@
     </div>
 @endisset
 
+<style>
+    .loading {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" style="margin:auto; background:none; display:block;" width="20px" height="20px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><circle cx="50" cy="50" fill="none" stroke="%2300f" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138"><animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform></circle></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px 20px;
+}
+</style>
 @endsection
 
 @section('script_section')
 <script>
+    document.querySelectorAll('.roll-no-class').forEach(function (input) {
+    input.addEventListener('blur', function () {
+        // `this` refers to the input that triggered blur
+        const value = this.value;
+        const studentId = this.dataset.id;
+        const errorEl = this.nextElementSibling;
+
+            // Add loading state
+            this.classList.add('loading');
+
+            // Clear previous status
+            this.classList.remove('border-success', 'border-danger');
+            if (errorEl) errorEl.innerText = '';
+            // Send AJAX request
+            fetch('/admin/student/update-roll-no', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept':'application/json'
+                },
+                body: JSON.stringify({
+                    id: studentId,
+                    university_roll_no: value
+                })
+            })
+            .then(async response => {
+            this.classList.remove('loading');
+            if (response.ok) {
+                this.classList.add('border-success');
+            } else if (response.status === 422) {
+                const data = await response.json();
+                this.classList.add('border-danger');
+                if (data.errors && data.errors.university_roll_no && errorEl) {
+                    errorEl.innerText = data.errors.university_roll_no[0];
+                }
+            } else {
+                this.classList.add('border-danger');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            this.classList.remove('loading');
+            this.classList.add('border-danger');
+            if (errorEl) errorEl.innerText = 'Something went wrong.';
+        });
+    });
+});
+</script>
+
+<script>
+
+
     document.getElementById('select-all').addEventListener('change', function() {
         let checkboxes = document.querySelectorAll('.select-item');
         checkboxes.forEach(checkbox => {

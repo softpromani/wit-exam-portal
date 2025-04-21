@@ -204,6 +204,16 @@ class StudentController extends Controller
         $res=Student::whereIn('id', $studentIds)->increment('semester_id');
         return redirect()->back()->with('success','Students Promoted');
     }
-
+    public function update_roll_no(Request $req){
+        $req->validate([
+            'id'=>'required|exists:students,id',
+            'university_roll_no'=>'required|unique:students,university_roll_no,' . $req->id . ',id',
+        ]);
+        $student=Student::findOrFail($req->id);
+        if($student->update(['university_roll_no'=>$req->university_roll_no])){
+            return response()->json(['message' => 'Updated successfully']);
+        }
+        return response()->json(['message'=>'Error'],500);
+    }
 
 }
