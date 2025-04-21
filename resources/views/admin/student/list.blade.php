@@ -69,7 +69,7 @@
                         <td><input type="checkbox" class="select-item" name="selected_students[]" value="{{$st->id}}"></td>
                         <td>{{$loop->index+1}}</td>
                         <td>{{$st->registration_no}}</td>
-                        <!--<td>{{$st->university_roll_no}}</td>-->
+                        <td>{{$st->university_roll_no}}</td>
                         <td>{{$st->student_name}}</td>
                         <td>{{$st->branch?->name}}</td>
                         <td>{{$st->semester?->semester_name}}</td>
