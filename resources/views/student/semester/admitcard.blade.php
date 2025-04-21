@@ -108,10 +108,15 @@
                                 <th>Semester</th>
                                 <td> <span style="margin-right:10px;">:</span> {{ $student->semester->semester_name}}</td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <th>Examination Center</th>
                                 <td> <span style="margin-right:10px;">:</span> B.Ed. Regular, Moti Mahal, LNMU, Darbhanga</td>
+                            </tr> --}}
+                            <tr>
+                                <th>Examination Center</th>
+                                <td> <span style="margin-right:10px;">:</span>University Department of Zoology, LNMU, Darbhanga</td>
                             </tr>
+
                         </tbody>
                     </table>
                 </div>
