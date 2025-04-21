@@ -208,7 +208,7 @@
             </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="upload_id" value="{{ $editstudent->sign->id }}" required>
+                <input type="hidden" name="upload_id" value="{{ $editstudent->sign?->id }}" required>
                 <input type="hidden" name="type" value="sign" required>
             <x-input-box type="file" name="pic" required label='Signature  <span class="text-danger">(must be 200x100 px and less than 512 Kb)</span>'/>
             </div>
