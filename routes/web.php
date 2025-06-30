@@ -88,6 +88,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     Route::post('student/update-roll-no',[AdminStudentController::class,'update_roll_no']);
     Route::post('student/import',[AdminStudentController::class,'import'])->name('student.import');
     Route::any('get-students',[AdminStudentController::class,'getStudents'])->name('student.list');
+    Route::any('get-reciept',[AdminStudentController::class,'getReciept'])->name('student.reciept');
     Route::post('student-promote',[AdminStudentController::class,'promote'])->name('student-promote');
 
 

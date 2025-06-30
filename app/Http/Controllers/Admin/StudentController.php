@@ -195,6 +195,13 @@ class StudentController extends Controller
         }
         return view('admin.student.list',$arrView);
     }
+
+    public function getReciept(Request $request)
+    {
+     return view('admin.student.reciept');
+
+    }
+
     public function promote(Request $req){
         $validatedData = $req->validate([
             'selected_students' => 'required|array', // Ensure at least one student is selected
