@@ -61,6 +61,7 @@
                         <th>Curr. Semester</th>
                         <th>Adm. Semester</th>
                         <th>Admission Session</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,6 +79,11 @@
                         <td>{{$st->semester?->semester_name}}</td>
                         <td>{{$st->admission_semester?->semester_name}}</td>
                         <td>{{$st->admission_session?->session_name}}</td>
+                        <td>
+                            <a href="{{ route('reciept') }}" class="btn btn-sm btn-primary" title="View Receipt">
+                                <i class="fa fa-file-invoice"></i>
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

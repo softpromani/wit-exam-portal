@@ -86,7 +86,6 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Components:</h6>
                 <a class="collapse-item" href="{{route('admin.student.list')}}">Students</a>
-                 <a class="collapse-item" href="{{route('admin.student.reciept')}}">Reciept</a>
                 <a class="collapse-item" href="{{route('admin.student.index')}}">Bulk Import</a>
             </div>
         </div>

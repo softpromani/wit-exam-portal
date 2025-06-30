@@ -28,6 +28,7 @@ Route::post('login-store', [AuthController::class, 'login'])->name(name: 'loginS
 Route::get('result-view', [AuthController::class, 'resultview'])->name('result');
 Route::post('fetch-result', [AuthController::class, 'fetch_result'])->name(name: 'fetch-result');
 
+Route::any('/student-reciept',[StudentController::class,'getReciept'])->name('reciept');
 
 Route::group(['prefix' => 'student', 'as' => 'student.','middleware'=>'auth:student'], function () {
     Route::get('dashboard', [StudentController::class, 'dashboard'])->name('dashboard');
@@ -88,7 +89,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>'auth'], funct
     Route::post('student/update-roll-no',[AdminStudentController::class,'update_roll_no']);
     Route::post('student/import',[AdminStudentController::class,'import'])->name('student.import');
     Route::any('get-students',[AdminStudentController::class,'getStudents'])->name('student.list');
-    Route::any('get-reciept',[AdminStudentController::class,'getReciept'])->name('student.reciept');
     Route::post('student-promote',[AdminStudentController::class,'promote'])->name('student-promote');
 
 

@@ -83,4 +83,10 @@ class StudentController extends Controller
     }
     return redirect()->back()->with('error','Something went wrong !!');
     }
+
+     public function getReciept(Request $request)
+    {
+     return view('admin.student.reciept');
+
+    }
 }
