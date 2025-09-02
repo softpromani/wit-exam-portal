@@ -20,7 +20,7 @@ class ExamFormController extends Controller
     {
         $student = auth()->guard('student')->user(); // Get the authenticated student once
 
-        $examSessions = ExamSession::where('status', 'process')->get()->map(function ($examSession) use ($student) {
+        $examSessions = ExamSession::where('status', 'proccess')->get()->map(function ($examSession) use ($student) {
             // Call the method to get the form status for the exam session
             $formStatus = $student->checkThisSemFormStatus($examSession->id);
 
@@ -109,7 +109,7 @@ class ExamFormController extends Controller
 
     public function admitcard_download($exam_session_id)
     {
-        $examform = ExamForm::with(['subjects', 'student'])
+        $examform = ExamForm::with(['subjects', 'student','exam_session'])
             ->where('student_id', auth()->guard('student')->id())
             ->where('session_id', $exam_session_id)
             ->first();
@@ -119,7 +119,7 @@ class ExamFormController extends Controller
             // Handle case when no exam form is found
             return response()->json(['message' => 'No exam form found.'], 404);
         }
-
+        $arrView['examSession']=$examform->exam_session;
         $arrView['student'] = $examform->student;
 
 
