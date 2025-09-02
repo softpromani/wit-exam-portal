@@ -114,7 +114,7 @@
                             </tr> --}}
                             <tr>
                                 <th>Examination Center</th>
-                                <td> <span style="margin-right:10px;">:</span>University Department of Zoology, LNMU, Darbhanga</td>
+                                <td> <span style="margin-right:10px;">:</span>{{$examSession->exam_center}}</td>
                             </tr>
 
                         </tbody>
