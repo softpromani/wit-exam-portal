@@ -91,6 +91,7 @@ class ExamController extends Controller
             $subject->time=$startDate .' to '.$endDate;
             return $subject;
         })->sortBy('date');
+        $arrView['examSession']=$examform->exam_session;
         return view('student.semester.admitcard', $arrView);
         }
         public function fetchexam_schedule(){
