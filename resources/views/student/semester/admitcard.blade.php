@@ -191,7 +191,7 @@
                 <p style="margin: 0;">Director</p>
             </div>
             <div style="text-align: right;">
-                <img src="{{ asset('wit/img/exam-controller-sign.png') }}" alt="signature image" style="width: 150px; height:50px; margin-top:5px">
+                <img src="{{ asset('wit/img/coe-2025.jpeg') }}" alt="signature image" style="width: 150px; height:50px; margin-top:5px">
                 <p style="margin: 0;">Controller of Examination</p>
             </div>
         </div>
