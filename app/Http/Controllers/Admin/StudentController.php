@@ -157,13 +157,13 @@ class StudentController extends Controller
     // get all student list
     public function getStudents(Request $request)
     {
-        $arrView=[
-            'courses'=>Course::with('branches')->get(),
-            'semesters'=>Semester::get(),
-            'admission_sessions'=>AdmissionSession::get(),
+        $arrView = [
+            'courses' => Course::with('branches')->get(),
+            'semesters' => Semester::get(),
+            'admission_sessions' => AdmissionSession::get(),
         ];
-        if($request->post()){
-            $query = Student::query()->with(['semester','branch','admission_session','admission_semester']);
+        if ($request->post()) {
+            $query = Student::query()->with(['semester', 'branch', 'admission_session', 'admission_semester']);
 
             // Apply search filters for each column
             if ($request->has('university_roll_no')) {
@@ -193,30 +193,55 @@ class StudentController extends Controller
 
             $arrView['students'] = $query->get();
         }
-        return view('admin.student.list',$arrView);
+        return view('admin.student.list', $arrView);
     }
 
-   
 
-    public function promote(Request $req){
+
+    public function promote(Request $req)
+    {
         $validatedData = $req->validate([
             'selected_students' => 'required|array', // Ensure at least one student is selected
             'selected_students.*' => 'exists:students,id', // Validate each student ID exists in the database
         ]);
         $studentIds = $req->input('selected_students');
-        $res=Student::whereIn('id', $studentIds)->increment('semester_id');
-        return redirect()->back()->with('success','Students Promoted');
+        $res = Student::whereIn('id', $studentIds)->increment('semester_id');
+        return redirect()->back()->with('success', 'Students Promoted');
     }
-    public function update_roll_no(Request $req){
+    public function update_roll_no(Request $req)
+    {
         $req->validate([
-            'id'=>'required|exists:students,id',
-            'university_roll_no'=>'required|unique:students,university_roll_no,' . $req->id . ',id',
+            'id' => 'required|exists:students,id',
+            'university_roll_no' => 'required|unique:students,university_roll_no,' . $req->id . ',id',
         ]);
-        $student=Student::findOrFail($req->id);
-        if($student->update(['university_roll_no'=>$req->university_roll_no])){
+        $student = Student::findOrFail($req->id);
+        if ($student->update(['university_roll_no' => $req->university_roll_no])) {
             return response()->json(['message' => 'Updated successfully']);
         }
-        return response()->json(['message'=>'Error'],500);
+        return response()->json(['message' => 'Error'], 500);
     }
 
+    public function getReciept($student_id)
+    {
+        $student = Student::with([
+            'course',
+            'branch',
+            'admission_session',
+            'profile_pic',
+            'sign',
+            'examForms' => function ($query) {
+                $query->latest();
+            },
+            'examForms.subjects'
+        ])->find($student_id);
+
+        if (!$student) {
+            return redirect()->back()->with('error', 'Student record not found.');
+        }
+
+        // Get the latest exam form to display subjects
+        $examForm = $student->examForms->first();
+
+        return view('admin.student.receipt', compact('student', 'examForm'));
+    }
 }
