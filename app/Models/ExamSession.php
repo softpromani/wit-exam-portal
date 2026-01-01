@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class ExamSession extends Model
 {
     use HasFactory;
-    protected $guarded=[];
+    protected $guarded = [];
+
+    public function exam_session_has_cbs()
+    {
+        return $this->hasMany(ExamSessionHasCBS::class);
+    }
 }

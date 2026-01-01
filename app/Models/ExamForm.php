@@ -11,12 +11,22 @@ class ExamForm extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'student_id', 'semester_id', 'session_id', 'result_status', 'exam_status',
+        'student_id',
+        'semester_id',
+        'session_id',
+        'result_status',
+        'exam_status',
+        'payment_status',
     ];
 
     public function payment()
     {
-        return $this->MorphOne(Payment::class,'paymentable');
+        return $this->MorphOne(Payment::class, 'paymentable');
+    }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
     }
 
     public function student()
@@ -27,7 +37,7 @@ class ExamForm extends Model
     public function exam_session()
     {
 
-        return $this->belongsTo(ExamSession::class,'session_id');
+        return $this->belongsTo(ExamSession::class, 'session_id');
 
     }
 
@@ -37,7 +47,8 @@ class ExamForm extends Model
         return $this->belongsToMany(Subject::class, 'exam_form_subjects', 'exam_form_id', 'subject_id');
     }
 
-    public function examfrom_has_subjects(){
-        return $this->hasMany(ExamFormSubject::class,'exam_form_id');
+    public function examfrom_has_subjects()
+    {
+        return $this->hasMany(ExamFormSubject::class, 'exam_form_id');
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\Student\AdmitCardController;
 use App\Http\Controllers\Admin\AddmissionSessionController;
 use App\Http\Controllers\Admin\ExamSessionController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
+use App\Http\Controllers\Student\PaymentController as StudentPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +51,18 @@ Route::group(['prefix' => 'student', 'as' => 'student.', 'middleware' => 'auth:s
         Route::get('examresult-download/{exam_session_id}', [ExamFormController::class, 'examresult_download'])->name('examresult-download');
 
         Route::get('locked-subject-by-examsession/{exam_Session_id}', [ExamFormController::class, 'locked_subject_by_examsession'])->name('locked-subject-by-examsession');
+        Route::get('locked-payment-history/{exam_session_id}', [ExamFormController::class, 'locked_payment_history'])->name('locked-payment-history');
+    });
 
+    Route::group(['prefix' => 'payment', 'as' => 'payment.'], function () {
+        Route::get('pay/{examFormId}', [StudentPaymentController::class, 'payProcess'])->name('process');
+        Route::get('checkout/{transactionId}', [StudentPaymentController::class, 'showCheckout'])->name('checkout');
+        Route::post('response', [StudentPaymentController::class, 'handlePaymentResponse'])->name('response');
+        Route::post('update-status', [StudentPaymentController::class, 'updateAjaxStatus'])->name('update-status');
+        Route::post('recheck-status/{transactionId}', [StudentPaymentController::class, 'recheckStatus'])->name('recheck-status');
+        Route::get('success', [StudentPaymentController::class, 'success'])->name('success');
+        Route::get('failed', [StudentPaymentController::class, 'failed'])->name('failed');
+        Route::get('pending', [StudentPaymentController::class, 'pending'])->name('pending');
     });
 });
 
@@ -81,6 +93,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     //Session
     Route::resource('admission-session', AddmissionSessionController::class);
     Route::resource('exam-session', ExamSessionController::class);
+    Route::get('exam-session/{id}/set-amount', [ExamSessionController::class, 'setAmount'])->name('exam-session.set-amount');
+    Route::post('exam-session/store-amount', [ExamSessionController::class, 'storeAmount'])->name('exam-session.store-amount');
     Route::post('/update-exam-status/{id}', [ExamSessionController::class, 'updateStatus']);
 
 

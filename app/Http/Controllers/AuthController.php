@@ -14,19 +14,21 @@ class AuthController extends Controller
     //
     public function index()
     {
-     return view('auth.login');
+        return view('auth.login');
     }
 
-    public function resultview(){
+    public function resultview()
+    {
         return view('result.view');
     }
 
-    public function fetch_result(Request $request){
+    public function fetch_result(Request $request)
+    {
 
-        $data=$request->validate([
+        $data = $request->validate([
             'resultrollno' => 'required',
         ]);
-        if(Storage::exists('result/'.$request->resultrollno.'.pdf')){
+        if (Storage::exists('result/' . $request->resultrollno . '.pdf')) {
             // return response()->file(storage_path(path: 'app/result/' . $request->resultrollno.'.pdf'));
             $filePath = storage_path('app/result/' . $request->resultrollno . '.pdf');
 
@@ -36,37 +38,39 @@ class AuthController extends Controller
                 'Content-Disposition' => 'inline; filename="' . $request->resultrollno . '.pdf"',
             ]);
         }
-        return redirect()->back()->with('error','Result Not Available');
+        return redirect()->back()->with('error', 'Result Not Available');
 
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
-        $data=$request->validate([
+        $data = $request->validate([
             'university_roll_no' => 'required',
             'password' => 'required',
             'remember_me' => 'sometimes|boolean'
         ]);
-        if (Auth::guard('student')->attempt([
+        if (
+            Auth::guard('student')->attempt([
                 'registration_no' => $data['university_roll_no'],
                 'password' => $data['password']
-            ], $request->remember_me??false)) {
-                if(Auth::guard('student')->user()->is_profile==1){
+            ], $request->remember_me ?? false)
+        ) {
+            if (Auth::guard('student')->user()->is_profile == 1) {
                 return redirect()->route('student.dashboard');
-                }
-                else
-                {
-                    return redirect()->route('student.profile')->with('success','Welcome to student panel !!');
-                }
+            } else {
+                return redirect()->route('student.profile')->with('success', 'Welcome to student panel !!');
+            }
         } else {
-            return redirect()->back()->with('error','Something Event Wrong');
+            return redirect()->back()->with('error', 'Invalid Credentials');
         }
 
     }
 
     // change password
 
-    public function changePassword(Request $request, $id) {
+    public function changePassword(Request $request, $id)
+    {
         $data = $request->validate([
             'old_password' => 'required',
             'new_password' => 'required',

@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExamSession;
+use App\Models\Course;
+use App\Models\Branch;
+use App\Models\Semester;
+use App\Models\ExamSessionHasCBS;
 use Illuminate\Http\Request;
+use DB;
 
 class ExamSessionController extends Controller
 {
@@ -13,8 +18,58 @@ class ExamSessionController extends Controller
      */
     public function index()
     {
-        $examsessions = ExamSession::get();
+        $examsessions = ExamSession::with('exam_session_has_cbs.course', 'exam_session_has_cbs.branch')->get();
         return view('admin.session.exam-session', compact('examsessions'));
+    }
+
+    public function setAmount($id)
+    {
+        $examsession = ExamSession::findOrFail($id);
+        $courses = Course::all();
+        $branches = Branch::all();
+        $semesters = Semester::all();
+        $existingConfigs = ExamSessionHasCBS::with(['course', 'branch'])->where('exam_session_id', $id)->get();
+
+        return view('admin.session.set-amount', compact('examsession', 'courses', 'branches', 'semesters', 'existingConfigs'));
+    }
+
+    public function storeAmount(Request $request)
+    {
+        $request->validate([
+            'exam_session_id' => 'required|exists:exam_sessions,id',
+            'course_id' => 'required',
+            'branch_id' => 'required',
+            'semesters' => 'required|array',
+            'amounts' => 'required|array',
+        ]);
+
+        $examsession = ExamSession::findOrFail($request->exam_session_id);
+        $course_id = $request->course_id;
+        $branch_id = $request->branch_id;
+        $semesters = array_values(array_filter($request->semesters)); // array of semester IDs
+        $amounts = array_values(array_filter($request->amounts)); // array of amounts corresponding to semesters
+
+        $semester_amounts = [];
+        foreach ($request->semesters as $index => $semId) {
+            if ($semId && isset($request->amounts[$index]) && $request->amounts[$index] > 0) {
+                $semester_amounts[$semId] = $request->amounts[$index];
+            }
+        }
+
+        ExamSessionHasCBS::updateOrCreate(
+            [
+                'exam_session_id' => $examsession->id,
+                'course_id' => $course_id,
+                'branch_id' => $branch_id,
+            ],
+            [
+                'semesters' => array_keys($semester_amounts),
+                'amounts' => array_values($semester_amounts),
+                'semester_amounts' => $semester_amounts
+            ]
+        );
+
+        return redirect()->back()->with('success', 'Amount configured successfully');
     }
 
     /**
@@ -96,8 +151,7 @@ class ExamSessionController extends Controller
             $session->status = $request->status;
             $session->save();
             return response()->json(['success' => true]);
-
-            return response()->json(['success' => false]);
         }
+        return response()->json(['success' => false]);
     }
 }
