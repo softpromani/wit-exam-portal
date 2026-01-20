@@ -86,6 +86,10 @@
                                             title="View Receipt">
                                             <i class="fa fa-file-invoice"></i>
                                         </a>
+                                        <a href="{{ route('admin.student.edit', $st->id) }}" class="btn btn-sm btn-info"
+                                            title="Edit Student">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

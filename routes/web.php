@@ -100,6 +100,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
     // Student Registration
     Route::resource('student', AdminStudentController::class);
+    Route::post('student/reset-password/{id}', [AdminStudentController::class, 'resetPassword'])->name('student.reset-password');
     Route::post('student/update-roll-no', [AdminStudentController::class, 'update_roll_no']);
     Route::post('student/import', [AdminStudentController::class, 'import'])->name('student.import');
     Route::any('get-students', [AdminStudentController::class, 'getStudents'])->name('student.list');

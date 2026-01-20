@@ -244,4 +244,63 @@ class StudentController extends Controller
 
         return view('admin.student.receipt', compact('student', 'examForm'));
     }
+
+    public function edit($id)
+    {
+        $student = Student::findOrFail($id);
+        $courses = Course::with('branches')->get();
+        $semesters = Semester::get();
+        $admission_sessions = AdmissionSession::get();
+
+        // Pass current course's branches for initial load
+        $current_branches = Branch::where('course_id', $student->course_id)->get();
+
+        return view('admin.student.edit', compact('student', 'courses', 'semesters', 'admission_sessions', 'current_branches'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'student_name' => 'required|string|max:255',
+            'registration_no' => 'required|unique:students,registration_no,' . $id,
+            'university_roll_no' => 'nullable|unique:students,university_roll_no,' . $id,
+            'branch_id' => 'required|exists:branches,id',
+            'semester_id' => 'required|exists:semesters,id',
+            'admission_semester_id' => 'required|exists:semesters,id',
+            'admission_session_id' => 'required|exists:admission_sessions,id',
+        ]);
+
+        $student = Student::findOrFail($id);
+
+        // Update course_id based on selected branch
+        $branch = Branch::findOrFail($request->branch_id);
+        $course_id = $branch->course_id;
+
+        $student->update([
+            'student_name' => $request->student_name,
+            'registration_no' => $request->registration_no,
+            'university_roll_no' => $request->university_roll_no,
+            'branch_id' => $request->branch_id,
+            'course_id' => $course_id,
+            'semester_id' => $request->semester_id,
+            'admission_semester_id' => $request->admission_semester_id,
+            'admission_session_id' => $request->admission_session_id,
+        ]);
+
+        return redirect()->route('admin.student.list')->with('success', 'Student details updated successfully.');
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $student = Student::findOrFail($id);
+        $student->update([
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()->back()->with('success', 'Password reset successfully.');
+    }
 }
