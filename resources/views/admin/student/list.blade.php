@@ -4,6 +4,13 @@
 @endsection
 
 @section('content')
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Student List</h1>
+        <a href="{{ route('admin.student.create') }}" class="btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Add Student
+        </a>
+    </div>
+
     <form action="{{route('admin.student.list')}}" method="post">
         @csrf
         <div class="card">

@@ -303,4 +303,56 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success', 'Password reset successfully.');
     }
+    public function create()
+    {
+        $courses = Course::with('branches')->get();
+        $semesters = Semester::get();
+        $admission_sessions = AdmissionSession::get();
+        return view('admin.student.create', compact('courses', 'semesters', 'admission_sessions'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'student_name' => 'required|string|max:255',
+            'registration_no' => 'nullable|unique:students,registration_no',
+            'university_roll_no' => 'nullable|unique:students,university_roll_no',
+            'password' => 'required|min:6',
+            'branch_id' => 'required|exists:branches,id',
+            'semester_id' => 'required|exists:semesters,id',
+            'admission_semester_id' => 'required|exists:semesters,id',
+            'admission_session_id' => 'required|exists:admission_sessions,id',
+            'registration_type' => 'required|in:normal,lateral',
+        ]);
+
+        // Auto-generate Registration No if empty
+        $registration_no = $request->registration_no;
+        if (empty($registration_no)) {
+            $registration_no = $this->generateRegistrationNo($request->admission_session_id);
+        }
+
+        // Auto-generate University Roll No if empty
+        $university_roll_no = $request->university_roll_no;
+        if (empty($university_roll_no)) {
+            $university_roll_no = $this->generateUniversityRollNo($request->branch_id, $request->admission_session_id);
+        }
+
+        $branch = Branch::findOrFail($request->branch_id);
+        $course_id = $branch->course_id;
+
+        Student::create([
+            'student_name' => $request->student_name,
+            'registration_no' => $registration_no,
+            'university_roll_no' => $university_roll_no,
+            'password' => bcrypt($request->password),
+            'branch_id' => $request->branch_id,
+            'course_id' => $course_id,
+            'semester_id' => $request->semester_id,
+            'admission_semester_id' => $request->admission_semester_id,
+            'admission_session_id' => $request->admission_session_id,
+            'registration_type' => $request->registration_type,
+        ]);
+
+        return redirect()->route('admin.student.list')->with('success', 'Student created successfully.');
+    }
 }
