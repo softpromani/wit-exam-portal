@@ -12,10 +12,13 @@
                     <div class="col-4">
                         <label for="branch_id">Branch</label>
                         <select class="form-control" name="branch_id" id="branch_id">
+                            <option value="">Select Branch</option>
                             @foreach($courses as $course)
                                 <optgroup label="{{ $course->name }}">
                                     @foreach($course->branches as $branch)
-                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                        <option value="{{ $branch->id }}" {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+                                            {{ $branch->name }}
+                                        </option>
                                     @endforeach
                                 </optgroup>
                             @endforeach
@@ -24,16 +27,22 @@
                     <div class="col-4">
                         <label for="semester_id">Semester</label>
                         <select class="form-control" name="semester_id" id="semester_id">
+                            <option value="">Select Semester</option>
                             @foreach($semesters as $sem)
-                                <option value="{{$sem->id}}">{{$sem->semester_name}}</option>
+                                <option value="{{$sem->id}}" {{ request('semester_id') == $sem->id ? 'selected' : '' }}>
+                                    {{$sem->semester_name}}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-4">
                         <label for="admission_session_id">Admission Session</label>
                         <select class="form-control" name="admission_session_id" id="admission_session_id">
+                            <option value="">Select Session</option>
                             @foreach($admission_sessions as $ads)
-                                <option value="{{$ads->id}}">{{$ads->session_name}}</option>
+                                <option value="{{$ads->id}}" {{ request('admission_session_id') == $ads->id ? 'selected' : '' }}>
+                                    {{$ads->session_name}}
+                                </option>
                             @endforeach
                         </select>
                     </div>
