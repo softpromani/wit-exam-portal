@@ -37,13 +37,14 @@
 
         <div class="card mt-3">
             <div class="card-body">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-sm table-hover small">
                     <thead class="table-primary">
                         <tr>
                             <th scope="col">Sr No</th>
                             <th scope="col">Session Name</th>
                             <th scope="col">From</th>
                             <th scope="col">To</th>
+                            <th scope="col">Forms Filled</th>
                             <th scope="col">Status</th>
                             <th scope="col">Fee Configs</th>
                             <th scope="col">Exam Center</th>
@@ -53,10 +54,14 @@
                     <tbody>
                         @foreach ($examsessions as $examsession)
                             <tr>
-                                <th scope="row">{{ $loop->index + 1 }}</th>
+                                <th scope="row">
+                                    {{ ($examsessions->currentPage() - 1) * $examsessions->perPage() + $loop->iteration }}</th>
                                 <td>{{ $examsession->session_name ?? 'N/A' }}</td>
                                 <td>{{ $examsession->from ?? 'N/A' }}</td>
                                 <td>{{ $examsession->to ?? 'N/A' }}</td>
+                                <td>
+                                    <span class="">{{ $examsession->exam_forms_count ?? 0 }}</span>
+                                </td>
                                 <td>
                                     <x-select-box name="status" :options="['processing' => 'Processing', 'admit-card' => 'Admit Card', 'completed' => 'Completed']" :value="$examsession->status"
                                         data-id="{{ $examsession->id }}" class="form-select status-select" />
@@ -74,11 +79,11 @@
                                 <td>
                                     <a href="{{ route('admin.exam-session.set-amount', $examsession->id) }}"
                                         class="btn btn-sm btn-info btn-round px-3">
-                                        <i class="fas fa-money-bill-wave me-1"></i> Set Amount
+                                        <i class="fas fa-money-bill-wave me-1"></i>
                                     </a>
                                     <a href="{{ route('admin.exam-session.edit', $examsession->id) }}"
                                         class="btn btn-sm btn-primary btn-round px-3">
-                                        <i class="fas fa-edit me-1"></i> Edit
+                                        <i class="fas fa-edit me-1"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -87,34 +92,18 @@
                     </tbody>
                 </table>
             </div>
+            <div class="card-footer">
+                {{ $examsessions->links() }}
+            </div>
         </div>
     </div>
 
 @endsection
 @section('script_section')
-    <script>
-        document.querySelectorAll('.status-select').forEach(select => {
+    <script>     document.querySelectorAll('.status-select').forEach(select => {
             select.addEventListener('change', function () {
-                const status = this.value;
-                const id = this.dataset.id;
-                const url = "{{ route('admin.exam-session.update-status', ':id') }}".replace(':id', id);
-
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ status: status })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Status updated!');
-                        } else {
-                            alert('Update failed!');
-                        }
-                    });
+                const status = this.value; const id = this.dataset.id; const url = "{{ route('admin.exam-session.update-status', ':id') }}".replace(':id', id);
+                fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, body: JSON.stringify({ status: status }) }).then(response => response.json()).then(data => { if (data.success) { alert('Status updated!'); } else { alert('Update failed!'); } });
             });
         });
     </script>

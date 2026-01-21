@@ -14,4 +14,9 @@ class ExamSession extends Model
     {
         return $this->hasMany(ExamSessionHasCBS::class);
     }
+
+    public function exam_forms()
+    {
+        return $this->hasMany(ExamForm::class, 'session_id');
+    }
 }

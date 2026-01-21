@@ -18,7 +18,7 @@ class ExamSessionController extends Controller
      */
     public function index()
     {
-        $examsessions = ExamSession::with('exam_session_has_cbs.course', 'exam_session_has_cbs.branch')->get();
+        $examsessions = ExamSession::with('exam_session_has_cbs.course', 'exam_session_has_cbs.branch')->withCount('exam_forms')->latest()->paginate(10);
         return view('admin.session.exam-session', compact('examsessions'));
     }
 
@@ -113,7 +113,7 @@ class ExamSessionController extends Controller
     {
         $editexamsession = $exam_session;
         // dd($edituser);
-        $examsessions = ExamSession::get();
+        $examsessions = ExamSession::withCount('exam_forms')->latest()->paginate(10);
         return view('admin.session.exam-session', compact('editexamsession', 'examsessions'));
     }
 
