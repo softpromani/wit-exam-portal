@@ -9,6 +9,10 @@ class ExamSession extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $casts = [
+        'from' => 'date',
+        'to' => 'date',
+    ];
 
     public function exam_session_has_cbs()
     {

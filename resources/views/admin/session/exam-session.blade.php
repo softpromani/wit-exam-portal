@@ -57,14 +57,14 @@
                                 <th scope="row">
                                     {{ ($examsessions->currentPage() - 1) * $examsessions->perPage() + $loop->iteration }}</th>
                                 <td>{{ $examsession->session_name ?? 'N/A' }}</td>
-                                <td>{{ $examsession->from ?? 'N/A' }}</td>
-                                <td>{{ $examsession->to ?? 'N/A' }}</td>
+                                <td>{{ $examsession->from ? $examsession->from->format('d-M-y') : 'N/A' }}</td>
+                                <td>{{ $examsession->to ? $examsession->to->format('d-M-y') : 'N/A' }}</td>
                                 <td>
                                     <span class="">{{ $examsession->exam_forms_count ?? 0 }}</span>
                                 </td>
                                 <td>
                                     <x-select-box name="status" :options="['processing' => 'Processing', 'admit-card' => 'Admit Card', 'completed' => 'Completed']" :value="$examsession->status"
-                                        data-id="{{ $examsession->id }}" class="form-select status-select" />
+                                        data-id="{{ $examsession->id }}" class="form-select status-select form-select-sm" style="font-size: 0.75rem; padding: 0.1rem 1.5rem 0.1rem 0.5rem;" />
                                 </td>
                                 <td>
                                     @if($examsession->exam_session_has_cbs->count() > 0)
