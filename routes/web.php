@@ -95,7 +95,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::resource('exam-session', ExamSessionController::class);
     Route::get('exam-session/{id}/set-amount', [ExamSessionController::class, 'setAmount'])->name('exam-session.set-amount');
     Route::post('exam-session/store-amount', [ExamSessionController::class, 'storeAmount'])->name('exam-session.store-amount');
-    Route::post('/update-exam-status/{id}', [ExamSessionController::class, 'updateStatus']);
+    Route::post('/update-exam-status/{id}', [ExamSessionController::class, 'updateStatus'])->name('exam-session.update-status');
 
 
     // Student Registration

@@ -8,13 +8,7 @@
             <label for="{{ $name }}">{{ $labelText }}</label>
         @endif
 
-        <select 
-            name="{{ $name }}" 
-            id="{{ $name }}" 
-            class="form-control" 
-            {{ $required ? 'required' : '' }} 
-            {{ $disabled ? 'disabled' : '' }}
-        >
+        <select name="{{ $name }}" id="{{ $name }}" {{ $attributes->merge(['class' => 'form-control']) }} {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }}>
             @foreach($options as $optionValue => $optionText)
                 <option value="{{ $optionValue }}" {{ $value == $optionValue ? 'selected' : '' }}>
                     {{ ucwords($optionText) }}

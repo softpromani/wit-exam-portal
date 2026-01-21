@@ -50,10 +50,13 @@
                                             <td>{{ $examsession->from ?? 'N/A' }}</td>
                                             <td>{{ $examsession->to ?? 'N/A' }}</td>
                                             <td>
-                                                <x-select-box name="status" :options="['processing' => 'Processing', 'admit-card' => 'Admit Card', 'completed' => 'Completed']" :value="$examsession->status" :attributes="[
-                                'data-id' => $examsession->id,
-                                'class' => 'form-select status-select'
-                            ]" />
+                                                <x-select-box 
+                                                    name="status" 
+                                                    :options="['processing' => 'Processing', 'admit-card' => 'Admit Card', 'completed' => 'Completed']" 
+                                                    :value="$examsession->status" 
+                                                    data-id="{{ $examsession->id }}"
+                                                    class="form-select status-select" 
+                                                />
                                             </td>
                                             <td>
                                                 @if($examsession->exam_session_has_cbs->count() > 0)
@@ -81,28 +84,31 @@
     </div>
 
 @endsection
-<script>
-    document.querySelectorAll('.status-select').forEach(select => {
-        select.addEventListener('change', function () {
-            const status = this.value;
-            const id = this.dataset.id;
+@section('script_section')
+    <script>
+        document.querySelectorAll('.status-select').forEach(select => {
+            select.addEventListener('change', function () {
+                const status = this.value;
+                const id = this.dataset.id;
+                const url = "{{ route('admin.exam-session.update-status', ':id') }}".replace(':id', id);
 
-            fetch(`/update-exam-status/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ status: status })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Status updated!');
-                    } else {
-                        alert('Update failed!');
-                    }
-                });
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ status: status })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Status updated!');
+                        } else {
+                            alert('Update failed!');
+                        }
+                    });
+            });
         });
-    });
-</script>
+    </script>
+@endsection
