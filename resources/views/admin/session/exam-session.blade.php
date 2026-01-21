@@ -56,7 +56,9 @@
                             <tr>
                                 <th scope="row">
                                     {{ ($examsessions->currentPage() - 1) * $examsessions->perPage() + $loop->iteration }}</th>
-                                <td>{{ $examsession->session_name ?? 'N/A' }}</td>
+                                <td style="max-width: 150px; white-space: normal; word-wrap: break-word;">
+                                    {{ $examsession->session_name ?? 'N/A' }}
+                                </td>
                                 <td>{{ $examsession->from ? $examsession->from->format('d-M-y') : 'N/A' }}</td>
                                 <td>{{ $examsession->to ? $examsession->to->format('d-M-y') : 'N/A' }}</td>
                                 <td>
@@ -75,7 +77,9 @@
                                         <span class="text-muted small">Not set</span>
                                     @endif
                                 </td>
-                                <td>{{ $examsession->exam_center ?? 'N/A' }}</td>
+                                <td style="max-width: 150px; white-space: normal; word-wrap: break-word;">
+                                    {{ $examsession->exam_center ?? 'N/A' }}
+                                </td>
                                 <td>
                                     <a href="{{ route('admin.exam-session.set-amount', $examsession->id) }}"
                                         class="btn btn-sm btn-info btn-round px-3">
