@@ -109,9 +109,9 @@ class ExamSessionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ExamSession $examsession)
+    public function edit(ExamSession $exam_session)
     {
-        $editexamsession = $examsession->first();
+        $editexamsession = $exam_session;
         // dd($edituser);
         $examsessions = ExamSession::get();
         return view('admin.session.exam-session', compact('editexamsession', 'examsessions'));
@@ -120,27 +120,27 @@ class ExamSessionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ExamSession $examsession)
+    public function update(Request $request, ExamSession $exam_session)
     {
         // dd($request->all());
         $data = [
             //Database column_name => Form field name
             'session_name' => $request->session_name,
-            'from' => $request->to,
+            'from' => $request->from,
             'to' => $request->to,
             'exam_center' => $request->exam_center,
         ];
 
-        $examsession = ExamSession::find($examsession->id)->update($data);
-        return redirect()->route('admin.exam-session.update');
+        $exam_session->update($data);
+        return redirect()->route('admin.exam-session.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ExamSession $examsession)
+    public function destroy(ExamSession $exam_session)
     {
-        $examsession->delete();
+        $exam_session->delete();
         return redirect()->route('admin.exam-session.destroy');
     }
 
