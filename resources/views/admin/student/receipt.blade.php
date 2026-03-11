@@ -77,7 +77,7 @@
 
                 <div class="row border-bottom pb-2">
                     <div class="col-2">
-                        <img src="https://www.lnmu.ac.in/Frontend/images/icon/logo.jpg" style="height:80px;width:80px" />
+                        <img src="/wit/img/university_logo.jpg" style="height:80px;width:80px" />
                     </div>
                     <div class="col-10 text-center">
                         <div class="header-title">LALIT NARAYAN MITHILA UNIVERSITY</div>
