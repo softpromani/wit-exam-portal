@@ -86,13 +86,16 @@
                 </div>
 
                 <div class="row border-bottom py-1">
-                    <div class="col-4">
+                    <div class="col-3">
                         <b>Registration no : {{ $student->registration_no ?? 'N/A' }}</b>
                     </div>
-                    <div class="col-4">
-                        <b>Session : {{ $student->admission_session->session_name ?? 'N/A' }}</b>
+                    <div class="col-3">
+                        <b>Registration Year : {{ Carbon::parse($student->admission_session->from)->year ?? 'N/A' }}</b>
                     </div>
-                    <div class="col-4">
+                     <div class="col-3">
+                        <b>Session : {{ Carbon::parse($student->admission_session->from)->year ?? 'N/A' }}</b>
+                    </div>
+                    <div class="col-3">
                         <b>Course : {{ $student->course->name ?? 'N/A' }}</b>
                     </div>
                 </div>
