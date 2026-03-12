@@ -143,9 +143,9 @@
 
                 <div class="row border-top pt-1" style="font-size: 10px;">
                     <div class="col-12">
-                        <b>Important Directions: </b> Please Keep this slip safely for future reference. Please ensure all
+                        <b>Important Directions: </b> Please Keep this slip safely for future reference.<br/> Please ensure all
                         the
-                        information printed are correct. Please Contact your college within fifteen days for any correction.
+                        information printed are correct.<br/> Please Contact your college within fifteen days for any correction.
                     </div>
                 </div>
             </div>
