@@ -102,7 +102,7 @@
 
                 <div class="row border-bottom py-1">
                     <div class="col-3">
-                        <b>College Code & Name</b><br /></div><br/>
+                        <b>College Code & Name</b><br /><br/>
                         <b>Name of Student</b><br />
                         <b>Father's Name</b><br />
                         <b>University Roll No.</b><br />
