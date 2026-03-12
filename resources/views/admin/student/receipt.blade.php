@@ -93,7 +93,7 @@
                         <b>Registration Year : {{ \Carbon\Carbon::parse($student->admission_session->from)->year ?? 'N/A' }}</b>
                     </div>
                      <div class="col-3">
-                        <b>Session : {{ Carbon::parse($student->admission_session->from)->year ?? 'N/A' }}</b>
+                        <b>Session : {{ $student->admission_session->session_name ?? 'N/A' }}</b>
                     </div>
                     <div class="col-3">
                         <b>Course : {{ $student->course->name ?? 'N/A' }}</b>
