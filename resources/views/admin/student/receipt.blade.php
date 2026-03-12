@@ -72,7 +72,7 @@
     <div class="container-fluid">
         @for ($i = 0; $i < 2; $i++)
             <div class="receipt-box position-relative">
-                <div class="watermark">{{ $i == 0 ? 'STUDENT COPY' : 'OFFICE COPY' }}</div>
+                <div class="watermark">{{ $i == 0 ? 'LNMU Darbhanga' : 'LNMU Darbhanga' }}</div>
                 <div class="text-end fw-bold mb-1">{{ $i == 0 ? 'STUDENT COPY' : 'OFFICE COPY' }}</div>
 
                 <div class="row border-bottom pb-2">
@@ -90,7 +90,7 @@
                         <b>Registration no : {{ $student->registration_no ?? 'N/A' }}</b>
                     </div>
                     <div class="col-4">
-                        <b>Year of Registration : {{ $student->admission_session->session_name ?? 'N/A' }}</b>
+                        <b>Session : {{ $student->admission_session->session_name ?? 'N/A' }}</b>
                     </div>
                     <div class="col-4">
                         <b>Course : {{ $student->course->name ?? 'N/A' }}</b>
@@ -102,7 +102,7 @@
                         <b>College Code & Name</b><br />
                         <b>Name of Student</b><br />
                         <b>Father's Name</b><br />
-                        <b>Class Roll No.</b><br />
+                        <b>University Roll No.</b><br />
                         <b>Gender</b>
                     </div>
                     <div class="col-6">
