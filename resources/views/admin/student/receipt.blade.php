@@ -96,7 +96,7 @@
                         <b>Session : {{ $student->admission_session->session_name ?? 'N/A' }}</b>
                     </div>
                     <div class="col-3">
-                        <b>Course : {{ $student->course->name ?? 'N/A' }}</b>
+                        <b>Course : {{ $student->course->full_name ?? $student->course->name ?? 'N/A' }}</b>
                     </div>
                 </div>
 
@@ -127,7 +127,7 @@
 
                 <div class="row border-bottom py-2" style="min-height: 50px;">
                     <div class="col-9 align-self-center">
-                        <b>Subject : </b> {{ $student->course->name ?? 'N/A' }} in {{ $student->branch->name ?? 'N/A' }}
+                        <b>Subject : </b> {{ $student->course->full_name ?? $student->course->name ?? 'N/A' }} in {{ $student->branch->full_name ?? $student->branch->name ?? 'N/A' }}
                     </div>
                     <div class="col-3 sign text-center border-start align-self-center">
                         @if($student->sign)
