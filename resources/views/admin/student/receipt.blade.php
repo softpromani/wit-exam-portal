@@ -82,7 +82,7 @@
                     <div class="col-10 text-center">
                         <div class="header-title">LALIT NARAYAN MITHILA UNIVERSITY</div>
                         <div class="header-sub">Kameshwarnagar, Darbhanga</div>
-                        <div class="header-sub">REGISTRATION SLIP</div>
+                        <h3><u>REGISTRATION SLIP</u></h3>
                     </div>
                 </div>
 
@@ -94,27 +94,19 @@
                         <b>Registration Year :
                             {{ \Carbon\Carbon::parse($student->admission_session->from)->year ?? 'N/A' }}</b>
                     </div>
-                    <div class="col-3">
-                        <b>Session : {{ $student->admission_session->session_name ?? 'N/A' }}</b>
-                    </div>
-                    <div class="col-3">
-                        <b>Course : {{ $student->course->full_name ?? $student->course->name ?? 'N/A' }}</b>
-                    </div>
                 </div>
 
                 <div class="row border-bottom py-1">
                     <div class="col-3">
-                        <b>College Code & Name</b><br /><br />
+                        <b>College Name</b><br />
                         <b>Name of Student</b><br />
                         <b>Father's Name</b><br />
-                        <b>University Roll No.</b><br />
                         <b>Gender</b>
                     </div>
                     <div class="col-6">
                         <b>: Dr. APJ Abdul Kalam Women’s Institute of Technology, Darbhanga</b><br />
                         <b>: {{ $student->student_name }}</b><br />
                         <b>: {{ $student->fname }}</b><br />
-                        <b>: {{ $student->university_roll_no ?? 'N/A' }}</b><br />
                         <b>: {{ $student->gender }}</b><br />
                     </div>
                     <div class="col-3 photo text-center border-start">
@@ -129,8 +121,7 @@
 
                 <div class="row border-bottom py-2" style="min-height: 50px;">
                     <div class="col-9 align-self-center">
-                        <b>Subject : </b> {{ $student->course->full_name ?? $student->course->name ?? 'N/A' }} in
-                        {{ $student->branch->full_name ?? $student->branch->name ?? 'N/A' }}
+                        <b>Course : </b> {{ $student->course->full_name ?? $student->course->name ?? 'N/A' }}
                     </div>
                     <div class="col-3 sign text-center border-start align-self-center">
                         @if($student->sign)
