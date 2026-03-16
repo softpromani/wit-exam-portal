@@ -98,13 +98,13 @@
 
                 <div class="row border-bottom py-1">
                     <div class="col-3">
-                        <b>College Name</b><br />
+                        <b>College Name</b><br /><br />
                         <b>Name of Student</b><br />
                         <b>Father's Name</b><br />
                         <b>Gender</b>
                     </div>
                     <div class="col-6">
-                        <b>: Dr. APJ Abdul Kalam Women’s Institute of Technology, Darbhanga</b><br />
+                        <b>: Dr. APJ Abdul Kalam Women’s Institute of Technology,<br /> Darbhanga</b><br />
                         <b>: {{ $student->student_name }}</b><br />
                         <b>: {{ $student->fname }}</b><br />
                         <b>: {{ $student->gender }}</b><br />
