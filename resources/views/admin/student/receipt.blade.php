@@ -107,7 +107,7 @@
                         <b>: Dr. APJ Abdul Kalam Women’s Institute of Technology,<br /> Darbhanga</b><br />
                         <b>: {{ $student->student_name }}</b><br />
                         <b>: {{ $student->fname }}</b><br />
-                        <b>: {{ $student->gender }}</b><br />
+                        <b>: {{ ucfirst($student->gender) }}</b><br />
                     </div>
                     <div class="col-3 photo text-center border-start">
                         @if($student->profile_pic)
@@ -135,16 +135,17 @@
 
                 <div class="row py-3">
                     <div class="col-6 text-center">D.A.</div>
-                    <div class="col-6 text-center">Controller of Examinations</div>
+                    <div class="col-6 text-center"><b>Controller of Examinations</b></div>
                 </div>
 
                 <div class="row border-top pt-1" style="font-size: 10px;">
-                    <div class="col-12">
-                        <b>Important Directions: </b> Please Keep this slip safely for future reference.<br /> Please ensure
-                        all
-                        the
-                        information printed are correct.<br /> Please Contact your college within fifteen days for any
-                        correction.
+                    <div class="col-3">
+                        <b>Important Directions: </b>
+                    </div>
+                    <div class="col-9">
+                        Please Keep this slip safely for future reference.<br />
+                        Please ensure all the information printed are correct.<br />
+                        Please Contact your college within fifteen days for any correction.
                     </div>
                 </div>
             </div>
