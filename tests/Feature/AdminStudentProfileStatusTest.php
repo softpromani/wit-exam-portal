@@ -78,7 +78,49 @@ class AdminStudentProfileStatusTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewHas('completedProfileCount');
         $response->assertViewHas('incompleteProfileCount');
-        $response->assertSee('Completed');
-        $response->assertSee('Incomplete');
+        $response->assertViewHas('paidStudentsCount');
+        $response->assertSee('Student Fee Collected / Total');
+    }
+
+    public function test_admin_student_list_has_fee_collected_and_total_counts(): void
+    {
+        $response = $this->actingAs($this->admin)->get(route('admin.student.list'));
+
+        $response->assertStatus(200);
+        $response->assertViewHas('globalPaidStudents');
+        $response->assertViewHas('globalCollectedFee');
+        $response->assertSee('Fee Collected / Total');
+    }
+
+    public function test_admin_can_filter_paid_fee_students(): void
+    {
+        $response = $this->actingAs($this->admin)->get(route('admin.student.list', ['fee_status' => 'paid']));
+
+        $response->assertStatus(200);
+        $response->assertViewHas('students');
+        $students = $response->viewData('students');
+
+        foreach ($students as $student) {
+            $hasPaid = $student->examForms->contains(function ($form) {
+                return $form->payment && $form->payment->payment_status === 'paid';
+            });
+            $this->assertTrue($hasPaid);
+        }
+    }
+
+    public function test_admin_can_filter_unpaid_fee_students(): void
+    {
+        $response = $this->actingAs($this->admin)->get(route('admin.student.list', ['fee_status' => 'unpaid']));
+
+        $response->assertStatus(200);
+        $response->assertViewHas('students');
+        $students = $response->viewData('students');
+
+        foreach ($students as $student) {
+            $hasPaid = $student->examForms->contains(function ($form) {
+                return $form->payment && $form->payment->payment_status === 'paid';
+            });
+            $this->assertFalse($hasPaid);
+        }
     }
 }

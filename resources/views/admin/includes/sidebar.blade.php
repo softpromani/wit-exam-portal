@@ -87,6 +87,7 @@
                 <h6 class="collapse-header">Custom Components:</h6>
                 <a class="collapse-item" href="{{route('admin.student.list')}}">Students</a>
                 <a class="collapse-item" href="{{route('admin.student.index')}}">Bulk Import</a>
+                <a class="collapse-item" href="{{route('admin.student.promotion-history')}}">Promotion History</a>
             </div>
         </div>
 

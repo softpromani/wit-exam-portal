@@ -26,11 +26,18 @@ class ExamController extends Controller
 
     public function ExamSession(Request $request)
     {
-        // dd($request->all());
         $examformdata = ExamForm::with('student', 'payment', 'exam_session')->where('session_id', $request->examsession)->get();
-        // return response()->json(['status' => 1, 'examsession' => $examformdata]);
         $examsessions = ExamSession::get();
-        return view('admin.exam.exam-form-list', compact('examformdata', 'examsessions'));
+
+        $sessionTotalForms = $examformdata->count();
+        $sessionPaidForms = $examformdata->filter(function ($f) {
+            return ($f->payment && $f->payment->payment_status === 'paid') || $f->payment_status === 'done';
+        })->count();
+        $sessionTotalFee = $examformdata->sum(function ($f) {
+            return ($f->payment && $f->payment->payment_status === 'paid') ? (float)$f->payment->paid_amount : 0;
+        });
+
+        return view('admin.exam.exam-form-list', compact('examformdata', 'examsessions', 'sessionTotalForms', 'sessionPaidForms', 'sessionTotalFee'));
     }
 
     public function exam_schedule(Request $request)

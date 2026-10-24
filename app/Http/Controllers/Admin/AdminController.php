@@ -102,6 +102,10 @@ class AdminController extends Controller
         $incompleteProfileCount = (clone $studentQuery)->where(function ($q) {
             $q->where('is_profile', 0)->orWhereNull('is_profile');
         })->count();
+        $paidStudentsCount = (clone $studentQuery)->whereHas('examForms.payment', function ($q) {
+            $q->where('payment_status', 'paid');
+        })->count();
+        $unpaidStudentsCount = $studentCount - $paidStudentsCount;
         $unpaidCount = $examFormCount - $paystatus;
 
         // Chart Data 1: Exam Forms per Course
@@ -156,6 +160,8 @@ class AdminController extends Controller
             'studentCount',
             'completedProfileCount',
             'incompleteProfileCount',
+            'paidStudentsCount',
+            'unpaidStudentsCount',
             'unpaidCount', // Counts
             'courseNames',
             'courseCounts', // Chart 1

@@ -40,6 +40,9 @@ class Student extends Authenticatable
     public function examForms(){
         return $this->hasMany(ExamForm::class,'student_id');
     }
+    public function promotionHistories(){
+        return $this->hasMany(PromotionStudent::class, 'student_id');
+    }
     public static function checkThisSemFormStatus($exam_session_id){
         $res=ExamForm::where('student_id',auth()->guard('student')->id())
         ->where('semester_id',auth()->guard('student')->user()->semester_id)

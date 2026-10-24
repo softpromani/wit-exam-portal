@@ -129,11 +129,14 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                          Paid Fee Status</div>
+                          Paid Exam Forms</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{$paystatus}}/{{$examFormCount}}</div>
+                        <div class="mt-2 small text-muted">
+                            <i class="fas fa-check-double text-success mr-1"></i> {{ $examFormCount > 0 ? round(($paystatus / $examFormCount) * 100, 1) : 0 }}% Forms Paid
+                        </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fa fa-check-circle text-gray-300" style="font-size:26px"></i>
+                        <i class="fa fa-check-circle text-gray-300" style="font-size:36px"></i>
                     </div>
                 </div>
             </div>
@@ -147,8 +150,13 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        Collected Fee</div>
+                          Student Fee Collected / Total</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">₹{{ number_format($totalFee, 2) }}</div>
+                        <div class="mt-2 small">
+                            <a href="{{ route('admin.student.list', ['fee_status' => 'paid']) }}" class="text-info font-weight-bold mr-2" title="View Paid Students">
+                                <i class="fas fa-user-check mr-1"></i> {{ $paidStudentsCount }}/{{ $studentCount }} Students Paid
+                            </a>
+                        </div>
                     </div>
                     <div class="col-auto">
                         <i class="fa fa-rupee-sign text-gray-300" style="font-size:36px"></i>

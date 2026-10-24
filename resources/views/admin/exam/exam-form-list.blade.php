@@ -19,10 +19,25 @@
             </div>
         </form>
 
-        <div class="card">
+        <div class="card shadow mb-4">
             <div class="card-body">
-                <h2>Applied Exam Form</h2>
-                <table class="table table-bordered" id="student_datatable">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+                    <h2 class="h4 font-weight-bold text-gray-800 mb-0">Applied Exam Forms</h2>
+                    @isset($examformdata)
+                        <div>
+                            <span class="badge badge-primary px-2 py-1 mr-1">
+                                <i class="fas fa-file-invoice mr-1"></i> Total Forms: {{ $sessionTotalForms ?? $examformdata->count() }}
+                            </span>
+                            <span class="badge badge-success px-2 py-1 mr-1">
+                                <i class="fas fa-check-circle mr-1"></i> Paid: {{ $sessionPaidForms ?? 0 }} / {{ $sessionTotalForms ?? $examformdata->count() }}
+                            </span>
+                            <span class="badge badge-info px-2 py-1">
+                                <i class="fas fa-rupee-sign mr-1"></i> Fee Collected: ₹{{ number_format($sessionTotalFee ?? 0, 2) }}
+                            </span>
+                        </div>
+                    @endisset
+                </div>
+                <table class="table table-bordered table-hover" id="student_datatable">
                     <thead>
                         <tr>
                             <th>S.No</th>

@@ -109,6 +109,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::post('student/import', [AdminStudentController::class, 'import'])->name('student.import');
     Route::any('get-students', [AdminStudentController::class, 'getStudents'])->name('student.list');
     Route::post('student-promote', [AdminStudentController::class, 'promote'])->name('student-promote');
-
-
+    Route::get('promotion-history', [AdminStudentController::class, 'promotionHistory'])->name('student.promotion-history');
+    Route::get('promotion-history/{id}', [AdminStudentController::class, 'promotionDetails'])->name('student.promotion-details');
+    Route::post('promotion-revert/{id}', [AdminStudentController::class, 'revertPromotion'])->name('student.promotion-revert');
 });
