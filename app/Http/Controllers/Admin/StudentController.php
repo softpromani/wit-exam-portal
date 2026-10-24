@@ -161,38 +161,58 @@ class StudentController extends Controller
             'courses' => Course::with('branches')->get(),
             'semesters' => Semester::get(),
             'admission_sessions' => AdmissionSession::get(),
+            'globalTotalStudents' => Student::count(),
+            'globalCompletedStudents' => Student::where('is_profile', 1)->count(),
+            'globalIncompleteStudents' => Student::where(function ($q) {
+                $q->where('is_profile', 0)->orWhereNull('is_profile');
+            })->count(),
         ];
-        if ($request->post()) {
+
+        if ($request->isMethod('post') || $request->has('is_profile') || $request->has('branch_id') || $request->has('semester_id') || $request->has('admission_session_id') || $request->has('fetch')) {
             $query = Student::query()->with(['semester', 'branch', 'admission_session', 'admission_semester']);
 
             // Apply search filters for each column
-            if ($request->has('university_roll_no')) {
+            if ($request->filled('university_roll_no')) {
                 $query->where('university_roll_no', 'like', '%' . $request->university_roll_no . '%');
             }
-            if ($request->has('registration_no')) {
+            if ($request->filled('registration_no')) {
                 $query->where('registration_no', 'like', '%' . $request->registration_no . '%');
             }
-            if ($request->has('registration_type')) {
+            if ($request->filled('registration_type')) {
                 $query->where('registration_type', 'like', '%' . $request->registration_type . '%');
             }
-            if ($request->has('student_name')) {
+            if ($request->filled('student_name')) {
                 $query->where('student_name', 'like', '%' . $request->student_name . '%');
             }
-            if ($request->has('course_id')) {
+            if ($request->filled('course_id')) {
                 $query->where('course_id', $request->course_id);
             }
-            if ($request->has('branch_id')) {
+            if ($request->filled('branch_id')) {
                 $query->where('branch_id', $request->branch_id);
             }
-            if ($request->has('semester_id')) {
+            if ($request->filled('semester_id')) {
                 $query->where('semester_id', $request->semester_id);
             }
-            if ($request->has('admission_session_id')) {
+            if ($request->filled('admission_session_id')) {
                 $query->where('admission_session_id', $request->admission_session_id);
             }
+            if ($request->has('is_profile') && $request->is_profile !== '' && $request->is_profile !== null) {
+                if ($request->is_profile == '1') {
+                    $query->where('is_profile', 1);
+                } else {
+                    $query->where(function ($q) {
+                        $q->where('is_profile', 0)->orWhereNull('is_profile');
+                    });
+                }
+            }
 
-            $arrView['students'] = $query->get();
+            $students = $query->get();
+            $arrView['students'] = $students;
+            $arrView['filteredCount'] = $students->count();
+            $arrView['filteredCompleted'] = $students->where('is_profile', 1)->count();
+            $arrView['filteredIncomplete'] = $arrView['filteredCount'] - $arrView['filteredCompleted'];
         }
+
         return view('admin.student.list', $arrView);
     }
 

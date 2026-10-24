@@ -58,6 +58,14 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="is_profile">Profile Status</label>
+                            <select name="is_profile" id="is_profile" class="form-control">
+                                <option value="">All Profile Statuses</option>
+                                <option value="1" {{ request('is_profile') === '1' ? 'selected' : '' }}>Completed</option>
+                                <option value="0" {{ request('is_profile') === '0' ? 'selected' : '' }}>Incomplete</option>
+                            </select>
+                        </div>
                         <div class="col-12 mt-2">
                             <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> Apply Filters</button>
                             <a href="{{ route('admin.admin-dashboard') }}" class="btn btn-secondary">Reset</a>
@@ -79,6 +87,14 @@
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             Total Students</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{$studentCount}}</div>
+                        <div class="mt-2 small">
+                            <a href="{{ route('admin.student.list', ['is_profile' => 1]) }}" class="text-success font-weight-bold mr-2" title="View Completed Profiles">
+                                <i class="fas fa-check-circle"></i> {{ $completedProfileCount }} Completed
+                            </a>
+                            <a href="{{ route('admin.student.list', ['is_profile' => 0]) }}" class="text-danger font-weight-bold" title="View Incomplete Profiles">
+                                <i class="fas fa-times-circle"></i> {{ $incompleteProfileCount }} Incomplete
+                            </a>
+                        </div>
                     </div>
                     <div class="col-auto">
                         <i class="fa-solid fa-users text-gray-300" style="font-size:36px"></i>

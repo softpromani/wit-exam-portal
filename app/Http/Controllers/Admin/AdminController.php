@@ -80,6 +80,17 @@ class AdminController extends Controller
             });
         }
 
+        // Filter: Profile Status
+        if ($request->has('is_profile') && $request->is_profile !== '' && $request->is_profile !== null) {
+            if ($request->is_profile == '1') {
+                $studentQuery->where('is_profile', 1);
+            } else {
+                $studentQuery->where(function ($q) {
+                    $q->where('is_profile', 0)->orWhereNull('is_profile');
+                });
+            }
+        }
+
         // --- 4. Execute Queries & Aggregates ---
 
         // Counts
@@ -87,6 +98,10 @@ class AdminController extends Controller
         $paystatus = $paymentQuery->count();
         $totalFee = $paymentQuery->sum('paid_amount');
         $studentCount = $studentQuery->count();
+        $completedProfileCount = (clone $studentQuery)->where('is_profile', 1)->count();
+        $incompleteProfileCount = (clone $studentQuery)->where(function ($q) {
+            $q->where('is_profile', 0)->orWhereNull('is_profile');
+        })->count();
         $unpaidCount = $examFormCount - $paystatus;
 
         // Chart Data 1: Exam Forms per Course
@@ -139,6 +154,8 @@ class AdminController extends Controller
             'paystatus',
             'totalFee',
             'studentCount',
+            'completedProfileCount',
+            'incompleteProfileCount',
             'unpaidCount', // Counts
             'courseNames',
             'courseCounts', // Chart 1

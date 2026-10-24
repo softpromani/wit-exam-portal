@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AddmissionSessionController;
 use App\Http\Controllers\Admin\ExamSessionController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Student\PaymentController as StudentPaymentController;
+use App\Http\Controllers\CaptchaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,9 @@ use App\Http\Controllers\Student\PaymentController as StudentPaymentController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('captcha-image', [CaptchaController::class, 'generate'])->name('captcha.image');
+Route::get('captcha-refresh', [CaptchaController::class, 'refresh'])->name('captcha.refresh');
+
 Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::post('login-store', [AuthController::class, 'login'])->name(name: 'loginStore');
 Route::get('result-view', [AuthController::class, 'resultview'])->name('result');

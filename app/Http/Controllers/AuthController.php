@@ -48,7 +48,11 @@ class AuthController extends Controller
         $data = $request->validate([
             'university_roll_no' => 'required',
             'password' => 'required',
+            'captcha' => 'required|captcha',
             'remember_me' => 'sometimes|boolean'
+        ], [
+            'captcha.required' => 'Please enter the captcha code.',
+            'captcha.captcha' => 'Invalid captcha code.',
         ]);
         if (
             Auth::guard('student')->attempt([
@@ -56,13 +60,16 @@ class AuthController extends Controller
                 'password' => $data['password']
             ], $request->remember_me ?? false)
         ) {
+            session()->forget('captcha_code');
             if (Auth::guard('student')->user()->is_profile == 1) {
                 return redirect()->route('student.dashboard');
             } else {
                 return redirect()->route('student.profile')->with('success', 'Welcome to student panel !!');
             }
         } else {
-            return redirect()->back()->with('error', 'Invalid Credentials');
+            return redirect()->back()
+                ->withInput($request->only('university_roll_no', 'remember_me'))
+                ->with('error', 'Invalid Credentials');
         }
 
     }
