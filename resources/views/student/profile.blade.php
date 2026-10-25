@@ -53,8 +53,46 @@
 
 @section('content')
 
-<h1 class="h3 mb-2 text-gray-800">Student Profile</h1>
-<div class="container card">
+<div class="d-flex align-items-center justify-content-between flex-wrap mb-3">
+    <h1 class="h3 mb-0 text-gray-800">Student Profile</h1>
+    @if($editstudent->is_profile == 1)
+        <span class="badge badge-success px-3 py-2 shadow-sm font-weight-bold" style="font-size: 90%;">
+            <i class="fas fa-lock mr-1"></i> Profile Locked (Verified)
+        </span>
+    @else
+        <span class="badge badge-warning text-dark px-3 py-2 shadow-sm font-weight-bold" style="font-size: 90%;">
+            <i class="fas fa-unlock-alt mr-1"></i> Profile Unlocked for Editing
+        </span>
+    @endif
+</div>
+
+@if($editstudent->is_profile == 0)
+    <div class="alert alert-warning border-left-warning shadow-sm mb-4">
+        <div class="d-flex align-items-center">
+            <div class="mr-3">
+                <i class="fas fa-unlock-alt fa-2x text-warning"></i>
+            </div>
+            <div>
+                <h5 class="alert-heading font-weight-bold mb-1">Profile Unlocked for Editing</h5>
+                <p class="mb-0 text-dark">Your profile has been unlocked by the administrator. You can update your details below and click <strong>Update Profile</strong> to save your changes.</p>
+            </div>
+        </div>
+    </div>
+@else
+    <div class="alert alert-info border-left-info shadow-sm mb-4">
+        <div class="d-flex align-items-center">
+            <div class="mr-3">
+                <i class="fas fa-lock fa-2x text-info"></i>
+            </div>
+            <div>
+                <h5 class="alert-heading font-weight-bold mb-1">Profile Locked</h5>
+                <p class="mb-0">Your profile information is verified and locked. If you need to make any changes or corrections, please request the administrator to unlock your profile.</p>
+            </div>
+        </div>
+    </div>
+@endif
+
+<div class="container card shadow-sm">
 
     <div class="card-body">
 
@@ -195,9 +233,12 @@
                     <b>Your Profile Pic</b> <br>
                     <img src="{{asset('storage/'.$editstudent->profile_pic->media)}}" alt="Profile Pic" class="crop-preview-thumb mt-1 mb-2" style="width: 150px; height: 200px; object-fit: cover;">
                     <br>
-                    <button class="btn btn-outline-danger btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#profilePicModal">
+                    <button class="btn btn-outline-danger btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#profilePicModal" {{ ($editstudent->is_profile == 1) ? 'disabled' : '' }} title="{{ ($editstudent->is_profile == 1) ? 'Profile is locked' : 'Change picture' }}">
                         <i class="fas fa-camera mr-1"></i> Change Pic
                     </button>
+                    @if($editstudent->is_profile == 1)
+                        <small class="d-block text-muted mt-1"><i class="fas fa-lock mr-1"></i> Locked</small>
+                    @endif
                 </div>
 
                 @endif
@@ -223,14 +264,22 @@
                         <b>Your Signature</b><br>
                         <img src="{{asset('storage/'.$editstudent->sign->media)}}" alt="Signature" class="crop-preview-thumb mt-1 mb-2" style="width: 200px; height: 100px; object-fit: contain; background: #fff;">
                         <br>
-                        <button class="btn btn-outline-danger btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#SignModal">
+                        <button class="btn btn-outline-danger btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#SignModal" {{ ($editstudent->is_profile == 1) ? 'disabled' : '' }} title="{{ ($editstudent->is_profile == 1) ? 'Profile is locked' : 'Change signature' }}">
                             <i class="fas fa-signature mr-1"></i> Change Signature
                         </button>
+                        @if($editstudent->is_profile == 1)
+                            <small class="d-block text-muted mt-1"><i class="fas fa-lock mr-1"></i> Locked</small>
+                        @endif
                     </div>
                 @endif
 
                 <div class="col-12 mt-3">
-                    <button type="submit" class="btn btn-primary" {{($editstudent->is_profile==1)?'disabled':''}} >Update</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold shadow-sm" {{($editstudent->is_profile==1)?'disabled':''}} >
+                        <i class="fas fa-save mr-1"></i> Update Profile
+                    </button>
+                    @if($editstudent->is_profile == 1)
+                        <span class="ml-2 text-muted small"><i class="fas fa-info-circle mr-1"></i> Profile locked by administration.</span>
+                    @endif
                 </div>
             </div>
         </form>

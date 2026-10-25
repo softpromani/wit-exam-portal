@@ -327,7 +327,7 @@
                                         <th>Admission Session</th>
                                         <th>Profile Status</th>
                                         <th>Fee Collected</th>
-                                        <th style="width: 90px;">Action</th>
+                                        <th style="width: 140px; text-align: center;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -342,33 +342,49 @@
                                             })->count();
                                         @endphp
                                         <tr>
-                                            <td class="text-center">
+                                            <td class="text-center align-middle">
                                                 <input type="checkbox" class="select-item" name="selected_students[]" value="{{$st->id}}">
                                             </td>
-                                            <td>{{ ($students->currentPage() - 1) * $students->perPage() + $loop->iteration }}</td>
-                                            <td><strong>{{$st->registration_no}}</strong></td>
-                                            <td>
+                                            <td class="align-middle">{{ ($students->currentPage() - 1) * $students->perPage() + $loop->iteration }}</td>
+                                            <td class="align-middle"><strong>{{$st->registration_no}}</strong></td>
+                                            <td class="align-middle">
                                                 <input type="text" value="{{ $st->university_roll_no }}" data-id="{{ $st->id }}"
                                                     class="form-control form-control-sm roll-no-class" />
                                                 <small class="text-danger error-message"></small>
                                             </td>
-                                            <td>{{$st->student_name}}</td>
-                                            <td>{{$st->branch?->name}}</td>
-                                            <td><span class="badge badge-info px-2 py-1">{{$st->semester?->semester_name}}</span></td>
-                                            <td>{{$st->admission_semester?->semester_name}}</td>
-                                            <td>{{$st->admission_session?->session_name}}</td>
-                                            <td class="text-center">
+                                            <td class="align-middle">{{$st->student_name}}</td>
+                                            <td class="align-middle">{{$st->branch?->name}}</td>
+                                            <td class="align-middle"><span class="badge badge-info px-2 py-1">{{$st->semester?->semester_name}}</span></td>
+                                            <td class="align-middle">{{$st->admission_semester?->semester_name}}</td>
+                                            <td class="align-middle">{{$st->admission_session?->session_name}}</td>
+                                            <td class="text-center align-middle">
                                                 @if($st->is_profile == 1)
-                                                    <span class="badge badge-success px-2 py-1" title="Profile completed">
+                                                    <span class="badge badge-success px-2 py-1" title="Profile completed (Locked)">
                                                         <i class="fas fa-check-circle mr-1"></i> Completed
                                                     </span>
+                                                    <div class="mt-1">
+                                                        <form action="{{ route('admin.student.unlock-profile', $st->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Unlock profile for {{ addslashes($st->student_name) }} to allow student to edit?');">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-outline-warning text-dark font-weight-bold py-0 px-2 shadow-sm" style="font-size: 11px;" title="Unlock profile for editing">
+                                                                <i class="fas fa-unlock-alt mr-1"></i>Unlock
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 @else
-                                                    <span class="badge badge-danger px-2 py-1" title="Profile not yet submitted">
+                                                    <span class="badge badge-danger px-2 py-1" title="Profile incomplete / Unlocked for editing">
                                                         <i class="fas fa-times-circle mr-1"></i> Incomplete
                                                     </span>
+                                                    <div class="mt-1">
+                                                        <form action="{{ route('admin.student.lock-profile', $st->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Lock profile for {{ addslashes($st->student_name) }}?');">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-outline-secondary py-0 px-2 shadow-sm" style="font-size: 11px;" title="Lock profile">
+                                                                <i class="fas fa-lock mr-1"></i>Lock
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 @endif
                                             </td>
-                                            <td class="text-center">
+                                            <td class="text-center align-middle">
                                                 @if($studentPaidForms > 0)
                                                     <span class="badge badge-success px-2 py-1 font-weight-bold" style="font-size: 85%;">
                                                         <i class="fas fa-check-circle mr-1"></i> ₹{{ number_format($studentPaidFee, 2) }}
@@ -385,7 +401,7 @@
                                                     </span>
                                                 @endif
                                             </td>
-                                            <td class="text-center">
+                                            <td class="text-center align-middle" style="white-space: nowrap;">
                                                 <a href="{{ route('reciept', $st->id) }}" class="btn btn-sm btn-primary"
                                                     title="View Receipt">
                                                     <i class="fa fa-file-invoice"></i>
@@ -394,6 +410,21 @@
                                                     title="Edit Student">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
+                                                @if($st->is_profile == 1)
+                                                    <form action="{{ route('admin.student.unlock-profile', $st->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Unlock profile for {{ addslashes($st->student_name) }} to allow editing?');">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-warning shadow-sm" title="Unlock Profile so student can edit">
+                                                            <i class="fas fa-unlock-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <form action="{{ route('admin.student.lock-profile', $st->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Lock profile for {{ addslashes($st->student_name) }}?');">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-outline-secondary shadow-sm" title="Lock Profile">
+                                                            <i class="fas fa-lock"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -402,11 +433,17 @@
                                     <tr class="bg-light">
                                         <th colspan="12" class="p-2" style="width: 100%; display: table-cell;">
                                             <div class="d-flex align-items-center justify-content-between flex-wrap w-100">
-                                                <div class="d-flex align-items-center">
-                                                    <button class="btn btn-danger btn-sm shadow-sm font-weight-bold" type="button" id="promote-btn">
+                                                <div class="d-flex align-items-center flex-wrap">
+                                                    <button class="btn btn-danger btn-sm shadow-sm font-weight-bold mr-2 my-1" type="button" id="promote-btn">
                                                         <i class="fas fa-level-up-alt mr-1"></i> Promote Next Sem
                                                     </button>
-                                                    <span id="promote-summary-badge" class="badge badge-light border ml-2 px-2 py-1">
+                                                    <button class="btn btn-warning btn-sm shadow-sm font-weight-bold mr-2 my-1" type="button" id="bulk-unlock-btn">
+                                                        <i class="fas fa-unlock-alt mr-1"></i> Unlock Selected
+                                                    </button>
+                                                    <button class="btn btn-secondary btn-sm shadow-sm font-weight-bold mr-2 my-1" type="button" id="bulk-lock-btn">
+                                                        <i class="fas fa-lock mr-1"></i> Lock Selected
+                                                    </button>
+                                                    <span id="promote-summary-badge" class="badge badge-light border ml-2 px-2 py-1 my-1">
                                                         0 students selected
                                                     </span>
                                                 </div>
@@ -655,9 +692,62 @@
                     promotionNotes.value = modalNotesInput.value;
                 }
                 const form = document.getElementById('select-students-form');
+                form.action = "{{ route('admin.student-promote') }}";
                 confirmPromoteBtn.disabled = true;
                 confirmPromoteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Promoting...';
                 form.submit();
+            });
+        }
+
+        // Bulk Unlock Profiles Handler
+        const bulkUnlockBtn = document.getElementById('bulk-unlock-btn');
+        if (bulkUnlockBtn) {
+            bulkUnlockBtn.addEventListener('click', function () {
+                const isAllFiltered = promoteAllFilteredInput.value === '1';
+                const checkedItems = document.querySelectorAll('.select-item:checked');
+
+                if (!isAllFiltered && checkedItems.length === 0) {
+                    alert("Please select at least one student to unlock.");
+                    return;
+                }
+
+                const message = isAllFiltered
+                    ? `Are you sure you want to UNLOCK profiles for ALL ${totalMatchingStudents} students matching current filters so they can edit their profile?`
+                    : `Are you sure you want to UNLOCK profiles for ${checkedItems.length} selected student(s) so they can edit their profile?`;
+
+                if (confirm(message)) {
+                    const form = document.getElementById('select-students-form');
+                    form.action = "{{ route('admin.student.bulk-unlock-profiles') }}";
+                    bulkUnlockBtn.disabled = true;
+                    bulkUnlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Unlocking...';
+                    form.submit();
+                }
+            });
+        }
+
+        // Bulk Lock Profiles Handler
+        const bulkLockBtn = document.getElementById('bulk-lock-btn');
+        if (bulkLockBtn) {
+            bulkLockBtn.addEventListener('click', function () {
+                const isAllFiltered = promoteAllFilteredInput.value === '1';
+                const checkedItems = document.querySelectorAll('.select-item:checked');
+
+                if (!isAllFiltered && checkedItems.length === 0) {
+                    alert("Please select at least one student to lock.");
+                    return;
+                }
+
+                const message = isAllFiltered
+                    ? `Are you sure you want to LOCK profiles for ALL ${totalMatchingStudents} students matching current filters?`
+                    : `Are you sure you want to LOCK profiles for ${checkedItems.length} selected student(s)?`;
+
+                if (confirm(message)) {
+                    const form = document.getElementById('select-students-form');
+                    form.action = "{{ route('admin.student.bulk-lock-profiles') }}";
+                    bulkLockBtn.disabled = true;
+                    bulkLockBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Locking...';
+                    form.submit();
+                }
             });
         }
     </script>

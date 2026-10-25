@@ -117,6 +117,43 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- Profile Status & Unlock Option -->
+                <div class="card mt-4 shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0">Profile Lock Status</h3>
+                        @if($student->is_profile == 1)
+                            <span class="badge badge-success px-2 py-1"><i class="fas fa-lock mr-1"></i> Locked</span>
+                        @else
+                            <span class="badge badge-warning text-dark px-2 py-1"><i class="fas fa-unlock-alt mr-1"></i> Unlocked</span>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        @if($student->is_profile == 1)
+                            <div class="alert alert-success py-2 px-3 small">
+                                <i class="fas fa-check-circle mr-1"></i> <strong>Profile is currently Locked (Completed).</strong>
+                                <p class="mb-0 text-muted mt-1">The student cannot edit their profile while it is locked. Click below to unlock their profile so the student can edit details.</p>
+                            </div>
+                            <form action="{{ route('admin.student.unlock-profile', $student->id) }}" method="POST" onsubmit="return confirm('Unlock profile for {{ addslashes($student->student_name) }} to allow editing?');">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-block font-weight-bold shadow-sm">
+                                    <i class="fas fa-unlock-alt mr-1"></i> Unlock Profile (Allow Student to Edit)
+                                </button>
+                            </form>
+                        @else
+                            <div class="alert alert-warning py-2 px-3 small text-dark">
+                                <i class="fas fa-info-circle mr-1"></i> <strong>Profile is currently Unlocked (Incomplete).</strong>
+                                <p class="mb-0 text-muted mt-1">The student can currently edit and update their profile details on the portal. You can manually lock it if editing is complete.</p>
+                            </div>
+                            <form action="{{ route('admin.student.lock-profile', $student->id) }}" method="POST" onsubmit="return confirm('Lock profile for {{ addslashes($student->student_name) }}?');">
+                                @csrf
+                                <button type="submit" class="btn btn-secondary btn-block font-weight-bold shadow-sm">
+                                    <i class="fas fa-lock mr-1"></i> Lock Profile
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
     </div>

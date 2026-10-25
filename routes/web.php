@@ -112,4 +112,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::get('promotion-history', [AdminStudentController::class, 'promotionHistory'])->name('student.promotion-history');
     Route::get('promotion-history/{id}', [AdminStudentController::class, 'promotionDetails'])->name('student.promotion-details');
     Route::post('promotion-revert/{id}', [AdminStudentController::class, 'revertPromotion'])->name('student.promotion-revert');
+    Route::post('student/{id}/unlock-profile', [AdminStudentController::class, 'unlockProfile'])->name('student.unlock-profile');
+    Route::post('student/{id}/lock-profile', [AdminStudentController::class, 'lockProfile'])->name('student.lock-profile');
+    Route::post('student-bulk-unlock-profiles', [AdminStudentController::class, 'bulkUnlockProfiles'])->name('student.bulk-unlock-profiles');
+    Route::post('student-bulk-lock-profiles', [AdminStudentController::class, 'bulkLockProfiles'])->name('student.bulk-lock-profiles');
 });

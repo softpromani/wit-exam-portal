@@ -780,4 +780,174 @@ class StudentController extends Controller
 
         return redirect()->route('admin.student.list')->with('success', 'Student created successfully.');
     }
+
+    public function unlockProfile(Request $request, $id)
+    {
+        $student = Student::findOrFail($id);
+        $student->update(['is_profile' => 0]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => "Profile for {$student->student_name} unlocked successfully.",
+                'is_profile' => 0,
+            ]);
+        }
+
+        return redirect()->back()->with('success', "Profile for {$student->student_name} ({$student->registration_no}) has been unlocked. The student can now edit their profile.");
+    }
+
+    public function lockProfile(Request $request, $id)
+    {
+        $student = Student::findOrFail($id);
+        $student->update(['is_profile' => 1]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => "Profile for {$student->student_name} locked successfully.",
+                'is_profile' => 1,
+            ]);
+        }
+
+        return redirect()->back()->with('success', "Profile for {$student->student_name} ({$student->registration_no}) has been locked.");
+    }
+
+    public function bulkUnlockProfiles(Request $request)
+    {
+        $promoteAllFiltered = $request->input('promote_all_filtered') === '1' || $request->boolean('select_all_filtered');
+
+        if ($promoteAllFiltered) {
+            $query = Student::query();
+
+            if ($request->filled('student_name')) {
+                $query->where('student_name', 'like', '%' . $request->student_name . '%');
+            }
+            if ($request->filled('registration_no')) {
+                $query->where('registration_no', 'like', '%' . $request->registration_no . '%');
+            }
+            if ($request->filled('university_roll_no')) {
+                $query->where('university_roll_no', 'like', '%' . $request->university_roll_no . '%');
+            }
+            if ($request->filled('course_id')) {
+                $query->where('course_id', $request->course_id);
+            }
+            if ($request->filled('registration_type')) {
+                $query->where('registration_type', $request->registration_type);
+            }
+            if ($request->filled('branch_id')) {
+                $query->where('branch_id', $request->branch_id);
+            }
+            if ($request->filled('semester_id')) {
+                $query->where('semester_id', $request->semester_id);
+            }
+            if ($request->filled('admission_session_id')) {
+                $query->where('admission_session_id', $request->admission_session_id);
+            }
+            if ($request->has('is_profile') && $request->is_profile !== '' && $request->is_profile !== null) {
+                if ($request->is_profile == '1') {
+                    $query->where('is_profile', 1);
+                } else {
+                    $query->where(function ($q) {
+                        $q->where('is_profile', 0)->orWhereNull('is_profile');
+                    });
+                }
+            }
+            if ($request->filled('fee_status')) {
+                if ($request->fee_status === 'paid') {
+                    $query->whereHas('examForms.payment', function ($q) {
+                        $q->where('payment_status', 'paid');
+                    });
+                } elseif ($request->fee_status === 'unpaid') {
+                    $query->whereDoesntHave('examForms.payment', function ($q) {
+                        $q->where('payment_status', 'paid');
+                    });
+                }
+            }
+
+            $count = $query->update(['is_profile' => 0]);
+        } else {
+            $request->validate([
+                'selected_students' => 'required|array|min:1',
+                'selected_students.*' => 'exists:students,id',
+            ], [
+                'selected_students.required' => 'Please select at least one student to unlock.',
+                'selected_students.min' => 'Please select at least one student to unlock.',
+            ]);
+
+            $studentIds = $request->input('selected_students', []);
+            $count = Student::whereIn('id', $studentIds)->update(['is_profile' => 0]);
+        }
+
+        return redirect()->back()->with('success', "Successfully unlocked {$count} student profile(s). These students can now edit their profiles.");
+    }
+
+    public function bulkLockProfiles(Request $request)
+    {
+        $promoteAllFiltered = $request->input('promote_all_filtered') === '1' || $request->boolean('select_all_filtered');
+
+        if ($promoteAllFiltered) {
+            $query = Student::query();
+
+            if ($request->filled('student_name')) {
+                $query->where('student_name', 'like', '%' . $request->student_name . '%');
+            }
+            if ($request->filled('registration_no')) {
+                $query->where('registration_no', 'like', '%' . $request->registration_no . '%');
+            }
+            if ($request->filled('university_roll_no')) {
+                $query->where('university_roll_no', 'like', '%' . $request->university_roll_no . '%');
+            }
+            if ($request->filled('course_id')) {
+                $query->where('course_id', $request->course_id);
+            }
+            if ($request->filled('registration_type')) {
+                $query->where('registration_type', $request->registration_type);
+            }
+            if ($request->filled('branch_id')) {
+                $query->where('branch_id', $request->branch_id);
+            }
+            if ($request->filled('semester_id')) {
+                $query->where('semester_id', $request->semester_id);
+            }
+            if ($request->filled('admission_session_id')) {
+                $query->where('admission_session_id', $request->admission_session_id);
+            }
+            if ($request->has('is_profile') && $request->is_profile !== '' && $request->is_profile !== null) {
+                if ($request->is_profile == '1') {
+                    $query->where('is_profile', 1);
+                } else {
+                    $query->where(function ($q) {
+                        $q->where('is_profile', 0)->orWhereNull('is_profile');
+                    });
+                }
+            }
+            if ($request->filled('fee_status')) {
+                if ($request->fee_status === 'paid') {
+                    $query->whereHas('examForms.payment', function ($q) {
+                        $q->where('payment_status', 'paid');
+                    });
+                } elseif ($request->fee_status === 'unpaid') {
+                    $query->whereDoesntHave('examForms.payment', function ($q) {
+                        $q->where('payment_status', 'paid');
+                    });
+                }
+            }
+
+            $count = $query->update(['is_profile' => 1]);
+        } else {
+            $request->validate([
+                'selected_students' => 'required|array|min:1',
+                'selected_students.*' => 'exists:students,id',
+            ], [
+                'selected_students.required' => 'Please select at least one student to lock.',
+                'selected_students.min' => 'Please select at least one student to lock.',
+            ]);
+
+            $studentIds = $request->input('selected_students', []);
+            $count = Student::whereIn('id', $studentIds)->update(['is_profile' => 1]);
+        }
+
+        return redirect()->back()->with('success', "Successfully locked {$count} student profile(s).");
+    }
 }
