@@ -682,7 +682,18 @@
                     modalPromotionDesc.innerHTML = `You are about to promote <strong>${checkedItems.length} selected student(s)</strong> on this page to the next semester.`;
                 }
 
-                $('#promoteModal').modal('show');
+                if (typeof $('#promoteModal').modal === 'function') {
+                    $('#promoteModal').modal('show');
+                } else if (window.bootstrap && typeof window.bootstrap.Modal === 'function') {
+                    const modal = new window.bootstrap.Modal(document.getElementById('promoteModal'));
+                    modal.show();
+                } else {
+                    const modalEl = document.getElementById('promoteModal');
+                    if (modalEl) {
+                        modalEl.classList.add('show');
+                        modalEl.style.display = 'block';
+                    }
+                }
             });
         }
 

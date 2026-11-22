@@ -41,7 +41,6 @@
             <!-- Footer -->
            @include('admin.includes.footer')
             <!-- End of Footer -->
-            @yield('script_section')
         </div>
         <!-- End of Content Wrapper -->
 
@@ -51,8 +50,9 @@
     <!-- Scroll to Top Button-->
 
     <!-- Bootstrap core JavaScript-->
-   @include('admin.includes.foot');
+   @include('admin.includes.foot')
 
+   @yield('script_section')
 </body>
 
 </html>

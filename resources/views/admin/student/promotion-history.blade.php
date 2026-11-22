@@ -301,7 +301,18 @@
             const form = document.getElementById('revert-form');
             form.action = "{{ url('admin/promotion-revert') }}/" + promoId;
 
-            $('#revertModal').modal('show');
+            if (typeof $('#revertModal').modal === 'function') {
+                $('#revertModal').modal('show');
+            } else if (window.bootstrap && typeof window.bootstrap.Modal === 'function') {
+                const modal = new window.bootstrap.Modal(document.getElementById('revertModal'));
+                modal.show();
+            } else {
+                const modalEl = document.getElementById('revertModal');
+                if (modalEl) {
+                    modalEl.classList.add('show');
+                    modalEl.style.display = 'block';
+                }
+            }
         });
     });
 
