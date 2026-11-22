@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\ExamSessionController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Student\PaymentController as StudentPaymentController;
 use App\Http\Controllers\CaptchaController;
+use App\Http\Controllers\Admin\SubjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,7 +85,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::get('fetch-exam-schedule', [ExamController::class, 'fetchexam_schedule'])->name('fetch_exam_schedule');
     Route::get('exam-schedule-edit/{id}', [ExamController::class, 'exam_schedule_edit'])->name('exam_schedule_edit');
     Route::post('exam-schedule-update', [ExamController::class, 'exam_schedule_update'])->name('exam_schedule_update');
-    Route::get('subject', [ExamController::class, 'subject'])->name('exam_subjects');
+    Route::get('subject/import', [SubjectController::class, 'importView'])->name('subject.import-view');
+    Route::post('subject/import', [SubjectController::class, 'import'])->name('subject.import');
+    Route::get('subject/sample-csv', [SubjectController::class, 'downloadSampleCsv'])->name('subject.sample-csv');
+    Route::resource('subject', SubjectController::class);
+    Route::get('subjects-list', [SubjectController::class, 'index'])->name('exam_subjects');
     Route::post('fee-payment', [PaymentController::class, 'feePayment'])->name('fee-payment');
     Route::post('exam-exam-session', [ExamController::class, 'ExamSession'])->name('examsession');
     Route::any('attendance_list', [ExamController::class, 'attendanceList'])->name('attendance_list');

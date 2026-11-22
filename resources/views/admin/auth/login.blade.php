@@ -46,8 +46,16 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror"
-                                            id="exampleInputPassword" name="password" placeholder="Enter Password">
+                                        <div class="position-relative">
+                                            <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror"
+                                                id="exampleInputPassword" name="password" placeholder="Enter Password" style="padding-right: 3rem;">
+                                            <button type="button" class="btn btn-link position-absolute toggle-password"
+                                                data-target="#exampleInputPassword"
+                                                style="top: 50%; right: 16px; transform: translateY(-50%); z-index: 10; color: #6e707e; text-decoration: none; padding: 0; border: none; background: transparent; outline: none; box-shadow: none;"
+                                                title="Show Password">
+                                                <i class="fas fa-eye fa-lg"></i>
+                                            </button>
+                                        </div>
                                         @error('password')
                                             <span class="text-danger small ml-2">{{ $message }}</span>
                                         @enderror
@@ -97,6 +105,23 @@
 @section('footer-section')
 <script>
     $(document).ready(function() {
+        $('.toggle-password').on('click', function(e) {
+            e.preventDefault();
+            var target = $(this).data('target');
+            var $input = $(target);
+            var $icon = $(this).find('i');
+
+            if ($input.attr('type') === 'password') {
+                $input.attr('type', 'text');
+                $icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                $(this).attr('title', 'Hide Password');
+            } else {
+                $input.attr('type', 'password');
+                $icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                $(this).attr('title', 'Show Password');
+            }
+        });
+
         $('#refresh-captcha').on('click', function(e) {
             e.preventDefault();
             var $icon = $(this).find('i');

@@ -35,9 +35,10 @@
             <i class="fa fa-address-book"></i>
             <span>Exams</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseTwo" class="collapse {{ request()->routeIs('admin.subject.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Components:</h6>
+                <a class="collapse-item {{ request()->routeIs('admin.subject.*') ? 'active' : '' }}" href="{{route('admin.subject.index')}}">Subjects</a>
                 <a class="collapse-item" href="{{route('admin.exam-form_list')}}">Exam from List</a>
                 <a class="collapse-item" href="{{route('admin.exam_schedule_list')}}">Exam Schedule</a>
                 <a class="collapse-item" href="{{route('admin.attendance_list')}}">Attendance List</a>
